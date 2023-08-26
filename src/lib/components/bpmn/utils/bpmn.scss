@@ -1,0 +1,185 @@
+/* body {
+	font-size: 22px;
+} */
+
+.djs-palette .separator {
+	padding-top: none !important;
+	height: 1px;
+	width: 100%;
+	border-color: #eee !important;
+	margin-bottom: 10px !important;
+}
+.djs-palette {
+	position: absolute;
+	width: 192px !important;
+	top: 0px !important;
+	left: 0 !important;
+	height: 100%;
+	background: transparent !important;
+	border-color: #eee !important;
+	background: #fff !important;
+	transition: transform 0.2s;
+	overflow-y: auto;
+}
+.bjs-powered-by {
+	display: none;
+}
+.djs-palette.open.close {
+	transform: translateX(-92px);
+}
+.djs-palette-entries .group {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.djs-palette-entries .group .entry {
+	border: 1px solid #f5f5f5;
+	border-radius: 8px;
+	margin: 4px 0;
+	background-size: 24px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+/* ------------------------------------------------ Palette Icons ----------------------------------------------------------- */
+.global-connect-tool {
+	background-image: url('/icons/connector.png') !important;
+	&:hover {
+		background-image: url('/icons/connector-1.png') !important;
+	}
+}
+.bpmn-inbound-route {
+	background-image: url('/icons/inbound-route.png') !important;
+	&:hover {
+		background-image: url('/icons/inbound-route-1.png') !important;
+	}
+	&::after {
+		content: 'ایجاد شماره جدید';
+		font-size: 12px;
+	}
+}
+.bpmn-bridge {
+	background-image: url('/icons/bridge.png') !important;
+	&:hover {
+		background-image: url('/icons/bridge-1.png') !important;
+	}
+}
+.bpmn-timeout {
+	background-image: url('/icons/timeout.png') !important;
+	&:hover {
+		background-image: url('/icons/timeout-1.png') !important;
+	}
+}
+.bpmn-audio {
+	background-image: url('/icons/audio.png') !important;
+	&:hover {
+		background-image: url('/icons/audio-1.png') !important;
+	}
+}
+.bpmn-queue {
+	background-image: url('/icons/queue.png') !important;
+	&:hover {
+		background-image: url('/icons/queue-1.png') !important;
+	}
+}
+.bpmn-recorder {
+	background-image: url('/icons/recorder.png') !important;
+	&:hover {
+		background-image: url('/icons/recorder-1.png') !important;
+	}
+}
+.bpmn-menu {
+	background-image: url('/icons/menu.png') !important;
+	&:hover {
+		background-image: url('/icons/menu-1.png') !important;
+	}
+}
+.bpmn-opinion {
+	background-image: url('/icons/opinion.png') !important;
+	&:hover {
+		background-image: url('/icons/opinion-1.png') !important;
+	}
+}
+.bpmn-mailbox {
+	background-image: url('/icons/mailbox.png') !important;
+	&:hover {
+		background-image: url('/icons/mailbox-1.png') !important;
+	}
+}
+.bpmn-callback {
+	background-image: url('/icons/callback.png') !important;
+	&:hover {
+		background-image: url('/icons/callback-1.png') !important;
+	}
+}
+.bpmn-extension {
+	background-image: url('/icons/extension.png') !important;
+	&:hover {
+		background-image: url('/icons/extension-1.png') !important;
+	}
+}
+.bpmn-call-center {
+	background-image: url('/icons/call-center.png') !important;
+	&:hover {
+		background-image: url('/icons/call-center-1.png') !important;
+	}
+}
+.bpmn-check-call-center {
+	background-image: url('/icons/check-call-center.png') !important;
+	&:hover {
+		background-image: url('/icons/check-call-center-1.png') !important;
+	}
+}
+.bpmn-check-dt-mf {
+	background-image: url('/icons/check-dt-mf.png') !important;
+	&:hover {
+		background-image: url('/icons/check-dt-mf-1.png') !important;
+	}
+}
+.bpmn-delete {
+	background-image: url('/icons/delete.png') !important;
+	&:hover {
+		background-image: url('/icons/delete-1.png') !important;
+	}
+}
+.bpmn-setting {
+	background-image: url('/icons/setting.png') !important;
+	&:hover {
+		background-image: url('/icons/setting-1.png') !important;
+	}
+}
+
+/* ----------------------------------------------- End Custom Palette Icons */
+text {
+	font-family: 'IRANsans', sans-serif;
+}
+
+.djs-context-pad .entry {
+	width: 36px !important;
+	height: 36px !important;
+	margin: 4px !important;
+	border: 1px solid #f5f5f5;
+	border-radius: 8px !important;
+	background-size: 24px !important;
+	background-repeat: no-repeat !important;
+	background-position: center !important;
+	display: inline-flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+}
+
+.djs-context-pad.open {
+	background: #fff;
+	border: 1px solid #eee;
+	display: flex;
+	flex-direction: column;
+	min-width: 158px;
+	border-radius: 16px;
+	padding: 12px;
+}
+
+.djs-connection .djs-visual path {
+	stroke-width: 1px !important;
+	stroke: #ccc !important;
+}
