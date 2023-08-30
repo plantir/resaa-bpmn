@@ -16,7 +16,7 @@
 					"type": "String"
 				},
 				{ "name": "title", "isAttr": true, "type": "String" },
-				{ "name": "timeout", "isAttr": true, "type": "Integer" }
+				{ "name": "timeout", "isAttr": true, "type": "String" }
 			]
 		},
 		{

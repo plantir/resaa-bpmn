@@ -14,11 +14,13 @@
       <bpmn:incoming>Flow_0yod7oz</bpmn:incoming>
       <bpmn:outgoing>Flow_0h67du3</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="Activity_0uvhmoy" name="Timeout 2s" cpbx:moduleType="timeout" cpbx:timeout="25">
+    <bpmn:task id="Activity_0uvhmoy" name="Timeout 2s" cpbx:moduleType="timeout"
+      cpbx:timeout="200ms">
       <bpmn:incoming>Flow_0h67du3</bpmn:incoming>
       <bpmn:outgoing>Flow_0yod7oz</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:sequenceFlow id="Flow_0ive80r" sourceRef="Activity_0d2evly" targetRef="Activity_05f0j9p" />
+    <bpmn:sequenceFlow id="Flow_0ive80r" name="test25" sourceRef="Activity_0d2evly"
+      targetRef="Activity_05f0j9p" />
     <bpmn:sequenceFlow id="Flow_0h67du3" sourceRef="Activity_05f0j9p" targetRef="Activity_0uvhmoy" />
     <bpmn:sequenceFlow id="Flow_0yod7oz" sourceRef="Activity_0uvhmoy" targetRef="Activity_05f0j9p" />
   </bpmn:process>
@@ -26,7 +28,6 @@
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
       <bpmndi:BPMNShape id="Activity_0d2evly_di" bpmnElement="Activity_0d2evly">
         <dc:Bounds x="344" y="133" width="192" height="55" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_05f0j9p_di" bpmnElement="Activity_05f0j9p">
         <dc:Bounds x="594" y="133" width="192" height="55" />
@@ -38,6 +39,9 @@
       <bpmndi:BPMNEdge id="Flow_0ive80r_di" bpmnElement="Flow_0ive80r">
         <di:waypoint x="536" y="161" />
         <di:waypoint x="594" y="161" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="551" y="83" width="29" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0h67du3_di" bpmnElement="Flow_0h67du3">
         <di:waypoint x="786" y="180" />

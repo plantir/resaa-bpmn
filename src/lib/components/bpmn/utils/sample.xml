@@ -2,20 +2,29 @@
 <vxml version="2.1" xmlns="http://www.w3.org/2001/vxml"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.w3.org/2001/vxml http://www.w3.org/TR/2007/REC-voicexml21-20070619/vxml.xsd"
-    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC">
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+    xmlns:di="http://www.omg.org/spec/DD/20100524/DI">
+    <meta name="@Meta.IVRStartNodeNumber" content="09123456789" />
+    <meta name="@Meta.IVRStartNodeTitle" content="Inbound Route" />
     <form>
         <block>
             <prompt>
-                <audio src="@Url.DocumentLink('menu.mp3','audio')" />
+                <dc:Bounds x="844" y="133" width="192" height="55" />
+                <di:waypont x="840" y="140" />
+                <audio
+                    src="@Url.DocumentLink('menu.mp3','audio')" />
+                <break time="2s" />
+                <audio
+                    src="@Url.DocumentLink('menu.mp3','audio')" />
             </prompt>
         </block>
     </form>
     <menu>
-
         <choice dtmf="1" next="#choiceOne" />
 
                 <noinput>
             <exit />
+                        <salam />
         </noinput>
     </menu>
 

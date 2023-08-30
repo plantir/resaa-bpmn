@@ -9,6 +9,7 @@
 	import 'bpmn-js/dist/assets/bpmn-js.css';
 	import 'bpmn-js/dist/assets/diagram-js.css';
 	import './bpmn.scss';
+	import { convertBPMNtoVXML, convertVXMLtoBPMN } from './custom-modeler/convertor';
 	const dispatch = createEventDispatcher();
 	let modeling;
 	let modeler;
@@ -40,7 +41,14 @@
 		modeler
 			.importXML(diagramXML)
 			.then(function () {
-				console.log(modeler);
+				let palettes = document.querySelectorAll('.djs-palette .group .entry');
+				palettes.forEach((element) => {
+					let span = document.createElement('span');
+					let title = element.getAttribute('title');
+					span.classList.add('entry-title');
+					span.innerHTML = title;
+					element.appendChild(span);
+				});
 				modeling = modeler.get('modeling');
 				var eventBus = modeler.get('eventBus');
 				eventBus.on('setting', (data) => {
@@ -55,8 +63,6 @@
 					// 	...businessObject
 					// });
 				});
-
-				console.log('Success!');
 			})
 			.catch(function (err) {
 				console.error('Error', err);
@@ -69,6 +75,8 @@
 			const result = await modeler.saveXML();
 			const { xml } = result;
 			console.log(xml);
+			let vxml = convertBPMNtoVXML(xml);
+			console.log(vxml);
 		} catch (err) {
 			console.log(err);
 		}

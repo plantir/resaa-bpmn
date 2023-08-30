@@ -45,7 +45,7 @@ export default class CustomPalette {
 			'global-connect-tool': {
 				group: 'tools',
 				className: 'global-connect-tool',
-				title: translate('Activate the global connect tool'),
+				title: translate('Global Connect'),
 				action: {
 					click: function (event) {
 						globalConnect.start(event);
