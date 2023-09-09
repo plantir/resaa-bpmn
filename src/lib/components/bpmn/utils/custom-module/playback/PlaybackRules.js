@@ -1,135 +1,133 @@
-import { reduce } from "min-dash";
+import { reduce } from 'min-dash';
 
-import inherits from "inherits";
+import inherits from 'inherits';
 
-import { is } from "bpmn-js/lib/util/ModelUtil";
+import { is } from 'bpmn-js/lib/util/ModelUtil';
 
-import BaseRuleProvider from "bpmn-js/lib/features/rules/BpmnRules";
+import BaseRuleProvider from 'bpmn-js/lib/features/rules/BpmnRules';
 
 var HIGH_PRIORITY = 1500;
 
 function isCustom(element) {
-  return element && element.type == "cpbx:Playback";
+	return element && element.type == 'cpbx:Playback';
 }
 
 /**
  * Specific rules for custom elements
  */
 export default function CustomRules(eventBus) {
-  BaseRuleProvider.call(this, eventBus);
+	BaseRuleProvider.call(this, eventBus);
 }
 
 inherits(CustomRules, BaseRuleProvider);
 
-CustomRules.$inject = ["eventBus"];
+CustomRules.$inject = ['eventBus'];
 
 CustomRules.prototype.init = function () {
-  /**
-   * Can shape be created on target container?
-   */
-  let that = this;
-  function canCreate(shape, target) {
-    // only judge about custom elements
-    if (!isCustom(shape)) {
-      return;
-    }
+	/**
+	 * Can shape be created on target container?
+	 */
+	let that = this;
+	function canCreate(shape, target) {
+		// only judge about custom elements
+		if (!isCustom(shape)) {
+			return;
+		}
 
-    // allow creation on processes
-    return (
-      is(target, "bpmn:Process") ||
-      is(target, "bpmn:Participant") ||
-      is(target, "bpmn:Collaboration")
-    );
-  }
+		// allow creation on processes
+		return (
+			is(target, 'bpmn:Process') ||
+			is(target, 'bpmn:Participant') ||
+			is(target, 'bpmn:Collaboration')
+		);
+	}
 
-  /**
-   * Can source and target be connected?
-   */
-  function canConnect(source, target) {
-    // if (source && source.type == "cpbx:Playback") {
-    //   source.type = "bpmn:StartEvent";
-    // }
-    if (source.type == "cpbx:Playback") {
-      console.log(is(source, "bpmn:FlowNode"));
-      console.log(source);
-    }
+	/**
+	 * Can source and target be connected?
+	 */
+	function canConnect(source, target) {
+		// if (source && source.type == "cpbx:Playback") {
+		//   source.type = "bpmn:StartEvent";
+		// }
+		if (source.type == 'cpbx:Playback') {
+		}
 
-    return;
-  }
+		return;
+	}
 
-  // this.addRule("elements.move", HIGH_PRIORITY, function (context) {
-  //   var target = context.target,
-  //     shapes = context.shapes;
+	// this.addRule("elements.move", HIGH_PRIORITY, function (context) {
+	//   var target = context.target,
+	//     shapes = context.shapes;
 
-  //   var type;
+	//   var type;
 
-  //   // do not allow mixed movements of custom / BPMN shapes
-  //   // if any shape cannot be moved, the group cannot be moved, too
-  //   var allowed = reduce(
-  //     shapes,
-  //     function (result, s) {
-  //       if (type === undefined) {
-  //         type = isCustom(s);
-  //       }
+	//   // do not allow mixed movements of custom / BPMN shapes
+	//   // if any shape cannot be moved, the group cannot be moved, too
+	//   var allowed = reduce(
+	//     shapes,
+	//     function (result, s) {
+	//       if (type === undefined) {
+	//         type = isCustom(s);
+	//       }
 
-  //       if (type !== isCustom(s) || result === false) {
-  //         return false;
-  //       }
+	//       if (type !== isCustom(s) || result === false) {
+	//         return false;
+	//       }
 
-  //       return canCreate(s, target);
-  //     },
-  //     undefined
-  //   );
+	//       return canCreate(s, target);
+	//     },
+	//     undefined
+	//   );
 
-  //   // reject, if we have at least one
-  //   // custom element that cannot be moved
-  //   return allowed;
-  // });
+	//   // reject, if we have at least one
+	//   // custom element that cannot be moved
+	//   return allowed;
+	// });
 
-  this.addRule("shape.create", HIGH_PRIORITY, function (context) {
-    var target = context.target,
-      shape = context.shape;
+	this.addRule('shape.create', HIGH_PRIORITY, function (context) {
+		var target = context.target,
+			shape = context.shape;
 
-    return canCreate(shape, target);
-  });
+		return canCreate(shape, target);
+	});
 
-  // this.addRule("shape.resize", HIGH_PRIORITY, function (context) {
-  //   var shape = context.shape;
+	// this.addRule("shape.resize", HIGH_PRIORITY, function (context) {
+	//   var shape = context.shape;
 
-  //   if (isCustom(shape)) {
-  //     // cannot resize custom elements
-  //     return false;
-  //   }
-  // });
+	//   if (isCustom(shape)) {
+	//     // cannot resize custom elements
+	//     return false;
+	//   }
+	// });
 
-  this.addRule("connection.start", HIGH_PRIORITY, function (context) {
-    var source = context.source,
-      target = context.target;
-    return canConnect(source, target);
-  });
+	this.addRule('connection.start', HIGH_PRIORITY, function (context) {
+		var source = context.source,
+			target = context.target;
+		return canConnect(source, target);
+	});
 
-  this.addRule("connection.create", HIGH_PRIORITY, function (context) {
-    var source = context.source,
-      target = context.target;
+	this.addRule('connection.create', HIGH_PRIORITY, function (context) {
+		var source = context.source,
+			target = context.target;
 
-    return canConnect(source, target);
-  });
+		return canConnect(source, target);
+	});
 
-  // this.addRule("connection.reconnectStart", HIGH_PRIORITY, function (context) {
-  //   var connection = context.connection,
-  //     source = context.hover || context.source,
-  //     target = connection.target;
+	// this.addRule("connection.reconnectStart", HIGH_PRIORITY, function (context) {
+	//   var connection = context.connection,
+	//     source = context.hover || context.source,
+	//     target = connection.target;
 
-  //   return canConnect(source, target, connection);
-  // });
+	//   return canConnect(source, target, connection);
+	// });
 
-  // this.addRule("connection.reconnectEnd", HIGH_PRIORITY, function (context) {
-  //   var connection = context.connection,
-  //     source = connection.source,
-  //     target = context.hover || context.target;
+	// this.addRule("connection.reconnectEnd", HIGH_PRIORITY, function (context) {
+	//   var connection = context.connection,
+	//     source = connection.source,
+	//     target = context.hover || context.target;
 
-  //   return canConnect(source, target, connection);
-  // });
+	//   return canConnect(source, target, connection);
+	// });
 };
 
 // CustomRules.prototype.canConnect = function (...args) {

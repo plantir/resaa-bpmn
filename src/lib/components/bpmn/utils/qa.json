@@ -7,8 +7,8 @@
 	},
 	"types": [
 		{
-			"name": "AnalyzedNode",
-			"extends": ["bpmn:FlowNode"],
+			"name": "task",
+			"extends": ["bpmn:Task"],
 			"properties": [
 				{
 					"name": "moduleType",
@@ -16,8 +16,22 @@
 					"type": "String"
 				},
 				{ "name": "title", "isAttr": true, "type": "String" },
-				{ "name": "timeout", "isAttr": true, "type": "String" }
+				{ "name": "timeout", "isAttr": true, "type": "String" },
+				{ "name": "src", "isAttr": true, "type": "String" },
+				{ "name": "queueId", "isAttr": true, "type": "String" },
+				{ "name": "callbackId", "isAttr": true, "type": "String" },
+				{ "name": "callCenterId", "isAttr": true, "type": "String" },
+				{ "name": "mailBoxId", "isAttr": true, "type": "String" },
+				{ "name": "shouldSendSms", "isAttr": true, "type": "String" },
+				{ "name": "callee", "isAttr": true, "type": "String" },
+				{ "name": "interdigittimeout", "isAttr": true, "type": "String" },
+				{ "name": "content", "isAttr": true, "type": "String" }
 			]
+		},
+		{
+			"name": "flow",
+			"extends": ["bpmn:SequenceFlow"],
+			"properties": [{ "name": "cond", "isAttr": true, "type": "String" }]
 		},
 		{
 			"name": "AnalysisDetails",

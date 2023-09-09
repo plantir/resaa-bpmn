@@ -77,8 +77,6 @@ export default class CustomContextPad {
 		}
 
 		function appendSettingEvent(event, element) {
-			console.log(event);
-			console.log(element);
 			let businessObject = getBusinessObject(element);
 
 			eventBus.fire('setting', { element, businessObject });
@@ -93,11 +91,12 @@ export default class CustomContextPad {
 			'menu',
 			'call-center',
 			'opinion',
-			'mailbox',
+			'mail-box',
 			'callback',
 			'extension',
-			'check-call-center',
-			'check-dt-mf'
+			'check-call-center-condition',
+			'check-dt-mf',
+			'exit'
 		];
 		let context_pad = {};
 		for (let item of custom_modules) {

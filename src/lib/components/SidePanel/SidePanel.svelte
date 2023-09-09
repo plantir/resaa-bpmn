@@ -6,14 +6,31 @@
 	export let data = {};
 	let formData = {};
 	let fields = {
-		timeout: ['name', 'timeout']
+		timeout: ['name', 'timeout'],
+		'inbound-route': ['name', 'content'],
+		'call-center': ['name', 'callCenterId'],
+		audio: ['name', 'src'],
+		opinion: ['name'],
+		queue: ['name', 'queueId'],
+		'mail-box': ['name', 'mailBoxId', 'shouldSendSms'],
+		callback: ['name', 'callbackId'],
+		menu: ['name', 'timeout', 'interdigittimeout'],
+		extension: ['name', 'callee'],
+		bridge: ['name', 'callee'],
+		'check-call-center-condition': ['name', 'callCenterId'],
+		'bpmn:SequenceFlow': ['name', 'cond']
 	};
 	$: open, open && getClone();
 	function getClone() {
-		let { businessObject } = JSON.parse(JSON.stringify(data));
 		debugger;
-		formData = _.pick(businessObject, fields[businessObject.moduleType]);
-		console.log(formData);
+		let { businessObject } = JSON.parse(JSON.stringify(data));
+		let type = businessObject.moduleType || businessObject.$type;
+		formData = _.pick(businessObject, fields[type]);
+		for (let field of fields[type]) {
+			if (!formData[field]) {
+				formData[field] = '';
+			}
+		}
 	}
 	function onClick() {
 		open = !open;
@@ -32,24 +49,17 @@
 	<div class="form-section">
 		<div>
 			{#if formData}
-				<div class="form-control w-full">
-					<span class="text-right label-text">عنوان</span>
-					<input
-						type="text"
-						bind:value={formData.name}
-						placeholder="Type here"
-						class="input input-bordered w-full input-sm"
-					/>
-				</div>
-				<div class="form-control w-full mt-4">
-					<span class="text-right label-text">مقدار وقفه</span>
-					<input
-						type="text"
-						bind:value={formData.timeout}
-						placeholder="Type here"
-						class="input input-bordered w-full input-sm"
-					/>
-				</div>
+				{#each Object.keys(formData) as field}
+					<div class="form-control w-full mt-4">
+						<span class="text-right label-text">{field}</span>
+						<input
+							type="text"
+							bind:value={formData[field]}
+							placeholder="Type here"
+							class="input input-bordered w-full input-sm"
+						/>
+					</div>
+				{/each}
 			{/if}
 		</div>
 	</div>

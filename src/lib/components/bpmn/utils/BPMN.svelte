@@ -9,7 +9,7 @@
 	import 'bpmn-js/dist/assets/bpmn-js.css';
 	import 'bpmn-js/dist/assets/diagram-js.css';
 	import './bpmn.scss';
-	import { convertBPMNtoVXML, convertVXMLtoBPMN } from './custom-modeler/convertor';
+	import { convertBPMNtoVXML, convertVXMLtoBPMN } from './convertor';
 	const dispatch = createEventDispatcher();
 	let modeling;
 	let modeler;
@@ -74,14 +74,12 @@
 		try {
 			const result = await modeler.saveXML();
 			const { xml } = result;
-			console.log(xml);
 			let vxml = convertBPMNtoVXML(xml);
 			console.log(vxml);
-		} catch (err) {
-			console.log(err);
-		}
+		} catch (err) {}
 	}
 	export function updateNode(element, data) {
+		debugger;
 		modeling.updateProperties(element, {
 			...data
 		});

@@ -45,7 +45,7 @@ export default class CustomPalette {
 			'global-connect-tool': {
 				group: 'tools',
 				className: 'global-connect-tool',
-				title: translate('Global Connect'),
+				title: translate('Create Global Connect'),
 				action: {
 					click: function (event) {
 						globalConnect.start(event);
@@ -68,11 +68,12 @@ export default class CustomPalette {
 			'menu',
 			'call-center',
 			'opinion',
-			'mailbox',
+			'mail-box',
 			'callback',
 			'extension',
-			'check-call-center',
-			'check-dt-mf'
+			'check-call-center-condition',
+			'check-dt-mf',
+			'exit'
 		];
 
 		for (let item of custom_modules) {

@@ -155,7 +155,6 @@ ElementFactory.prototype.create = function (elementType, attrs) {
       });
     }
     let startEvent = this._bpmnFactory.create("bpmn:StartEvent");
-    console.log(startEvent);
     // END minic ModdleElement API
 
     return this.createElement(elementType, attrs);

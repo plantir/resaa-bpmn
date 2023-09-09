@@ -14,11 +14,9 @@ export default function CustomContextPadProvider(injector, connect, translate) {
 	this.getContextPadEntries = function (element) {
 		var actions = cached(element);
 		var businessObject = element.businessObject;
-		console.log(businessObject);
 		function startConnect(event, element, autoActivate) {
 			connect.start(event, element, autoActivate);
 		}
-		console.log(actions);
 		if (actions['delete']) actions['delete'].className = 'bpmn-delete';
 		assign(actions, {});
 

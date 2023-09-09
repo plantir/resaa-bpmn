@@ -32,6 +32,8 @@
 	}
 	.entry-title {
 		font-size: 12px;
+		direction: rtl;
+		display: inline-flex;
 	}
 }
 .bjs-powered-by {
@@ -102,7 +104,7 @@
 		background-image: url('/icons/opinion-1.png') !important;
 	}
 }
-.bpmn-mailbox {
+.bpmn-mail-box {
 	background-image: url('/icons/mailbox.png') !important;
 	&:hover {
 		background-image: url('/icons/mailbox-1.png') !important;
@@ -126,7 +128,7 @@
 		background-image: url('/icons/call-center-1.png') !important;
 	}
 }
-.bpmn-check-call-center {
+.bpmn-check-call-center-condition {
 	background-image: url('/icons/check-call-center.png') !important;
 	&:hover {
 		background-image: url('/icons/check-call-center-1.png') !important;
@@ -136,6 +138,12 @@
 	background-image: url('/icons/check-dt-mf.png') !important;
 	&:hover {
 		background-image: url('/icons/check-dt-mf-1.png') !important;
+	}
+}
+.bpmn-exit {
+	background-image: url('/icons/exit-icon.png') !important;
+	&:hover {
+		background-image: url('/icons/exit-icon-1.png') !important;
 	}
 }
 .bpmn-delete {

@@ -154,7 +154,7 @@ export default class CustomRenderer extends BaseRenderer {
       </g>
       `;
 		}
-		if (type == 'mailbox') {
+		if (type == 'mail-box') {
 			icon = `
       <g style="transform: translateX(16px) translateY(16px);">
         <path d="M10 21V14.5C10 12.567 8.433 11 6.5 11C4.567 11 3 12.567 3 14.5V21H21V15C21 12.7909 19.2091 11 17 11H6.5" stroke="#4338FF" stroke-linecap="round" stroke-linejoin="round"/>
@@ -182,7 +182,7 @@ export default class CustomRenderer extends BaseRenderer {
       </g>
       `;
 		}
-		if (type == 'check-call-center') {
+		if (type == 'check-call-center-condition') {
 			icon = `
       <g style="transform: translateX(16px) translateY(16px);">
         <rect x="4" y="12" width="4" height="6" rx="2" stroke="#4338FF" stroke-linecap="round" stroke-linejoin="round"/>
@@ -202,6 +202,17 @@ export default class CustomRenderer extends BaseRenderer {
         <rect x="2.5" y="8" width="4" height="4" rx="2" stroke="#4338FF"/>
         <rect x="10.5" y="11" width="10" height="10" rx="5" stroke="#4338FF"/>
         <path d="M13.5 16.875L14.5909 18L17.5 15" stroke="#4338FF" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      `;
+		}
+		if (type == 'exit') {
+			icon = `
+      <g style="transform: translateX(16px) translateY(16px);">
+	  	<path stroke="none" d="M0 0h24v24H0z" fill="none" id="mainIconPathAttribute"></path>
+		<path d="M13 12v.01" id="mainIconPathAttribute"></path> 
+		<path d="M3 21h18" id="mainIconPathAttribute"></path> 
+		<path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5" id="mainIconPathAttribute"></path> 
+		<path d="M14 7h7m-3 -3l3 3l-3 3" id="mainIconPathAttribute"></path>
       </g>
       `;
 		}
