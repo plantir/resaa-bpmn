@@ -2,13 +2,9 @@ import inherits from 'inherits';
 
 import ContextPadProvider from 'bpmn-js/lib/features/context-pad/ContextPadProvider';
 
-import { isAny } from 'bpmn-js/lib/features/modeling/util/ModelingUtil';
-
 import { assign, bind } from 'min-dash';
-
 export default function CustomContextPadProvider(injector, connect, translate) {
 	injector.invoke(ContextPadProvider, this);
-	debugger;
 	var cached = bind(this.getContextPadEntries, this);
 
 	this.getContextPadEntries = function (element) {

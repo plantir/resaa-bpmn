@@ -88,7 +88,6 @@
 		} catch (err) {}
 	}
 	export function updateNode(element, data) {
-		debugger;
 		modeling.updateProperties(element, {
 			...data
 		});

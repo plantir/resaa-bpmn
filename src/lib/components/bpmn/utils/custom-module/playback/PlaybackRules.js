@@ -1,9 +1,6 @@
-import { reduce } from 'min-dash';
-
 import inherits from 'inherits';
 
 import { is } from 'bpmn-js/lib/util/ModelUtil';
-
 import BaseRuleProvider from 'bpmn-js/lib/features/rules/BpmnRules';
 
 var HIGH_PRIORITY = 1500;

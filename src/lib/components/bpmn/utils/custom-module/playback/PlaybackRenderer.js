@@ -1,5 +1,4 @@
 import BaseRenderer from 'diagram-js/lib/draw/BaseRenderer';
-import { assign } from 'min-dash';
 import {
 	innerSVG,
 	append as svgAppend,
@@ -9,10 +8,7 @@ import {
 } from 'tiny-svg';
 
 import { getRoundRectPath } from 'bpmn-js/lib/draw/BpmnRenderUtil';
-
 import { is, getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
-
-import { isNil } from 'min-dash';
 
 const HIGH_PRIORITY = 1500,
 	TASK_BORDER_RADIUS = 2,

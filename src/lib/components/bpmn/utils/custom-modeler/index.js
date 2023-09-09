@@ -8,7 +8,6 @@ import CustomModule from './custom';
 
 export default function CustomModeler(options) {
 	Modeler.call(this, options);
-	debugger;
 	this._customElements = [];
 }
 

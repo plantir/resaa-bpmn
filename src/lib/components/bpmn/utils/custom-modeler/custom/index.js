@@ -1,10 +1,10 @@
 import CustomContextPadProvider from './CustomContextPadProvider';
-import CustomElementFactory from './CustomElementFactory';
-import CustomOrderingProvider from './CustomOrderingProvider';
+// import CustomElementFactory from './CustomElementFactory';
+// import CustomOrderingProvider from './CustomOrderingProvider';
 import CustomPalette from './CustomPalette';
-import CustomRenderer from './CustomRenderer';
-import CustomRules from './CustomRules';
-import CustomUpdater from './CustomUpdater';
+// import CustomRenderer from './CustomRenderer';
+// import CustomRules from './CustomRules';
+// import CustomUpdater from './CustomUpdater';
 
 export default {
 	__init__: [

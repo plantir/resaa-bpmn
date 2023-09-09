@@ -32,6 +32,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@sveltejs/adapter-static": "^2.0.3",
 		"@types/lodash": "^4.14.197",
 		"bpmn-js": "^13.2.2",
 		"diagram-js-grid": "^0.2.0",

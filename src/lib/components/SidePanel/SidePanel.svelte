@@ -22,7 +22,6 @@
 	};
 	$: open, open && getClone();
 	function getClone() {
-		debugger;
 		let { businessObject } = JSON.parse(JSON.stringify(data));
 		let type = businessObject.moduleType || businessObject.$type;
 		formData = _.pick(businessObject, fields[type]);
