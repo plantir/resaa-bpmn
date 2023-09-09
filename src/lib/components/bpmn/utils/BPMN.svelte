@@ -75,6 +75,15 @@
 			const result = await modeler.saveXML();
 			const { xml } = result;
 			let vxml = convertBPMNtoVXML(xml);
+			var filename = 'file.xml';
+			var pom = document.createElement('a');
+			var bb = new Blob([vxml], { type: 'text/plain' });
+			pom.setAttribute('href', window.URL.createObjectURL(bb));
+			pom.setAttribute('download', filename);
+			pom.dataset.downloadurl = ['text/plain', pom.download, pom.href].join(':');
+			pom.draggable = true;
+			pom.classList.add('dragout');
+			pom.click();
 			console.log(vxml);
 		} catch (err) {}
 	}
@@ -88,7 +97,7 @@
 
 <div id="container" />
 
-<button class="btn btn-sm btn-primary" id="save">save</button>
+<!-- <button class="btn btn-sm btn-primary" id="save">save</button> -->
 
 <style lang="scss" global>
 	#container {

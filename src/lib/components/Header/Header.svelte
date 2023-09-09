@@ -1,6 +1,12 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 	function toggleMenu() {
 		document.querySelector('.djs-palette.open')?.classList.toggle('close');
+	}
+	function download() {
+		dispatch('on:download');
 	}
 </script>
 
@@ -23,7 +29,7 @@
 	</div>
 	<div class="ml-6">
 		<button class="btn btn-sm btn-secondary">ذخیره</button>
-		<button class="btn ml-2 btn-sm btn-primary">انتشار</button>
+		<button on:click={download} class="btn ml-2 btn-sm btn-primary">دانلود</button>
 	</div>
 	<div class="flex-1" />
 	<div class="flex-none">

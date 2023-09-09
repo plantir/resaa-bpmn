@@ -20,13 +20,17 @@
 		open = false;
 		toastCondition = true;
 	}
+
+	function download() {
+		bpmn.save();
+	}
 </script>
 
 <svelte:head>
 	<title>Home</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
-<Header />
+<Header on:on:download={download} />
 <Bpmn on:setting:clicked={onSettingClicked} bind:this={bpmn} />
 <SidePanel bind:open data={nodeData} on:submit={onSubmit} />
 <Toast type="success" timeout={2000} bind:show={toastCondition} message={toastMessage} />
