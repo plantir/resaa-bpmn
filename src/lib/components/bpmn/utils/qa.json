@@ -25,7 +25,8 @@
 				{ "name": "shouldSendSms", "isAttr": true, "type": "String" },
 				{ "name": "callee", "isAttr": true, "type": "String" },
 				{ "name": "interdigittimeout", "isAttr": true, "type": "String" },
-				{ "name": "content", "isAttr": true, "type": "String" }
+				{ "name": "content", "isAttr": true, "type": "String" },
+				{ "name": "cond", "isAttr": true, "type": "String" }
 			]
 		},
 		{

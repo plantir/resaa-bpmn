@@ -113,7 +113,6 @@ export function convertBPMNtoVXML(bpmn: string) {
 			let attributes = (<any>item).getAttributeNames();
 			if (attributes.includes('cpbx:moduleType')) {
 				let moduleType = item.getAttribute('cpbx:moduleType');
-				debugger;
 				let id = item.getAttribute('id');
 				let is_exist = vxml.querySelector(`#${id}`);
 				if (is_exist) continue;
@@ -183,7 +182,6 @@ export function convertBPMNtoVXML(bpmn: string) {
 								else_if_element.setAttribute('cond', cond ? cond : `choice == ${dtmf}`);
 								let subdialog = doc.createElement('subdialog');
 								subdialog.setAttribute('src', `#${next}`);
-								debugger;
 								let else_element = if_element.querySelector('else');
 								if (else_element) {
 									if_element.insertBefore(else_if_element, else_element);
@@ -210,7 +208,9 @@ export function convertBPMNtoVXML(bpmn: string) {
 					var_element.setAttribute('name', 'choice');
 					form.setAttribute('id', id);
 					let if_element = doc.createElement('if');
-					if_element.setAttribute('cond', 'checkCondition.result');
+					debugger;
+					let cond = item.getAttribute('cpbx:cond');
+					if_element.setAttribute('cond', cond);
 					let else_element = doc.createElement('else');
 					if_element.appendChild(else_element);
 					let children = item.children;

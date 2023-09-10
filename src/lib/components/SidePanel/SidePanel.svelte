@@ -4,8 +4,9 @@
 	let dispatch = createEventDispatcher();
 	export let open = false;
 	export let data = {};
-	let formData = {};
-	let fields = {
+	let formData: any = {};
+	let fields: any = {
+		default: ['name'],
 		timeout: ['name', 'timeout'],
 		'inbound-route': ['name', 'content'],
 		'call-center': ['name', 'callCenterId'],
@@ -18,14 +19,16 @@
 		extension: ['name', 'callee'],
 		bridge: ['name', 'callee'],
 		'check-call-center-condition': ['name', 'callCenterId'],
+		'check-dt-mf': ['name', 'cond'],
 		'bpmn:SequenceFlow': ['name', 'cond']
 	};
 	$: open, open && getClone();
 	function getClone() {
 		let { businessObject } = JSON.parse(JSON.stringify(data));
 		let type = businessObject.moduleType || businessObject.$type;
-		formData = _.pick(businessObject, fields[type]);
-		for (let field of fields[type]) {
+		let module_fields = fields[type] || fields['default'];
+		formData = _.pick(businessObject, module_fields);
+		for (let field of module_fields) {
 			if (!formData[field]) {
 				formData[field] = '';
 			}

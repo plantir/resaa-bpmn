@@ -58,7 +58,8 @@
       <bpmn:outgoing>Flow_09al5rm</bpmn:outgoing>
     </bpmn:task>
     <bpmn:sequenceFlow id="Flow_1vt8gyd" sourceRef="Activity_0wg58ey" targetRef="Activity_0b82j89" />
-    <bpmn:task id="Activity_0eshruh" cpbx:moduleType="check-dt-mf">
+    <bpmn:task id="Activity_0eshruh" name="check length" cpbx:moduleType="check-dt-mf"
+      cpbx:cond="choice.lenght == 8">
       <bpmn:incoming>Flow_182yn82</bpmn:incoming>
       <bpmn:outgoing>Flow_128c0rq</bpmn:outgoing>
       <bpmn:outgoing>Flow_1v1gqm6</bpmn:outgoing>
@@ -154,6 +155,7 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0eshruh_di" bpmnElement="Activity_0eshruh">
         <dc:Bounds x="1354" y="102" width="192" height="55" />
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1xnsmyq_di" bpmnElement="Activity_1xnsmyq">
         <dc:Bounds x="1614" y="52" width="192" height="55" />
