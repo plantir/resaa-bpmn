@@ -85,7 +85,9 @@
 			pom.classList.add('dragout');
 			pom.click();
 			console.log(vxml);
-		} catch (err) {}
+		} catch (err) {
+			console.error(err);
+		}
 	}
 	export function updateNode(element, data) {
 		modeling.updateProperties(element, {

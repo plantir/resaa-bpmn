@@ -15,7 +15,7 @@ export default {
 		base: true,
 		utils: true,
 		logs: true,
-		rtl: true,
+		rtl: false,
 		prefix: '',
 		darkTheme: 'light'
 	}

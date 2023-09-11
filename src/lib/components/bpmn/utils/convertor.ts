@@ -93,29 +93,29 @@ export function convertBPMNtoVXML(bpmn: string) {
 					let cond = flow?.getAttribute('name');
 					let next = flow?.getAttribute('targetRef');
 					if (cond == 'yes') {
-						let subdialog = doc.createElement('subdialog');
-						subdialog.setAttribute('src', `#${next}`);
-						if_element.prepend(subdialog);
+						let goto = doc.createElement('goto');
+						goto.setAttribute('next', `#${next}`);
+						if_element.prepend(goto);
 					} else if (cond == 'no') {
-						let subdialog = doc.createElement('subdialog');
-						subdialog.setAttribute('src', `#${next}`);
-						if_element.append(subdialog);
+						let goto = doc.createElement('goto');
+						goto.setAttribute('next', `#${next}`);
+						if_element.append(goto);
 					}
 				}
 			}
 			form.appendChild(if_element);
 		}
-
+		return form;
 		vxml.appendChild(form);
 	};
-	for (let item of process_items) {
-		if (item.nodeName == 'bpmn:task') {
+	let convertItem = (item: any, appendTo) => {
+		if (item.nodeName == 'bpmn:task' || item.nodeName == 'bpmn:subProcess') {
 			let attributes = (<any>item).getAttributeNames();
 			if (attributes.includes('cpbx:moduleType')) {
 				let moduleType = item.getAttribute('cpbx:moduleType');
 				let id = item.getAttribute('id');
 				let is_exist = vxml.querySelector(`#${id}`);
-				if (is_exist) continue;
+				if (is_exist) return;
 				if (
 					[
 						'queue',
@@ -128,8 +128,9 @@ export function convertBPMNtoVXML(bpmn: string) {
 						'extension'
 					].includes(moduleType)
 				) {
-					makeSubdialog(moduleType, item);
-					continue;
+					let form = makeSubdialog(moduleType, item);
+					appendTo.appendChild(form);
+					return;
 				}
 				if (moduleType == 'menu') {
 					let form = doc.createElement('form');
@@ -147,7 +148,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 					field.appendChild(timeout_property);
 					field.appendChild(interdigittimeout_property);
 					let no_input = doc.createElement('noinput');
-					let fiiled = doc.createElement('filled');
+					let filled = doc.createElement('filled');
 					let if_element = doc.createElement('if');
 					let no_input_child = doc.createElement('reprompt');
 					let index = 0;
@@ -158,30 +159,33 @@ export function convertBPMNtoVXML(bpmn: string) {
 							let next = flow?.getAttribute('targetRef');
 							let cond = flow?.getAttribute('cpbx:cond');
 							if (dtmf == 'noinput') {
-								no_input_child = doc.createElement('subdialog');
-								no_input_child.setAttribute('src', `#${next}`);
+								no_input_child = doc.createElement('goto');
+								no_input_child.setAttribute('next', `#${next}`);
 								continue;
 							}
 							if (index == 0) {
 								if_element.setAttribute('cond', cond ? cond : `choice == ${dtmf}`);
-								let subdialog = doc.createElement('subdialog');
-								subdialog.setAttribute('src', `#${next}`);
-								if_element.appendChild(subdialog);
+								let goto = doc.createElement('goto');
+								goto.setAttribute('next', `#${next}`);
+								if_element.appendChild(goto);
 							} else if (dtmf == 'choice') {
 								let else_element = doc.createElement('else');
-								let subdialog = doc.createElement('subdialog');
-								let param = doc.createElement('param');
-								param.setAttribute('name', 'choice');
-								param.setAttribute('expr', 'choice');
-								subdialog.appendChild(param);
-								subdialog.setAttribute('src', `#${next}`);
+								let goto = doc.createElement('goto');
+								let var_element = doc.createElement('var');
+								var_element.setAttribute('name', 'global_choice');
+								let assign_element = doc.createElement('assign');
+								assign_element.setAttribute('name', 'global_choice');
+								assign_element.setAttribute('expr', 'choice');
+								filled.prepend(assign_element);
+								vxml.prepend(var_element);
+								goto.setAttribute('next', `#${next}`);
 								if_element.appendChild(else_element);
-								if_element.appendChild(subdialog);
+								if_element.appendChild(goto);
 							} else {
 								let else_if_element = doc.createElement('elseif');
 								else_if_element.setAttribute('cond', cond ? cond : `choice == ${dtmf}`);
 								let subdialog = doc.createElement('subdialog');
-								subdialog.setAttribute('src', `#${next}`);
+								subdialog.setAttribute('next', `#${next}`);
 								let else_element = if_element.querySelector('else');
 								if (else_element) {
 									if_element.insertBefore(else_if_element, else_element);
@@ -196,20 +200,18 @@ export function convertBPMNtoVXML(bpmn: string) {
 					}
 					no_input.appendChild(no_input_child);
 					field.appendChild(no_input);
-					fiiled.appendChild(if_element);
-					field.appendChild(fiiled);
+					filled.appendChild(if_element);
+					field.appendChild(filled);
 					form.appendChild(field);
-					vxml.appendChild(form);
+					appendTo.appendChild(form);
 				}
 				if (moduleType == 'check-dt-mf') {
 					let id = item.getAttribute('id');
 					let form = doc.createElement('form');
-					let var_element = doc.createElement('var');
-					var_element.setAttribute('name', 'choice');
 					form.setAttribute('id', id);
 					let if_element = doc.createElement('if');
-					debugger;
 					let cond = item.getAttribute('cpbx:cond');
+					cond = cond.replace('choice', 'global_choice');
 					if_element.setAttribute('cond', cond);
 					let else_element = doc.createElement('else');
 					if_element.appendChild(else_element);
@@ -220,19 +222,18 @@ export function convertBPMNtoVXML(bpmn: string) {
 							let cond = flow?.getAttribute('name');
 							let next = flow?.getAttribute('targetRef');
 							if (cond == 'yes') {
-								let subdialog = doc.createElement('subdialog');
-								subdialog.setAttribute('src', `#${next}`);
-								if_element.prepend(subdialog);
+								let goto = doc.createElement('goto');
+								goto.setAttribute('next', `#${next}`);
+								if_element.prepend(goto);
 							} else if (cond == 'no') {
-								let subdialog = doc.createElement('subdialog');
-								subdialog.setAttribute('src', `#${next}`);
-								if_element.append(subdialog);
+								let goto = doc.createElement('goto');
+								goto.setAttribute('next', `#${next}`);
+								if_element.append(goto);
 							}
 						}
 					}
-					form.appendChild(var_element);
 					form.appendChild(if_element);
-					vxml.appendChild(form);
+					appendTo.appendChild(form);
 				}
 				if (moduleType == 'timeout') {
 					let id = item.getAttribute('id');
@@ -249,7 +250,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 					prompt.appendChild(timeout);
 					block.appendChild(prompt);
 					form.appendChild(block);
-					vxml.appendChild(form);
+					appendTo.appendChild(form);
 				}
 				if (moduleType == 'audio') {
 					let id = item.getAttribute('id');
@@ -266,7 +267,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 					prompt.appendChild(audio);
 					block.appendChild(prompt);
 					form.appendChild(block);
-					vxml.appendChild(form);
+					appendTo.appendChild(form);
 				}
 				if (moduleType == 'inbound-route') {
 					let meta1 = doc.createElement('meta');
@@ -277,8 +278,8 @@ export function convertBPMNtoVXML(bpmn: string) {
 					meta1.setAttribute('content', content);
 					meta2.setAttribute('name', '@Meta.IVRStartNodeTitle');
 					meta2.setAttribute('content', name);
-					vxml.prepend(meta1);
-					vxml.prepend(meta2);
+					appendTo.prepend(meta1);
+					appendTo.prepend(meta2);
 				}
 				if (moduleType == 'exit') {
 					let id = item.getAttribute('id');
@@ -288,10 +289,26 @@ export function convertBPMNtoVXML(bpmn: string) {
 					let exit = doc.createElement('exit');
 					block.append(exit);
 					form.append(block);
-					vxml.appendChild(form);
+					appendTo.appendChild(form);
+				}
+				if (moduleType == 'recorder') {
+					let id = item.getAttribute('id');
+					let form = doc.createElement('form');
+					form.setAttribute('id', id);
+					let recorder = doc.createElement('recorder');
+					let name = item.getAttribute('name') || 'salesCallRecord';
+					recorder.setAttribute('name', name);
+					for (let child of item.childNodes) {
+						convertItem(child, recorder);
+					}
+					form.append(recorder);
+					appendTo.appendChild(form);
 				}
 			}
 		}
+	};
+	for (let item of process_items) {
+		convertItem(item, vxml);
 		// if (item.nodeName == 'bpmn:sequenceFlow') {
 		// 	vxml.appendChild(item.cloneNode());
 		// }

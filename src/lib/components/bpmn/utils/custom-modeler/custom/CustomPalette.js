@@ -17,17 +17,32 @@ export default class CustomPalette {
 
 		function createTask(module) {
 			return function (event) {
-				const businessObject = bpmnFactory.create('bpmn:Task');
+				console.log(module);
+				let shape = {};
+				if (module == 'recorder') {
+					const businessObject = bpmnFactory.create('bpmn:SubProcess');
 
-				businessObject.moduleType = module;
+					businessObject.moduleType = module;
 
-				const shape = elementFactory.createShape({
-					type: 'bpmn:Task',
-					businessObject: businessObject,
-					width: 192,
-					height: 55
-				});
+					shape = elementFactory.createShape({
+						type: 'bpmn:SubProcess',
+						isExpanded: true,
+						businessObject: businessObject,
+						width: 392,
+						height: 155
+					});
+				} else {
+					const businessObject = bpmnFactory.create('bpmn:Task');
 
+					businessObject.moduleType = module;
+
+					shape = elementFactory.createShape({
+						type: 'bpmn:Task',
+						businessObject: businessObject,
+						width: 192,
+						height: 55
+					});
+				}
 				create.start(event, shape);
 			};
 		}
@@ -64,7 +79,7 @@ export default class CustomPalette {
 			'timeout',
 			'audio',
 			'queue',
-			'recorder',
+			// 'recorder',
 			'menu',
 			'call-center',
 			'opinion',

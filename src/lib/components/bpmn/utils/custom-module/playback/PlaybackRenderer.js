@@ -31,7 +31,7 @@ export default class CustomRenderer extends BaseRenderer {
 
 	drawShape(parentNode, element) {
 		const moduleType = this.getModuleType(element);
-
+		debugger;
 		if (moduleType) {
 			// assign(element, { width: 192, height: 55 });
 			const title = this.getTitle(element);
@@ -40,7 +40,13 @@ export default class CustomRenderer extends BaseRenderer {
 				fill: 'transparent',
 				width: '200'
 			});
-			let shape = this.getShape(moduleType);
+			let width = 192;
+			let height = 55;
+			if (moduleType == 'recorder') {
+				width = element.width;
+				height = element.height;
+			}
+			let shape = this.getShape(moduleType, width, height);
 			shape += `${
 				title
 					? `<text font-size="14" x="55" y="38"  width="40" height="40" rx="8" fill="#262626"><tspan>${title}</tspan></text>`
@@ -54,9 +60,9 @@ export default class CustomRenderer extends BaseRenderer {
 
 		return shape;
 	}
-	getShape(type) {
-		let shape = `<rect x="0" y="0" width="192" height="55" rx="15.5" fill="white"/>
-    <rect x="0" y="0" width="192" height="55" rx="15.5" stroke="#F5F5F5"/>
+	getShape(type, width = 192, height = 55) {
+		let shape = `<rect x="0" y="0" width="${width}" height="${height}" rx="15.5" fill="white"/>
+    <rect x="0" y="0"  width="${width}" height="${height}" stroke="#F5F5F5"/>
     <rect x="8" y="8" width="40" height="40" rx="8" fill="#ECEBFF"/>`;
 		let icon,
 			name = this.translate(type);

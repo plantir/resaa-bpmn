@@ -7,6 +7,18 @@
 	},
 	"types": [
 		{
+			"name": "subprocess",
+			"extends": ["bpmn:SubProcess"],
+			"properties": [
+				{
+					"name": "moduleType",
+					"isAttr": true,
+					"type": "String"
+				},
+				{ "name": "title", "isAttr": true, "type": "String" }
+			]
+		},
+		{
 			"name": "task",
 			"extends": ["bpmn:Task"],
 			"properties": [
@@ -16,6 +28,7 @@
 					"type": "String"
 				},
 				{ "name": "title", "isAttr": true, "type": "String" },
+				{ "name": "shouldRecord", "isAttr": true, "type": "Boolean" },
 				{ "name": "timeout", "isAttr": true, "type": "String" },
 				{ "name": "src", "isAttr": true, "type": "String" },
 				{ "name": "queueId", "isAttr": true, "type": "String" },
