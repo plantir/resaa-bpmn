@@ -51,7 +51,7 @@
 				<if cond="choice == 1">
 					<goto next="#Activity_1oee60k" />
 					<elseif cond="choice == 2" />
-					<subdialog
+					<goto
 						next="#Activity_04dd2up" />
 					<else />
 					<goto next="#Activity_0eshruh" />
@@ -107,8 +107,8 @@
 	<form id="Activity_0b82j89">
 		<subdialog src="@Url.DocumentLink('mail-box','ccxml')" />
 	</form>
+	<goto next="#Activity_13fnicd" />
 	<form id="Activity_0eshruh">
-		<var name="choice" />
 		<if cond="global_choice.lenght == 8">
 			<goto next="#Activity_1xnsmyq" />
 			<else />
@@ -121,9 +121,11 @@
 			<param name="callee" expr="''" />
 		</subdialog>
 	</form>
+	<goto next="#Activity_13fnicd" />
 	<form id="Activity_0e466qh">
 		<subdialog src="@Url.DocumentLink('extension','ccxml')" />
 	</form>
+	<goto next="#Activity_13fnicd" />
 	<form id="Activity_04dd2up">
 		<block>
 			<prompt>

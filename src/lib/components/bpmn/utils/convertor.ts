@@ -106,7 +106,6 @@ export function convertBPMNtoVXML(bpmn: string) {
 			form.appendChild(if_element);
 		}
 		return form;
-		vxml.appendChild(form);
 	};
 	let convertItem = (item: any, appendTo) => {
 		if (item.nodeName == 'bpmn:task' || item.nodeName == 'bpmn:subProcess') {
@@ -115,7 +114,14 @@ export function convertBPMNtoVXML(bpmn: string) {
 				let moduleType = item.getAttribute('cpbx:moduleType');
 				let id = item.getAttribute('id');
 				let is_exist = vxml.querySelector(`#${id}`);
-				if (is_exist) return;
+				if (is_exist) {
+					debugger;
+					if (vxml.lastChild?.nodeName == 'goto') return;
+					let goto = doc.createElement('goto');
+					goto.setAttribute('next', `#${id}`);
+					vxml.append(goto);
+					return;
+				}
 				if (
 					[
 						'queue',
@@ -184,15 +190,15 @@ export function convertBPMNtoVXML(bpmn: string) {
 							} else {
 								let else_if_element = doc.createElement('elseif');
 								else_if_element.setAttribute('cond', cond ? cond : `choice == ${dtmf}`);
-								let subdialog = doc.createElement('subdialog');
-								subdialog.setAttribute('next', `#${next}`);
+								let goto = doc.createElement('goto');
+								goto.setAttribute('next', `#${next}`);
 								let else_element = if_element.querySelector('else');
 								if (else_element) {
 									if_element.insertBefore(else_if_element, else_element);
-									if_element.insertBefore(subdialog, else_element);
+									if_element.insertBefore(goto, else_element);
 								} else {
 									if_element.appendChild(else_if_element);
-									if_element.appendChild(subdialog);
+									if_element.appendChild(goto);
 								}
 							}
 							index++;
