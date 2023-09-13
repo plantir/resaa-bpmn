@@ -93,12 +93,10 @@ export function convertBPMNtoVXML(bpmn: string) {
 					let cond = flow?.getAttribute('name');
 					let next = flow?.getAttribute('targetRef');
 					if (cond == 'yes') {
-						let goto = doc.createElement('goto');
-						goto.setAttribute('next', `#${next}`);
+						let goto = makeGoTo(next!);
 						if_element.prepend(goto);
 					} else if (cond == 'no') {
-						let goto = doc.createElement('goto');
-						goto.setAttribute('next', `#${next}`);
+						let goto = makeGoTo(next!);
 						if_element.append(goto);
 					}
 				}
@@ -106,6 +104,15 @@ export function convertBPMNtoVXML(bpmn: string) {
 			form.appendChild(if_element);
 		}
 		return form;
+	};
+	let makeGoTo = (id: string, single = true) => {
+		let form = doc.createElement('form');
+		let block = doc.createElement('block');
+		let goto = doc.createElement('goto');
+		goto.setAttribute('next', `#${id}`);
+		block.appendChild(goto);
+		form.appendChild(block);
+		return single ? goto : form;
 	};
 	let convertItem = (item: any, appendTo) => {
 		if (item.nodeName == 'bpmn:task' || item.nodeName == 'bpmn:subProcess') {
@@ -115,10 +122,8 @@ export function convertBPMNtoVXML(bpmn: string) {
 				let id = item.getAttribute('id');
 				let is_exist = vxml.querySelector(`#${id}`);
 				if (is_exist) {
-					debugger;
-					if (vxml.lastChild?.nodeName == 'goto') return;
-					let goto = doc.createElement('goto');
-					goto.setAttribute('next', `#${id}`);
+					if (vxml.lastChild?.nodeName == 'block') return;
+					let goto = makeGoTo(id, false);
 					vxml.append(goto);
 					return;
 				}
@@ -165,18 +170,16 @@ export function convertBPMNtoVXML(bpmn: string) {
 							let next = flow?.getAttribute('targetRef');
 							let cond = flow?.getAttribute('cpbx:cond');
 							if (dtmf == 'noinput') {
-								no_input_child = doc.createElement('goto');
-								no_input_child.setAttribute('next', `#${next}`);
+								no_input_child = makeGoTo(next!);
 								continue;
 							}
 							if (index == 0) {
 								if_element.setAttribute('cond', cond ? cond : `choice == ${dtmf}`);
-								let goto = doc.createElement('goto');
-								goto.setAttribute('next', `#${next}`);
+								let goto = makeGoTo(next!);
 								if_element.appendChild(goto);
 							} else if (dtmf == 'choice') {
 								let else_element = doc.createElement('else');
-								let goto = doc.createElement('goto');
+								let goto = makeGoTo(next!);
 								let var_element = doc.createElement('var');
 								var_element.setAttribute('name', 'global_choice');
 								let assign_element = doc.createElement('assign');
@@ -184,14 +187,12 @@ export function convertBPMNtoVXML(bpmn: string) {
 								assign_element.setAttribute('expr', 'choice');
 								filled.prepend(assign_element);
 								vxml.prepend(var_element);
-								goto.setAttribute('next', `#${next}`);
 								if_element.appendChild(else_element);
 								if_element.appendChild(goto);
 							} else {
 								let else_if_element = doc.createElement('elseif');
 								else_if_element.setAttribute('cond', cond ? cond : `choice == ${dtmf}`);
-								let goto = doc.createElement('goto');
-								goto.setAttribute('next', `#${next}`);
+								let goto = makeGoTo(next!);
 								let else_element = if_element.querySelector('else');
 								if (else_element) {
 									if_element.insertBefore(else_if_element, else_element);
@@ -228,12 +229,10 @@ export function convertBPMNtoVXML(bpmn: string) {
 							let cond = flow?.getAttribute('name');
 							let next = flow?.getAttribute('targetRef');
 							if (cond == 'yes') {
-								let goto = doc.createElement('goto');
-								goto.setAttribute('next', `#${next}`);
+								let goto = makeGoTo(next!);
 								if_element.prepend(goto);
 							} else if (cond == 'no') {
-								let goto = doc.createElement('goto');
-								goto.setAttribute('next', `#${next}`);
+								let goto = makeGoTo(next!);
 								if_element.append(goto);
 							}
 						}

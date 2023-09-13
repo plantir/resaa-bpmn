@@ -107,7 +107,11 @@
 	<form id="Activity_0b82j89">
 		<subdialog src="@Url.DocumentLink('mail-box','ccxml')" />
 	</form>
-	<goto next="#Activity_13fnicd" />
+	<form>
+		<block>
+			<goto next="#Activity_13fnicd" />
+		</block>
+	</form>
 	<form id="Activity_0eshruh">
 		<if cond="global_choice.lenght == 8">
 			<goto next="#Activity_1xnsmyq" />
@@ -121,11 +125,24 @@
 			<param name="callee" expr="''" />
 		</subdialog>
 	</form>
-	<goto next="#Activity_13fnicd" />
+	<form>
+		<block>
+			<goto next="#Activity_13fnicd" />
+		</block>
+	</form>
 	<form id="Activity_0e466qh">
 		<subdialog src="@Url.DocumentLink('extension','ccxml')" />
 	</form>
-	<goto next="#Activity_13fnicd" />
+	<form>
+		<block>
+			<goto next="#Activity_13fnicd" />
+		</block>
+	</form>
+	<form>
+		<block>
+			<goto next="#Activity_13fnicd" />
+		</block>
+	</form>
 	<form id="Activity_04dd2up">
 		<block>
 			<prompt>
