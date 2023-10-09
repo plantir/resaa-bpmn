@@ -12,6 +12,7 @@ WORKDIR /app
 RUN rm -rf ./*
 COPY --from=build /app/package.json .
 COPY --from=build /app/build .
+COPY --from=build /app/diagram.bpmn .
 RUN yarn --prod
 EXPOSE 3000
 CMD ["node","index.js"]
