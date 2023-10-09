@@ -24,6 +24,105 @@ export function convertVXMLtoBPMN(vxml: string) {
 	task.setAttribute('name', 'IR 09356659943');
 	task.setAttribute('id', 'Activity_0hy81xk');
 	task.setAttribute('cpbx:moduleType', 'inbound-route');
+	function convertItem() {}
+	let form_items = parsed_vxml.getElementsByTagName('form');
+	for (let form_item of form_items) {
+		let audio = form_item.querySelector('audio');
+		if (audio) {
+			let id = form_item.getAttribute('id');
+			let name = form_item.getAttribute('name');
+			let src = audio.getAttribute('src');
+			let task = doc.createElement('bpmn:task');
+			task.setAttribute('id', id!);
+			task.setAttribute('name', name!);
+			task.setAttribute('cpbx:src', src!);
+			task.setAttribute('cpbx:moduleType', 'audio');
+			for (let child of audio.childNodes) {
+				task.appendChild(child.cloneNode(true));
+				if (child.nodeName == 'bpmn:incoming') {
+					let outgoings = parsed_vxml.getElementsByTagName('bpmn:outgoing');
+					for (let a of outgoings) {
+						if (a.textContent == child.textContent) {
+							let parent = a.parentNode;
+							while (parent?.nodeName != 'form') {
+								parent = parent?.parentNode;
+							}
+							let sequenceFlow = doc.createElement('bpmn:sequenceFlow');
+							sequenceFlow.setAttribute('id', a.textContent!);
+							sequenceFlow.setAttribute('sourceRef', parent!.getAttribute('id'));
+							sequenceFlow.setAttribute('targetRef', id!);
+							bpmn_process.appendChild(sequenceFlow);
+						}
+					}
+				}
+			}
+			bpmn_process.appendChild(task);
+		}
+		let timeout = form_item.querySelector('break');
+		if (timeout) {
+			let id = form_item.getAttribute('id');
+			let name = form_item.getAttribute('name');
+			let src = timeout.getAttribute('src');
+			let task = doc.createElement('bpmn:task');
+			task.setAttribute('id', id!);
+			task.setAttribute('name', name!);
+			task.setAttribute('cpbx:src', src!);
+			task.setAttribute('cpbx:moduleType', 'timeout');
+			for (let child of timeout.childNodes) {
+				task.appendChild(child.cloneNode(true));
+				if (child.nodeName == 'bpmn:incoming') {
+					let outgoings = parsed_vxml.getElementsByTagName('bpmn:outgoing');
+					for (let a of outgoings) {
+						if (a.textContent == child.textContent) {
+							let parent = a.parentNode;
+							while (parent?.nodeName != 'form') {
+								parent = parent?.parentNode;
+							}
+							let sequenceFlow = doc.createElement('bpmn:sequenceFlow');
+							sequenceFlow.setAttribute('id', a.textContent!);
+							sequenceFlow.setAttribute('sourceRef', parent!.getAttribute('id'));
+							sequenceFlow.setAttribute('targetRef', id!);
+							bpmn_process.appendChild(sequenceFlow);
+						}
+					}
+				}
+			}
+			bpmn_process.appendChild(task);
+		}
+		let opinion = form_item.querySelector(
+			"subdialog[src=\"@Url.DocumentLink('opinion','ccxml')\"]"
+		);
+		if (opinion) {
+			let id = form_item.getAttribute('id');
+			let name = form_item.getAttribute('name');
+			let src = opinion.getAttribute('src');
+			let task = doc.createElement('bpmn:task');
+			task.setAttribute('id', id!);
+			task.setAttribute('name', name!);
+			task.setAttribute('cpbx:src', src!);
+			task.setAttribute('cpbx:moduleType', 'opinion');
+			for (let child of opinion.childNodes) {
+				task.appendChild(child.cloneNode(true));
+				if (child.nodeName == 'bpmn:incoming') {
+					let outgoings = parsed_vxml.getElementsByTagName('bpmn:outgoing');
+					for (let a of outgoings) {
+						if (a.textContent == child.textContent) {
+							let parent = a.parentNode;
+							while (parent?.nodeName != 'form') {
+								parent = parent?.parentNode;
+							}
+							let sequenceFlow = doc.createElement('bpmn:sequenceFlow');
+							sequenceFlow.setAttribute('id', a.textContent!);
+							sequenceFlow.setAttribute('sourceRef', parent!.getAttribute('id'));
+							sequenceFlow.setAttribute('targetRef', id!);
+							bpmn_process.appendChild(sequenceFlow);
+						}
+					}
+				}
+			}
+			bpmn_process.appendChild(task);
+		}
+	}
 	bpmn_process.appendChild(task);
 	bpmn.appendChild(bpmn_process);
 	bpmn.appendChild(bpmn_diagram[0]);
@@ -68,7 +167,6 @@ export function convertBPMNtoVXML(bpmn: string) {
 		return [];
 	}
 	process_items = TreeSort(process_items);
-	console.log(process_items);
 	let doc = document.implementation.createDocument('', '', null);
 	let vxml = doc.createElement('vxml');
 	const pi = doc.createProcessingInstruction('xml', 'version="1.0" encoding="UTF-8"');
@@ -85,8 +183,10 @@ export function convertBPMNtoVXML(bpmn: string) {
 	vxml.setAttribute('xmlns:bpmn', 'http://www.omg.org/spec/BPMN/20100524/MODEL');
 	let makeSubdialog = (name: string, item: HTMLFormElement) => {
 		let id = item.getAttribute('id');
+		let form_name = item.getAttribute('name');
 		let form = doc.createElement('form');
 		form.setAttribute('id', id!);
+		form.setAttribute('name', form_name!);
 		let subdialog = doc.createElement('subdialog');
 		subdialog.setAttribute('src', `@Url.DocumentLink('${name}','ccxml')`);
 		let attributes = item.getAttributeNames();
@@ -107,6 +207,9 @@ export function convertBPMNtoVXML(bpmn: string) {
 				param.setAttribute('expr', `${expr}`);
 				subdialog.appendChild(param);
 			});
+		for (let child of item.childNodes) {
+			subdialog.append(child.cloneNode(true));
+		}
 		form.appendChild(subdialog);
 		if (name == 'check-call-center-condition') {
 			subdialog.setAttribute('name', `checkCondition`);
@@ -288,7 +391,9 @@ export function convertBPMNtoVXML(bpmn: string) {
 				if (moduleType == 'audio') {
 					let id = item.getAttribute('id');
 					let form = doc.createElement('form');
+					let name = item.getAttribute('name');
 					form.setAttribute('id', id);
+					form.setAttribute('name', name);
 					let block = doc.createElement('block');
 					let prompt = doc.createElement('prompt');
 					let audio = doc.createElement('audio');
