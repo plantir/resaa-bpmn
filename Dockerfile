@@ -6,10 +6,12 @@ COPY . .
 RUN yarn
 RUN yarn build
 
+FROM node:18-alpine AS deploy-node
 
-FROM steebchen/nginx-spa:stable
-
-COPY --from=build /app/build /app
-EXPOSE 80
-
-CMD ["nginx"]
+WORKDIR /app
+RUN rm -rf ./*
+COPY --from=build /app/package.json .
+COPY --from=build /app/build .
+RUN yarn --prod
+EXPOSE 3000
+CMD ["node","index.js"]
