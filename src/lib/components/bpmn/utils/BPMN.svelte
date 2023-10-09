@@ -40,35 +40,52 @@
 			}
 		});
 		let index = 1;
-		modeler
-			.importXML(data)
-			.then(function () {
-				let palettes = document.querySelectorAll('.djs-palette .group .entry');
-				palettes.forEach((element) => {
-					let span = document.createElement('span');
-					let title = element.getAttribute('title');
-					span.classList.add('entry-title');
-					span.innerHTML = title!;
-					element.appendChild(span);
+		if (data) {
+			modeler
+				.importXML(data)
+				.then(function () {
+					let palettes = document.querySelectorAll('.djs-palette .group .entry');
+					palettes.forEach((element) => {
+						let span = document.createElement('span');
+						let title = element.getAttribute('title');
+						span.classList.add('entry-title');
+						span.innerHTML = title!;
+						element.appendChild(span);
+					});
+					modeling = modeler.get('modeling');
+					var eventBus = modeler.get('eventBus');
+					eventBus.on('setting', (data: any) => {
+						dispatch('setting:clicked', data);
+						let { businessObject, element } = data;
+						// index++;
+						// if (businessObject.moduleType == 'timeout') {
+						// 	businessObject.timeout = businessObject.timeout ? businessObject.timeout + 1 : 30;
+						// }
+						// businessObject.name = businessObject.name + index;
+						// modeling.updateProperties(element, {
+						// 	...businessObject
+						// });
+					});
+				})
+				.catch(function (err: any) {
+					console.error('Error', err);
 				});
-				modeling = modeler.get('modeling');
-				var eventBus = modeler.get('eventBus');
-				eventBus.on('setting', (data: any) => {
-					dispatch('setting:clicked', data);
-					let { businessObject, element } = data;
-					// index++;
-					// if (businessObject.moduleType == 'timeout') {
-					// 	businessObject.timeout = businessObject.timeout ? businessObject.timeout + 1 : 30;
-					// }
-					// businessObject.name = businessObject.name + index;
-					// modeling.updateProperties(element, {
-					// 	...businessObject
-					// });
-				});
-			})
-			.catch(function (err: any) {
-				console.error('Error', err);
+		} else {
+			let palettes = document.querySelectorAll('.djs-palette .group .entry');
+			palettes.forEach((element) => {
+				let span = document.createElement('span');
+				let title = element.getAttribute('title');
+				span.classList.add('entry-title');
+				span.innerHTML = title!;
+				element.appendChild(span);
 			});
+			modeling = modeler.get('modeling');
+			var eventBus = modeler.get('eventBus');
+			eventBus.on('setting', (data: any) => {
+				dispatch('setting:clicked', data);
+				let { businessObject, element } = data;
+			});
+		}
 		let save_btn = document.getElementById('save');
 		save_btn?.addEventListener('click', save);
 	});
