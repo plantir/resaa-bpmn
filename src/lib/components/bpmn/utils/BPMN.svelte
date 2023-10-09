@@ -40,75 +40,51 @@
 			}
 		});
 		let index = 1;
-		if (data) {
-			modeler
-				.importXML(data)
-				.then(function () {
-					let palettes = document.querySelectorAll('.djs-palette .group .entry');
-					palettes.forEach((element) => {
-						let span = document.createElement('span');
-						let title = element.getAttribute('title');
-						span.classList.add('entry-title');
-						span.innerHTML = title!;
-						element.appendChild(span);
-					});
-					modeling = modeler.get('modeling');
-					var eventBus = modeler.get('eventBus');
-					eventBus.on('setting', (data: any) => {
-						dispatch('setting:clicked', data);
-						let { businessObject, element } = data;
-						// index++;
-						// if (businessObject.moduleType == 'timeout') {
-						// 	businessObject.timeout = businessObject.timeout ? businessObject.timeout + 1 : 30;
-						// }
-						// businessObject.name = businessObject.name + index;
-						// modeling.updateProperties(element, {
-						// 	...businessObject
-						// });
-					});
-				})
-				.catch(function (err: any) {
-					console.error('Error', err);
+		console.log(data);
+		modeler
+			.importXML(data)
+			.then(function () {
+				let palettes = document.querySelectorAll('.djs-palette .group .entry');
+				palettes.forEach((element) => {
+					let span = document.createElement('span');
+					let title = element.getAttribute('title');
+					span.classList.add('entry-title');
+					span.innerHTML = title!;
+					element.appendChild(span);
 				});
-		} else {
-			let palettes = document.querySelectorAll('.djs-palette .group .entry');
-			palettes.forEach((element) => {
-				let span = document.createElement('span');
-				let title = element.getAttribute('title');
-				span.classList.add('entry-title');
-				span.innerHTML = title!;
-				element.appendChild(span);
+				modeling = modeler.get('modeling');
+				var eventBus = modeler.get('eventBus');
+				eventBus.on('setting', (data: any) => {
+					dispatch('setting:clicked', data);
+					let { businessObject, element } = data;
+					// index++;
+					// if (businessObject.moduleType == 'timeout') {
+					// 	businessObject.timeout = businessObject.timeout ? businessObject.timeout + 1 : 30;
+					// }
+					// businessObject.name = businessObject.name + index;
+					// modeling.updateProperties(element, {
+					// 	...businessObject
+					// });
+				});
+			})
+			.catch(function (err: any) {
+				console.error('Error', err);
 			});
-			modeling = modeler.get('modeling');
-			var eventBus = modeler.get('eventBus');
-			eventBus.on('setting', (data: any) => {
-				dispatch('setting:clicked', data);
-				let { businessObject, element } = data;
-			});
-		}
+
 		let save_btn = document.getElementById('save');
 		save_btn?.addEventListener('click', save);
 	});
+
 	export async function save() {
 		try {
 			const result = await modeler.saveXML();
 			const { xml } = result;
 			await axios.post('/api', { data: xml });
-			// let vxml = convertBPMNtoVXML(xml);
-			// var filename = 'file.xml';
-			// var pom = document.createElement('a');
-			// var bb = new Blob([vxml], { type: 'text/plain' });
-			// pom.setAttribute('href', window.URL.createObjectURL(bb));
-			// pom.setAttribute('download', filename);
-			// pom.dataset.downloadurl = ['text/plain', pom.download, pom.href].join(':');
-			// pom.draggable = true;
-			// pom.classList.add('dragout');
-			// pom.click();
-			// console.log(vxml);
 		} catch (err) {
 			console.error(err);
 		}
 	}
+
 	export async function download() {
 		try {
 			const result = await modeler.saveXML();
@@ -128,6 +104,43 @@
 			console.error(err);
 		}
 	}
+
+	export async function importVXML() {
+		try {
+			let fileInput = document.createElement('input');
+			fileInput.setAttribute('type', 'file');
+			fileInput.setAttribute('hidden', 'true');
+			fileInput.setAttribute('accept', '.vxml,.xml,.bpmn');
+			document.body.appendChild(fileInput);
+			fileInput.click();
+			fileInput.addEventListener('change', (ev) => {
+				let selectedFile = ev.target.files[0];
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					var vxml = e.target.result;
+					let bpmn = convertVXMLtoBPMN(vxml);
+					console.log(bpmn);
+					modeler.importXML(bpmn).catch(function (err: any) {
+						alert(err);
+					});
+				};
+				reader.readAsText(selectedFile);
+			});
+		} catch (err) {
+			console.error(err);
+		}
+	}
+
+	export async function createNew() {
+		modeler.importXML(`<?xml version="1.0" encoding="UTF-8"?>
+		<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" id="Definitions_13i9w9f" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="14.0.0">
+		  <bpmn:process id="Process_135k828" isExecutable="false" />
+		  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+			<bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_135k828" />
+		  </bpmndi:BPMNDiagram>
+		</bpmn:definitions>`);
+	}
+
 	export function updateNode(element: any, data: any) {
 		modeling.updateProperties(element, {
 			...data

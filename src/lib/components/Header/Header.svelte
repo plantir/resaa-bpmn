@@ -11,6 +11,12 @@
 	function save() {
 		dispatch('save');
 	}
+	function importVxml() {
+		dispatch('importVxml');
+	}
+	function createNew() {
+		dispatch('createNew');
+	}
 </script>
 
 <div class="navbar flex border-b border-[#eee]">
@@ -31,8 +37,10 @@
 		</button>
 	</div>
 	<div class="ml-6">
-		<button on:click={save} class="btn btn-sm btn-secondary">ذخیره</button>
+		<button on:click={createNew} class="btn ml-2 btn-sm btn-accent text-gray-50">جدید</button>
+		<button on:click={save} class="btn ml-2 btn-sm btn-secondary">ذخیره</button>
 		<button on:click={download} class="btn ml-2 btn-sm btn-primary">دانلود</button>
+		<button on:click={importVxml} class="btn ml-2 btn-sm btn-neutral">بارگزاری</button>
 	</div>
 	<div class="flex-1" />
 	<div class="flex-none">

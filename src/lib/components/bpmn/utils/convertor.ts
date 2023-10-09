@@ -1,12 +1,40 @@
 import { flattenDeep } from 'lodash';
 
-export function convertVXMLtoBPMN() {}
+export function convertVXMLtoBPMN(vxml: string) {
+	let parser = new DOMParser();
+	let parsed_vxml = parser.parseFromString(vxml, 'text/xml');
+	let bpmn_diagram = parsed_vxml.getElementsByTagName('bpmndi:BPMNDiagram');
+	let doc = document.implementation.createDocument('', '', null);
+	let bpmn = doc.createElement('bpmn:definitions');
+	let bpmn_process = doc.createElement('bpmn:process');
+	bpmn_process.setAttribute('id', 'Process1');
+	const pi = doc.createProcessingInstruction('xml', 'version="1.0" encoding="UTF-8"');
+	doc.insertBefore(pi, doc.firstChild);
+	bpmn.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+	bpmn.setAttribute('xmlns:bpmn', 'http://www.omg.org/spec/BPMN/20100524/MODEL');
+	bpmn.setAttribute('xmlns:bpmndi', 'http://www.omg.org/spec/BPMN/20100524/DI');
+	bpmn.setAttribute('xmlns:dc', 'http://www.omg.org/spec/DD/20100524/DC');
+	bpmn.setAttribute('xmlns:cpbx', 'http://some-company/schema/bpmn/qa');
+	bpmn.setAttribute('xmlns:di', 'http://www.omg.org/spec/DD/20100524/DI');
+	bpmn.setAttribute('targetNamespace', 'http://activiti.org/bpmn');
+	// <bpmn:task id="Activity_0hy81xk" name="IR 09356659943" cpbx:moduleType="inbound-route">
+	// 	<bpmn:outgoing>Flow_11peke2</bpmn:outgoing>
+	// </bpmn:task>
+	let task = doc.createElement('bpmn:task');
+	task.setAttribute('name', 'IR 09356659943');
+	task.setAttribute('id', 'Activity_0hy81xk');
+	task.setAttribute('cpbx:moduleType', 'inbound-route');
+	bpmn_process.appendChild(task);
+	bpmn.appendChild(bpmn_process);
+	bpmn.appendChild(bpmn_diagram[0]);
+	doc.appendChild(bpmn);
+	return new XMLSerializer().serializeToString(doc);
+}
 
 /**
  * @param {string} bpmn
  */
 export function convertBPMNtoVXML(bpmn: string) {
-	console.log(bpmn);
 	let parser = new DOMParser();
 	let parsed_bpmn = parser.parseFromString(bpmn, 'text/xml');
 	let process = parsed_bpmn.getElementsByTagName('bpmn:process');

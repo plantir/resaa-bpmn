@@ -28,13 +28,19 @@
 		await bpmn.save();
 		toastCondition = true;
 	}
+	async function importVXML() {
+		await bpmn.importVXML();
+	}
+	async function createNew() {
+		await bpmn.createNew();
+	}
 </script>
 
 <svelte:head>
 	<title>BPMN</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
-<Header on:download={download} on:save={save} />
+<Header on:download={download} on:save={save} on:importVxml={importVXML} on:createNew={createNew} />
 <Bpmn on:setting:clicked={onSettingClicked} bind:this={bpmn} />
 <SidePanel bind:open data={nodeData} on:submit={onSubmit} />
 <Toast type="success" timeout={2000} bind:show={toastCondition} message={toastMessage} />
