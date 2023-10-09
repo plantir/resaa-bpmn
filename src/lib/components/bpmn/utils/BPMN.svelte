@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 	import CustomModeler from './custom-modeler';
 	import customTranslate from './custom-translate';
-	import diagramXML from './newDiagram.bpmn?raw';
+
 	import PlaybackModule from './custom-module/playback';
 	import gridModule from 'diagram-js-grid';
 	import qaExtension from './qa.json';
@@ -10,15 +10,17 @@
 	import 'bpmn-js/dist/assets/diagram-js.css';
 	import './bpmn.scss';
 	import { convertBPMNtoVXML, convertVXMLtoBPMN } from './convertor';
+	import axios from 'axios';
 	const dispatch = createEventDispatcher();
-	let modeling;
-	let modeler;
+	let modeling: any;
+	let modeler: any;
 	// import nyanDrawModule from "bpmn-js-nyan/lib/nyan/draw";
 	// import nyanPaletteModule from "bpmn-js-nyan/lib/nyan/palette";
 	var customTranslateModule = {
 		translate: ['value', customTranslate]
 	};
 	onMount(async () => {
+		let { data } = await axios.get('/api');
 		modeler = new CustomModeler({
 			container: '#container',
 			keyboard: {
@@ -39,19 +41,19 @@
 		});
 		let index = 1;
 		modeler
-			.importXML(diagramXML)
+			.importXML(data)
 			.then(function () {
 				let palettes = document.querySelectorAll('.djs-palette .group .entry');
 				palettes.forEach((element) => {
 					let span = document.createElement('span');
 					let title = element.getAttribute('title');
 					span.classList.add('entry-title');
-					span.innerHTML = title;
+					span.innerHTML = title!;
 					element.appendChild(span);
 				});
 				modeling = modeler.get('modeling');
 				var eventBus = modeler.get('eventBus');
-				eventBus.on('setting', (data) => {
+				eventBus.on('setting', (data: any) => {
 					dispatch('setting:clicked', data);
 					let { businessObject, element } = data;
 					// index++;
@@ -64,13 +66,33 @@
 					// });
 				});
 			})
-			.catch(function (err) {
+			.catch(function (err: any) {
 				console.error('Error', err);
 			});
 		let save_btn = document.getElementById('save');
 		save_btn?.addEventListener('click', save);
 	});
 	export async function save() {
+		try {
+			const result = await modeler.saveXML();
+			const { xml } = result;
+			await axios.post('/api', { data: xml });
+			// let vxml = convertBPMNtoVXML(xml);
+			// var filename = 'file.xml';
+			// var pom = document.createElement('a');
+			// var bb = new Blob([vxml], { type: 'text/plain' });
+			// pom.setAttribute('href', window.URL.createObjectURL(bb));
+			// pom.setAttribute('download', filename);
+			// pom.dataset.downloadurl = ['text/plain', pom.download, pom.href].join(':');
+			// pom.draggable = true;
+			// pom.classList.add('dragout');
+			// pom.click();
+			// console.log(vxml);
+		} catch (err) {
+			console.error(err);
+		}
+	}
+	export async function download() {
 		try {
 			const result = await modeler.saveXML();
 			const { xml } = result;
@@ -89,7 +111,7 @@
 			console.error(err);
 		}
 	}
-	export function updateNode(element, data) {
+	export function updateNode(element: any, data: any) {
 		modeling.updateProperties(element, {
 			...data
 		});

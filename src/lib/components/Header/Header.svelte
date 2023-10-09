@@ -6,7 +6,10 @@
 		document.querySelector('.djs-palette.open')?.classList.toggle('close');
 	}
 	function download() {
-		dispatch('on:download');
+		dispatch('download');
+	}
+	function save() {
+		dispatch('save');
 	}
 </script>
 
@@ -28,7 +31,7 @@
 		</button>
 	</div>
 	<div class="ml-6">
-		<button class="btn btn-sm btn-secondary">ذخیره</button>
+		<button on:click={save} class="btn btn-sm btn-secondary">ذخیره</button>
 		<button on:click={download} class="btn ml-2 btn-sm btn-primary">دانلود</button>
 	</div>
 	<div class="flex-1" />
