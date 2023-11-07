@@ -2,6 +2,7 @@ import translations from './translations';
 
 
 export default function customTranslate(template, replacements) {
+  debugger
   replacements = replacements || {};
 
   // Translate

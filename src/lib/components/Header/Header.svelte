@@ -37,10 +37,12 @@
 		</button>
 	</div>
 	<div class="ml-6">
+		<button on:click={save} class="btn ml-2 btn-sm btn-primary">ذخیره</button>
 		<button on:click={createNew} class="btn ml-2 btn-sm btn-accent text-gray-50">جدید</button>
-		<button on:click={save} class="btn ml-2 btn-sm btn-secondary">ذخیره</button>
-		<button on:click={download} class="btn ml-2 btn-sm btn-primary">دانلود</button>
-		<button on:click={importVxml} class="btn ml-2 btn-sm btn-neutral">بارگزاری</button>
+		<button on:click={download} class="btn ml-2 btn-sm bg-pink-700 hover:bg-pink-400 text-white"
+			>دانلود</button
+		>
+		<button on:click={importVxml} class="btn ml-2 btn-sm btn-white">بارگزاری</button>
 	</div>
 	<div class="flex-1" />
 	<div class="flex-none">

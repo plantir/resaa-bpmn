@@ -192,3 +192,19 @@ text {
 	stroke-width: 1px !important;
 	stroke: #ccc !important;
 }
+
+.djs-shape {
+	&.hover,
+	&.selected {
+		rect.svg-bg {
+			fill: #d7f2f4;
+		}
+		.svg-icon {
+			path,
+			rect,
+			circle {
+				stroke: #00425b;
+			}
+		}
+	}
+}
