@@ -29,6 +29,9 @@
 		background-position: 8px;
 		padding-left: 24px;
 		width: calc(100% - 16px);
+		&:hover {
+			background-color: #d7f2f4;
+		}
 	}
 	.entry-title {
 		font-size: 12px;
@@ -52,111 +55,111 @@
 /* ------------------------------------------------ Palette Icons ----------------------------------------------------------- */
 .global-connect-tool {
 	background-image: url('/icons/connector.png') !important;
-	&:hover {
-		background-image: url('/icons/connector-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/connector-1.png') !important;
+	// }
 }
 .bpmn-inbound-route {
 	background-image: url('/icons/inbound-route.png') !important;
-	&:hover {
-		background-image: url('/icons/inbound-route-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/inbound-route-1.png') !important;
+	// }
 }
 .bpmn-bridge {
 	background-image: url('/icons/bridge.png') !important;
-	&:hover {
-		background-image: url('/icons/bridge-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/bridge-1.png') !important;
+	// }
 }
 .bpmn-timeout {
 	background-image: url('/icons/timeout.png') !important;
-	&:hover {
-		background-image: url('/icons/timeout-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/timeout-1.png') !important;
+	// }
 }
 .bpmn-audio {
 	background-image: url('/icons/audio.png') !important;
-	&:hover {
-		background-image: url('/icons/audio-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/audio-1.png') !important;
+	// }
 }
 .bpmn-queue {
 	background-image: url('/icons/queue.png') !important;
-	&:hover {
-		background-image: url('/icons/queue-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/queue-1.png') !important;
+	// }
 }
 .bpmn-recorder {
 	background-image: url('/icons/recorder.png') !important;
-	&:hover {
-		background-image: url('/icons/recorder-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/recorder-1.png') !important;
+	// }
 }
 .bpmn-menu {
 	background-image: url('/icons/menu.png') !important;
-	&:hover {
-		background-image: url('/icons/menu-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/menu-1.png') !important;
+	// }
 }
 .bpmn-opinion {
 	background-image: url('/icons/opinion.png') !important;
-	&:hover {
-		background-image: url('/icons/opinion-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/opinion-1.png') !important;
+	// }
 }
 .bpmn-mail-box {
 	background-image: url('/icons/mailbox.png') !important;
-	&:hover {
-		background-image: url('/icons/mailbox-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/mailbox-1.png') !important;
+	// }
 }
 .bpmn-callback {
 	background-image: url('/icons/callback.png') !important;
-	&:hover {
-		background-image: url('/icons/callback-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/callback-1.png') !important;
+	// }
 }
 .bpmn-extension {
 	background-image: url('/icons/extension.png') !important;
-	&:hover {
-		background-image: url('/icons/extension-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/extension-1.png') !important;
+	// }
 }
 .bpmn-call-center {
 	background-image: url('/icons/call-center.png') !important;
-	&:hover {
-		background-image: url('/icons/call-center-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/call-center-1.png') !important;
+	// }
 }
 .bpmn-check-call-center-condition {
 	background-image: url('/icons/check-call-center.png') !important;
-	&:hover {
-		background-image: url('/icons/check-call-center-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/check-call-center-1.png') !important;
+	// }
 }
 .bpmn-check-dt-mf {
 	background-image: url('/icons/check-dt-mf.png') !important;
-	&:hover {
-		background-image: url('/icons/check-dt-mf-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/check-dt-mf-1.png') !important;
+	// }
 }
 .bpmn-exit {
 	background-image: url('/icons/exit-icon.png') !important;
-	&:hover {
-		background-image: url('/icons/exit-icon-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/exit-icon-1.png') !important;
+	// }
 }
 .bpmn-delete {
 	background-image: url('/icons/delete.png') !important;
-	&:hover {
-		background-image: url('/icons/delete-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/delete-1.png') !important;
+	// }
 }
 .bpmn-setting {
 	background-image: url('/icons/setting.png') !important;
-	&:hover {
-		background-image: url('/icons/setting-1.png') !important;
-	}
+	// &:hover {
+	// 	background-image: url('/icons/setting-1.png') !important;
+	// }
 }
 
 /* ----------------------------------------------- End Custom Palette Icons */
@@ -176,6 +179,9 @@ text {
 	display: inline-flex !important;
 	justify-content: center !important;
 	align-items: center !important;
+	// &:hover {
+	// 	background-color: #d7f2f4;
+	// }
 }
 
 .djs-context-pad.open {

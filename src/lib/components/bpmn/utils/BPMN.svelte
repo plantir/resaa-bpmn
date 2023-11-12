@@ -153,6 +153,9 @@
 <!-- <button class="btn btn-sm btn-primary" id="save">save</button> -->
 
 <style lang="scss" global>
+	.djs-parent {
+		--palette-entry-hover-color: #d7f2f4;
+	}
 	#container {
 		height: calc(100vh - 65px);
 	}

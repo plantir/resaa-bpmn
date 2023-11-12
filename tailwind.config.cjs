@@ -11,9 +11,10 @@ export default {
 	plugins: [require('daisyui')],
 	daisyui: {
 		styled: true,
-		themes: ['dark', {light: {
+		themes: [ {light: {
 			...require("daisyui/src/theming/themes")["[data-theme=light]"],
 			"primary": "#00425B",
+			"primary-content": "#ffffff",
 			"primary-focus": "#03739d",
 			"secondary":"#56C5D0"
 
@@ -23,7 +24,7 @@ export default {
 		logs: true,
 		rtl: false,
 		prefix: '',
-		darkTheme: 'light',
+		darkTheme: false,
 		
 	}
 };

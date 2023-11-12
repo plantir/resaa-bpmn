@@ -2,7 +2,14 @@
 /* Firefox */
 :root {
 	--scroll-primary: #eee;
-	--scroll-secondary: #000;
+	--scroll-secondary: #00425b;
+}
+.djs-parent {
+	--palette-entry-hover-color: #00425b !important;
+	--element-selected-outline-stroke-color: #00435b8a !important;
+	--context-pad-entry-hover-background-color: #d7f2f4 !important;
+	--element-dragger-color: #00435b8a !important;
+	--bendpoint-fill-color: #00435b8a !important;
 }
 * {
 	scrollbar-width: thin;
@@ -11,7 +18,7 @@
 
 /* Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-	width: 8px;
+	width: 5px;
 }
 
 *::-webkit-scrollbar-track {
@@ -21,7 +28,7 @@
 
 *::-webkit-scrollbar-thumb {
 	background-color: var(--scroll-secondary);
-	border-radius: 8px;
+	border-radius: 6px;
 	border: 2px solid var(--p);
 }
 @tailwind components;
