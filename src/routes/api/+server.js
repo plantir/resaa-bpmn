@@ -1,5 +1,4 @@
 import fs from 'fs/promises';
-
 export async function GET({ params }) {
 	try {
 		let data = await fs.readFile('./data/diagram.bpmn', { encoding: 'utf8' });

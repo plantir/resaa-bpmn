@@ -1,15 +1,13 @@
 import translations from './translations';
 
-
 export default function customTranslate(template, replacements) {
-  debugger
-  replacements = replacements || {};
+	replacements = replacements || {};
 
-  // Translate
-  template = translations[template] || template;
+	// Translate
+	template = translations[template] || template;
 
-  // Replace
-  return template.replace(/{([^}]+)}/g, function(_, key) {
-    return replacements[key] || '{' + key + '}';
-  });
+	// Replace
+	return template.replace(/{([^}]+)}/g, function (_, key) {
+		return replacements[key] || '{' + key + '}';
+	});
 }

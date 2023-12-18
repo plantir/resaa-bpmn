@@ -15,7 +15,7 @@
 	export let open = false;
 	export let data = {};
 	let formData: any = [];
-	let default_fields_start = [{ title: 'name', model: 'name', type: 'input' }];
+	let default_fields_start = [{ title: 'عنوان', model: 'name', type: 'input' }];
 	let shouldRecord = { title: 'shouldRecord', model: 'shouldRecord', type: 'checkbox' };
 	let fields: any = {
 		default: [...default_fields_start],
@@ -30,6 +30,12 @@
 			shouldRecord
 		],
 		audio: [...default_fields_start, { title: 'src', model: 'src', type: 'input' }],
+		sms: [...default_fields_start, { title: 'متن پیام', model: 'text', type: 'input' }],
+		email: [
+			...default_fields_start,
+			{ title: 'ارسال به', model: 'to', type: 'input' },
+			{ title: 'متن ایمیل', model: 'text', type: 'input' }
+		],
 		opinion: [...default_fields_start],
 		queue: [...default_fields_start, { title: 'queueId', model: 'queueId', type: 'input' }],
 		'mail-box': [

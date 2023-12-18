@@ -152,5 +152,32 @@ export function getIconByType(type: string, icon_color = '#545454') {
 </g>
 `;
 	}
+	if (type == 'sms') {
+		icon = `
+		<g style="transform: translateX(16px) translateY(16px);">
+		<path d="M10 21V14.5C10 12.567 8.433 11 6.5 11C4.567 11 3 12.567 3 14.5V21H21V15C21 12.7909 19.2091 11 17 11H6.5" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>
+		<path d="M12 11V3H16L18 5L16 7H12" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>
+		<path d="M5.99997 15H6.99997" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>
+		</g>
+`;
+	}
+	if (type == 'email') {
+		icon = `
+		<g style="transform: translateX(16px) translateY(16px);">
+		<path d="M10 21V14.5C10 12.567 8.433 11 6.5 11C4.567 11 3 12.567 3 14.5V21H21V15C21 12.7909 19.2091 11 17 11H6.5" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>
+		<path d="M12 11V3H16L18 5L16 7H12" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>
+		<path d="M5.99997 15H6.99997" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>
+		</g>
+`;
+	}
+	if (type == 'working-hours') {
+		icon = `
+		<g style="transform: translateX(16px) translateY(16px);">
+		<path d="M10 21V14.5C10 12.567 8.433 11 6.5 11C4.567 11 3 12.567 3 14.5V21H21V15C21 12.7909 19.2091 11 17 11H6.5" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>
+		<path d="M12 11V3H16L18 5L16 7H12" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>
+		<path d="M5.99997 15H6.99997" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>
+		</g>
+`;
+	}
 	return icon;
 }

@@ -40,7 +40,6 @@
 			}
 		});
 		let index = 1;
-		console.log(data);
 		modeler
 			.importXML(data)
 			.then(function () {
