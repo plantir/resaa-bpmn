@@ -85,7 +85,7 @@ export default class CustomPalette {
 			'recorder',
 			'menu',
 			'call-center',
-			'opinion',
+			'survey',
 			'mail-box',
 			'callback',
 			'extension',

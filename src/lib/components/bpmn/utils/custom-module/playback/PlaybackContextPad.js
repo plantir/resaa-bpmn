@@ -90,7 +90,7 @@ export default class CustomContextPad {
 			'recorder',
 			'menu',
 			'call-center',
-			'opinion',
+			'survey',
 			'mail-box',
 			'working-hours',
 			'sms',

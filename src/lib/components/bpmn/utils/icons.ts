@@ -84,7 +84,7 @@ export function getIconByType(type: string, icon_color = '#545454') {
 </g>
 `;
 	}
-	if (type == 'opinion') {
+	if (type == 'survey') {
 		icon = `
 <g style="transform: translateX(16px) translateY(16px);">
 <rect x="10.5" y="15.3309" width="3.0028" height="4.66927" rx="1" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>

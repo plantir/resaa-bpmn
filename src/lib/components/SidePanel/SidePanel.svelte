@@ -30,13 +30,13 @@
 			shouldRecord
 		],
 		audio: [...default_fields_start, { title: 'src', model: 'src', type: 'input' }],
-		sms: [...default_fields_start, { title: 'متن پیام', model: 'text', type: 'input' }],
+		sms: [...default_fields_start, { title: 'متن پیام', model: 'text', type: 'textarea' }],
 		email: [
 			...default_fields_start,
 			{ title: 'ارسال به', model: 'to', type: 'input' },
-			{ title: 'متن ایمیل', model: 'text', type: 'input' }
+			{ title: 'متن ایمیل', model: 'text', type: 'textarea' }
 		],
-		opinion: [...default_fields_start],
+		survey: [...default_fields_start, { title: 'آیدی نظر سنجی', model: 'queueId', type: 'input' }],
 		queue: [...default_fields_start, { title: 'queueId', model: 'queueId', type: 'input' }],
 		'mail-box': [
 			...default_fields_start,
@@ -154,6 +154,16 @@
 								placeholder="Type here"
 								class="input input-bordered w-full h-[44px] min-h-[44px]"
 							/>
+						{:else if field.type == 'textarea'}
+							<div class="flex items-center">
+								<textarea
+									value={field[field.model]}
+									on:input={(e) => changeValue(e, field)}
+									rows="36"
+									placeholder="Type here"
+									class="textarea textarea-bordered w-full h-24"
+								/>
+							</div>
 						{:else if field.type == 'checkbox'}
 							<div class="flex items-center">
 								<input
