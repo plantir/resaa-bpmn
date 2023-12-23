@@ -6,14 +6,11 @@
 	import { onMount } from 'svelte';
 	import { auth } from '$lib/stores/auth';
 	import { goto } from '$app/navigation';
-	import { minio } from '$lib/stores/minio';
 	let layoutLoading = true;
 	onMount(async () => {
 		// const { minio } = await import('$lib/stores/minio');
 		(await auth.isLogin()) ? (layoutLoading = false) : goto('/auth/login');
 		layoutLoading = false;
-		let objectList = await minio.getObjectList();
-		console.log(objectList);
 	});
 </script>
 

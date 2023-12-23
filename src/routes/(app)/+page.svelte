@@ -34,7 +34,7 @@
 	{#each objectList as item}
 		<div class="mb-2">
 			<a class="hover:text-primary-focus" href="/editor/{item.Key}">
-				{item.Key}
+				{item.Key?.replace('.bpmn', '')}
 				<i class="la la-edit" />
 			</a>
 			<a on:click={showDeleteModal(item)} class="hover:text-error cursor-pointer"
