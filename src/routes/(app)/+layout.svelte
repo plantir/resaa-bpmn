@@ -10,9 +10,10 @@
 	let layoutLoading = true;
 	onMount(async () => {
 		// const { minio } = await import('$lib/stores/minio');
-		// (await auth.isLogin()) ? (layoutLoading = false) : goto('/auth/login');
+		(await auth.isLogin()) ? (layoutLoading = false) : goto('/auth/login');
 		layoutLoading = false;
-		let minioClient = await minio.init();
+		let objectList = await minio.getObjectList();
+		console.log(objectList);
 	});
 </script>
 

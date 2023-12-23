@@ -20,7 +20,14 @@
 		translate: ['value', customTranslate]
 	};
 	onMount(async () => {
-		let { data } = await axios.get('/api');
+		// let { data } = await axios.get('/api');
+		let data = `<?xml version="1.0" encoding="UTF-8"?>
+		<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" id="Definitions_13i9w9f" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="14.0.0">
+		  <bpmn:process id="Process_135k828" isExecutable="false" />
+		  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+			<bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_135k828" />
+		  </bpmndi:BPMNDiagram>
+		</bpmn:definitions>`;
 		modeler = new CustomModeler({
 			container: '#container',
 			keyboard: {
@@ -56,14 +63,6 @@
 				eventBus.on('setting', (data: any) => {
 					dispatch('setting:clicked', data);
 					let { businessObject, element } = data;
-					// index++;
-					// if (businessObject.moduleType == 'timeout') {
-					// 	businessObject.timeout = businessObject.timeout ? businessObject.timeout + 1 : 30;
-					// }
-					// businessObject.name = businessObject.name + index;
-					// modeling.updateProperties(element, {
-					// 	...businessObject
-					// });
 				});
 			})
 			.catch(function (err: any) {
@@ -78,7 +77,18 @@
 		try {
 			const result = await modeler.saveXML();
 			const { xml } = result;
-			await axios.post('/api', { data: xml });
+			return xml;
+			// await axios.post('/api', { data: xml });
+		} catch (err) {
+			console.error(err);
+		}
+	}
+	export async function xml() {
+		try {
+			const result = await modeler.saveXML();
+			const { xml } = result;
+			return xml;
+			// await axios.post('/api', { data: xml });
 		} catch (err) {
 			console.error(err);
 		}
@@ -125,6 +135,24 @@
 				};
 				reader.readAsText(selectedFile);
 			});
+		} catch (err) {
+			console.error(err);
+		}
+	}
+	export async function load(bpmn: string) {
+		try {
+			modeler.importXML(bpmn).catch(function (err: any) {
+				alert(err);
+			});
+		} catch (err) {
+			console.error(err);
+		}
+	}
+
+	export async function loadVxml(vxml: string) {
+		try {
+			let bpmn = convertVXMLtoBPMN(vxml);
+			load(bpmn);
 		} catch (err) {
 			console.error(err);
 		}
