@@ -29,7 +29,7 @@
 	async function save() {
 		let xml = await bpmn.xml();
 		console.log(xml);
-		await minio.putObject($page.params.slug, xml);
+		await minio.putObject('VXML/' + $page.params.slug, xml);
 		toastCondition = true;
 	}
 	async function importVXML() {
@@ -41,9 +41,8 @@
 	import { minio } from '$lib/stores/minio';
 	import { page } from '$app/stores';
 	onMount(async () => {
-		console.log($page.params.slug);
 		let slug = $page.params.slug;
-		let data = await minio.getObject(slug);
+		let data = await minio.getObject('VXML/' + slug);
 		let bpmn_data = await data.Body?.transformToString();
 		if (slug.includes('.bpmn')) {
 			bpmn.load(bpmn_data);
@@ -61,6 +60,3 @@
 <Bpmn on:setting:clicked={onSettingClicked} bind:this={bpmn} />
 <SidePanel bind:open data={nodeData} on:submit={onSubmit} />
 <Toast type="success" timeout={2000} bind:show={toastCondition} message={toastMessage} />
-
-<style>
-</style>

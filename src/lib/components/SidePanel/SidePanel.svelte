@@ -2,6 +2,8 @@
 	import { afterUpdate, createEventDispatcher, onMount } from 'svelte';
 	import _ from 'lodash';
 	import translate from '../bpmn/utils/custom-translate/index';
+	import { minio } from '$lib/stores/minio';
+
 	import {
 		innerSVG,
 		append as svgAppend,
@@ -11,9 +13,11 @@
 		create as svgCreate
 	} from 'tiny-svg';
 	import { getIconByType } from '../bpmn/utils/icons';
+	import Uploader from './Uploader.svelte';
 	let dispatch = createEventDispatcher();
 	export let open = false;
 	export let data = {};
+	let key = 0;
 	let formData: any = [];
 	let default_fields_start = [{ title: 'عنوان', model: 'name', type: 'input' }];
 	let shouldRecord = { title: 'shouldRecord', model: 'shouldRecord', type: 'checkbox' };
@@ -29,7 +33,7 @@
 			{ title: 'callCenterId', model: 'callCenterId', type: 'input' },
 			shouldRecord
 		],
-		audio: [...default_fields_start, { title: 'src', model: 'src', type: 'input' }],
+		audio: [...default_fields_start, { title: 'فایل صدا', model: 'src', type: 'file' }],
 		sms: [...default_fields_start, { title: 'متن پیام', model: 'text', type: 'textarea' }],
 		email: [
 			...default_fields_start,
@@ -73,6 +77,7 @@
 	let svgWrapper: any = undefined;
 	let svg: any = '';
 	let type: string = '';
+	let loading = false;
 	$: open, open && getClone();
 	function timeout(time = 100) {
 		return new Promise((resolve) => {
@@ -106,91 +111,108 @@
 	function onClick() {
 		open = !open;
 	}
-	function submit() {
+	async function submit() {
+		loading = true;
 		let data: any = {};
 		for (const item of formData) {
+			if (item.type == 'file') {
+				let name = `Audio/Stream/${item[item.model].name}`;
+				await minio.putObject(name, item[item.model]);
+				data[item.model] = name;
+				continue;
+			}
 			data[item.model] = item[item.model];
 		}
 		dispatch('submit', data);
+		loading = false;
 	}
 	function cancel() {
 		// data = Object.assign({}, clone);
 		open = false;
 	}
 	function changeValue(e, field) {
-		// console.log(e.target.value);
-		// console.log(field);
 		if (field.type == 'checkbox') {
 			field[field.model] = e.target.checked;
 		} else {
 			field[field.model] = e.target.value;
 		}
 	}
-
+	const changeKey = () => {
+		key++;
+	};
+	$: open, changeKey();
 	onMount(() => {});
 </script>
 
 <div class="wrapper" class:open>
-	<div class="flex justify-between items-start">
-		<div class="flex items-center">
-			<div class="icon" bind:this={svgWrapper} />
-			<span class="mr-2 font-bold text-lg">{translate(type)}</span>
+	{#key key}
+		<div class="flex justify-between items-start">
+			<div class="flex items-center">
+				<div class="icon" bind:this={svgWrapper} />
+				<span class="mr-2 font-bold text-lg">{translate(type)}</span>
+			</div>
+			<a class="btn btn-square btn-sm self-end bg-transparent" on:click={onClick}>
+				<i class="la la-times" />
+			</a>
 		</div>
-		<a class="btn btn-square btn-sm self-end bg-transparent" on:click={onClick}>
-			<i class="la la-times" />
-		</a>
-	</div>
-	<div class="form-section">
-		<div>
-			{#if formData}
-				{#each formData as field}
-					<div class="form-control w-full mt-4">
-						<span class="text-right label-text mb-2 pr-1">{field.title}</span>
-						{#if field.type == 'input'}
-							<input
-								type="text"
-								value={field[field.model]}
-								on:input={(e) => changeValue(e, field)}
-								placeholder="Type here"
-								class="input input-bordered w-full h-[44px] min-h-[44px]"
-							/>
-						{:else if field.type == 'textarea'}
-							<div class="flex items-center">
-								<textarea
+		<div class="form-section">
+			<div>
+				{#if formData}
+					{#each formData as field}
+						<div class="form-control w-full mt-4">
+							<span class="text-right label-text mb-2 pr-1">{field.title}</span>
+							{#if field.type == 'input'}
+								<input
+									type="text"
 									value={field[field.model]}
 									on:input={(e) => changeValue(e, field)}
-									rows="36"
 									placeholder="Type here"
-									class="textarea textarea-bordered w-full h-24"
+									class="input input-bordered w-full h-[44px] min-h-[44px]"
 								/>
-							</div>
-						{:else if field.type == 'checkbox'}
-							<div class="flex items-center">
-								<input
-									type="checkbox"
-									checked={field[field.model]}
-									on:input={(e) => changeValue(e, field)}
-									bind:value={field.checked}
-									placeholder="Type here"
-									class="toggle toggle-secondary"
-								/>
-								<span class="mr-2.5">
-									{field[field.model] ? 'فعال' : 'غیر فعال'}
-								</span>
-							</div>
-						{/if}
-					</div>
-				{/each}
-			{/if}
+							{:else if field.type == 'file'}
+								<Uploader bind:file={field[field.model]} />
+							{:else if field.type == 'textarea'}
+								<div class="flex items-center">
+									<textarea
+										value={field[field.model]}
+										on:input={(e) => changeValue(e, field)}
+										rows="36"
+										placeholder="Type here"
+										class="textarea textarea-bordered w-full h-24"
+									/>
+								</div>
+							{:else if field.type == 'checkbox'}
+								<div class="flex items-center">
+									<input
+										type="checkbox"
+										checked={field[field.model]}
+										on:input={(e) => changeValue(e, field)}
+										bind:value={field.checked}
+										placeholder="Type here"
+										class="toggle toggle-secondary"
+									/>
+									<span class="mr-2.5">
+										{field[field.model] ? 'فعال' : 'غیر فعال'}
+									</span>
+								</div>
+							{/if}
+						</div>
+					{/each}
+				{/if}
+			</div>
 		</div>
-	</div>
-	<!-- <div class="flex-1" /> -->
-	<div class="flex gap-2 self-end mt-4 justify-between w-full">
-		<button class="btn min-h-[44px] h-[44px] w-28 btn-primary" on:click={submit}>
-			<i class="la la-save text-2xl" />ذخیره
-		</button>
-		<button class="btn min-h-[44px] h-[44px] w-20" on:click={cancel}>انصراف</button>
-	</div>
+		<!-- <div class="flex-1" /> -->
+		<div class="flex gap-2 self-end mt-4 justify-between w-full">
+			<button class="btn min-h-[44px] h-[44px] w-28 btn-primary" on:click={submit}>
+				{#if loading}
+					<span class="loading loading-spinner" />
+				{:else}
+					<i class="la la-save text-2xl" />ذخیره
+				{/if}
+			</button>
+			<button class="btn min-h-[44px] h-[44px] w-20" on:click={cancel}>انصراف</button>
+		</div>
+	{/key}
 </div>
 
 <style lang="scss">

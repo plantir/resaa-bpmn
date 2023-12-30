@@ -171,16 +171,16 @@ export function convertBPMNtoVXML(bpmn: string) {
 	let vxml = doc.createElement('vxml');
 	const pi = doc.createProcessingInstruction('xml', 'version="1.0" encoding="UTF-8"');
 	doc.insertBefore(pi, doc.firstChild);
-	vxml.setAttribute('version', '2.1');
-	vxml.setAttribute('xmlns', 'http://www.w3.org/2001/vxml');
-	vxml.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
-	vxml.setAttribute(
-		'xsi:schemaLocation',
-		'http://www.w3.org/2001/vxml http://www.w3.org/TR/2007/REC-voicexml21-20070619/vxml.xsd'
-	);
-	vxml.setAttribute('xmlns:dc', 'http://www.omg.org/spec/DD/20100524/DC');
-	vxml.setAttribute('xmlns:di', 'http://www.omg.org/spec/DD/20100524/DI');
-	vxml.setAttribute('xmlns:bpmn', 'http://www.omg.org/spec/BPMN/20100524/MODEL');
+	// vxml.setAttribute('version', '2.1');
+	// vxml.setAttribute('xmlns', 'http://www.w3.org/2001/vxml');
+	// vxml.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+	// vxml.setAttribute(
+	// 	'xsi:schemaLocation',
+	// 	'http://www.w3.org/2001/vxml http://www.w3.org/TR/2007/REC-voicexml21-20070619/vxml.xsd http://www.omg.org/spec/DD/20100524/DC http://www.omg.org/spec/BPMN/20100501/DC.xsd http://www.omg.org/spec/DD/20100524/DI http://www.omg.org/spec/BPMN/20100501/DI.xsd http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd'
+	// );
+	// vxml.setAttribute('xmlns:dc', 'http://www.omg.org/spec/DD/20100524/DC');
+	// vxml.setAttribute('xmlns:di', 'http://www.omg.org/spec/DD/20100524/DI');
+	// vxml.setAttribute('xmlns:bpmn', 'http://www.omg.org/spec/BPMN/20100524/MODEL');
 	let makeSubdialog = (name: string, item: HTMLFormElement) => {
 		let id = item.getAttribute('id');
 		let form_name = item.getAttribute('name');
@@ -353,6 +353,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 					if_element.setAttribute('cond', cond);
 					let else_element = doc.createElement('else');
 					if_element.appendChild(else_element);
+					let block_element = doc.createElement('block');
 					let children = item.children;
 					for (let item of children) {
 						if (item.nodeName == 'bpmn:outgoing') {
@@ -366,9 +367,10 @@ export function convertBPMNtoVXML(bpmn: string) {
 								let goto = makeGoTo(next!);
 								if_element.append(goto);
 							}
+							block_element.appendChild(if_element);
 						}
 					}
-					form.appendChild(if_element);
+					form.appendChild(block_element);
 					appendTo.appendChild(form);
 				}
 				if (moduleType == 'timeout') {
@@ -388,6 +390,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 					form.appendChild(block);
 					appendTo.appendChild(form);
 				}
+				debugger;
 				if (moduleType == 'audio') {
 					let id = item.getAttribute('id');
 					let form = doc.createElement('form');
@@ -398,7 +401,8 @@ export function convertBPMNtoVXML(bpmn: string) {
 					let prompt = doc.createElement('prompt');
 					let audio = doc.createElement('audio');
 					let src = item.getAttribute('cpbx:src');
-					audio.setAttribute('src', src);
+					debugger;
+					audio.setAttribute('src', 'http://document-server.cloudpbx.local:5000/Documents/' + src);
 					for (let child of item.childNodes) {
 						audio.append(child.cloneNode(true));
 					}
@@ -446,6 +450,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 		}
 	};
 	for (let item of process_items) {
+		debugger;
 		convertItem(item, vxml);
 		// if (item.nodeName == 'bpmn:sequenceFlow') {
 		// 	vxml.appendChild(item.cloneNode());
@@ -459,5 +464,17 @@ export function convertBPMNtoVXML(bpmn: string) {
 		.serializeToString(doc)
 		.replace(/xmlns:(bpmn|di|dc)="[^"]+"/g, function (str, ...args) {
 			return '';
-		});
+		})
+		.replace('&lt;', '<')
+		.replace('&gt;', '>')
+		.replace(
+			'<vxml>',
+			`<vxml version="2.1"
+    xmlns="http://www.w3.org/2001/vxml"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+    xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+    xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xsi:schemaLocation="http://www.w3.org/2001/vxml http://www.w3.org/TR/2007/REC-voicexml21-20070619/vxml.xsd http://www.omg.org/spec/DD/20100524/DC http://www.omg.org/spec/BPMN/20100501/DC.xsd http://www.omg.org/spec/DD/20100524/DI http://www.omg.org/spec/BPMN/20100501/DI.xsd http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd">`
+		);
 }

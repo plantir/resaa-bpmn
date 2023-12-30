@@ -4,6 +4,7 @@
 	import type { _Object } from '@aws-sdk/client-s3';
 	import { goto } from '$app/navigation';
 	import Modal from '$lib/components/Modal/Modal.svelte';
+	import { replace } from 'tiny-svg';
 	let modal = false;
 	let objectList: _Object[] = [];
 	let selectedItem: any = undefined;
@@ -11,7 +12,8 @@
 		getList();
 	});
 	async function getList() {
-		objectList = await minio.getObjectList();
+		let data = await minio.getObjectList();
+		objectList = data.filter((item) => item.Key?.startsWith('VXML/'));
 	}
 	function showDeleteModal(item: any) {
 		selectedItem = item;
@@ -33,8 +35,8 @@
 <div class="container mx-auto mt-20">
 	{#each objectList as item}
 		<div class="mb-2">
-			<a class="hover:text-primary-focus" href="/editor/{item.Key}">
-				{item.Key?.replace('.bpmn', '')}
+			<a class="hover:text-primary-focus" href="/editor/{item.Key.replace('VXML/', '')}">
+				{item.Key?.replace('VXML/', '').replace('.bpmn', '')}
 				<i class="la la-edit" />
 			</a>
 			<a on:click={showDeleteModal(item)} class="hover:text-error cursor-pointer"

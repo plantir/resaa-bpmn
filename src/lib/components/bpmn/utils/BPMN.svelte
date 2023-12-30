@@ -98,6 +98,7 @@
 		try {
 			const result = await modeler.saveXML();
 			const { xml } = result;
+			debugger;
 			let vxml = convertBPMNtoVXML(xml);
 			var filename = 'file.xml';
 			var pom = document.createElement('a');
