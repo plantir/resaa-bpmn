@@ -62,8 +62,8 @@ export default class CustomRenderer extends BaseRenderer {
 	}
 	getShape(type, width = 192, height = 55) {
 		let shape = `<rect x="0" y="0" width="${width}" height="${height}" rx="15.5" fill="white"/>
-    <rect x="0" y="0"  width="${width}" height="${height}" stroke="#F5F5F5"/>
-    <rect x="8" y="8" width="40" height="40" rx="8" fill="#F5F5F5" class="svg-bg"/>`;
+    <rect x="0" y="0"  width="${width}" height="${height}" stroke="#c5c5c5"/>
+    <rect x="8" y="8" width="40" height="40" rx="8" fill="#f5f5f5" class="svg-bg"/>`;
 		const icon_color = '#545454';
 		let name = this.translate(type);
 		let icon = getIconByType(type);
