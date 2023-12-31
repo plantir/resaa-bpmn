@@ -313,6 +313,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 								let goto = makeGoTo(next!);
 								let var_element = doc.createElement('var');
 								var_element.setAttribute('name', 'global_choice');
+								var_element.setAttribute('expr', "''");
 								let assign_element = doc.createElement('assign');
 								assign_element.setAttribute('name', 'global_choice');
 								assign_element.setAttribute('expr', 'choice');
@@ -341,6 +342,61 @@ export function convertBPMNtoVXML(bpmn: string) {
 					filled.appendChild(if_element);
 					field.appendChild(filled);
 					form.appendChild(field);
+					appendTo.appendChild(form);
+				}
+				debugger;
+				if (moduleType == 'working-hours') {
+					let form = doc.createElement('form');
+					form.setAttribute('id', id);
+					let block = doc.createElement('block');
+					let var_element = doc.createElement('var');
+					var_element.setAttribute('name', 'time');
+					var_element.setAttribute('expr', "formatDateTime(now(), 'HHmm')");
+					block.appendChild(var_element);
+					let if_element = doc.createElement('if');
+					let index = 0;
+					for (let child of item.childNodes) {
+						if (child.nodeName == 'bpmn:outgoing') {
+							let flow = parsed_bpmn.getElementById(child.innerHTML);
+							let flow_value = flow?.getAttribute('name');
+							let next = flow?.getAttribute('targetRef');
+							if (index == 0) {
+								if_element.setAttribute(
+									'cond',
+									`time >= '${flow_value?.split('-')[0]}' and time <= '${
+										flow_value?.split('-')[1]
+									}'`
+								);
+								let goto = makeGoTo(next!);
+								if_element.appendChild(goto);
+							} else if (flow_value == '') {
+								let else_element = doc.createElement('else');
+								let goto = makeGoTo(next!);
+								if_element.appendChild(else_element);
+								if_element.appendChild(goto);
+							} else {
+								let else_if_element = doc.createElement('elseif');
+								else_if_element.setAttribute(
+									'cond',
+									`time >= '${flow_value?.split('-')[0]}' and time <= '${
+										flow_value?.split('-')[1]
+									}'`
+								);
+								let goto = makeGoTo(next!);
+								let else_element = if_element.querySelector('else');
+								if (else_element) {
+									if_element.insertBefore(else_if_element, else_element);
+									if_element.insertBefore(goto, else_element);
+								} else {
+									if_element.appendChild(else_if_element);
+									if_element.appendChild(goto);
+								}
+							}
+							index++;
+						}
+					}
+					block.appendChild(if_element);
+					form.appendChild(block);
 					appendTo.appendChild(form);
 				}
 				if (moduleType == 'check-dt-mf') {
@@ -390,7 +446,6 @@ export function convertBPMNtoVXML(bpmn: string) {
 					form.appendChild(block);
 					appendTo.appendChild(form);
 				}
-				debugger;
 				if (moduleType == 'audio') {
 					let id = item.getAttribute('id');
 					let form = doc.createElement('form');
@@ -401,7 +456,6 @@ export function convertBPMNtoVXML(bpmn: string) {
 					let prompt = doc.createElement('prompt');
 					let audio = doc.createElement('audio');
 					let src = item.getAttribute('cpbx:src');
-					debugger;
 					audio.setAttribute('src', 'http://document-server.cloudpbx.local:5000/Documents/' + src);
 					for (let child of item.childNodes) {
 						audio.append(child.cloneNode(true));
@@ -450,7 +504,6 @@ export function convertBPMNtoVXML(bpmn: string) {
 		}
 	};
 	for (let item of process_items) {
-		debugger;
 		convertItem(item, vxml);
 		// if (item.nodeName == 'bpmn:sequenceFlow') {
 		// 	vxml.appendChild(item.cloneNode());
@@ -465,8 +518,8 @@ export function convertBPMNtoVXML(bpmn: string) {
 		.replace(/xmlns:(bpmn|di|dc)="[^"]+"/g, function (str, ...args) {
 			return '';
 		})
-		.replace('&lt;', '<')
-		.replace('&gt;', '>')
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>')
 		.replace(
 			'<vxml>',
 			`<vxml version="2.1"
