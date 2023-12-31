@@ -267,6 +267,9 @@ export function convertBPMNtoVXML(bpmn: string) {
 						'check-call-center-condition',
 						'callback',
 						'bridge',
+						'sms',
+						'recorder',
+						'email',
 						'extension'
 					].includes(moduleType)
 				) {

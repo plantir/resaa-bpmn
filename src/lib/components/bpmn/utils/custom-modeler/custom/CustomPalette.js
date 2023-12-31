@@ -19,7 +19,7 @@ export default class CustomPalette {
 			return function (event) {
 				console.log(module);
 				let shape = {};
-				if (module == 'recorder') {
+				if (module == 'recorder2') {
 					const businessObject = bpmnFactory.create('bpmn:SubProcess');
 
 					businessObject.moduleType = module;

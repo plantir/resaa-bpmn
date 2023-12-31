@@ -34,11 +34,11 @@
 			shouldRecord
 		],
 		audio: [...default_fields_start, { title: 'فایل صدا', model: 'src', type: 'file' }],
-		sms: [...default_fields_start, { title: 'متن پیام', model: 'text', type: 'textarea' }],
+		sms: [...default_fields_start, { title: 'متن پیام', model: 'message', type: 'textarea' }],
 		email: [
 			...default_fields_start,
 			{ title: 'ارسال به', model: 'to', type: 'input' },
-			{ title: 'متن ایمیل', model: 'text', type: 'textarea' }
+			{ title: 'متن ایمیل', model: 'message', type: 'textarea' }
 		],
 		survey: [...default_fields_start, { title: 'آیدی نظر سنجی', model: 'queueId', type: 'input' }],
 		queue: [...default_fields_start, { title: 'queueId', model: 'queueId', type: 'input' }],

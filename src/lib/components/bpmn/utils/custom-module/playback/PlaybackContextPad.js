@@ -95,7 +95,6 @@ export default class CustomContextPad {
 			'working-hours',
 			'sms',
 			'email',
-			'recorder',
 			'callback',
 			'extension',
 			'check-call-center-condition',
