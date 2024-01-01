@@ -40,8 +40,8 @@ function minioClient() {
 			});
 			// await createBucket('Audio');
 		} catch (error) {
-			// localStorage.removeItem('token');
-			// goto('/auth/login');
+			localStorage.removeItem('token');
+			goto('/auth/login');
 		}
 	}
 	function getBucketName() {

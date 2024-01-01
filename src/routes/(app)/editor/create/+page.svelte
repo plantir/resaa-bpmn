@@ -4,11 +4,20 @@
 	import SidePanel from '$lib/components/SidePanel/SidePanel.svelte';
 	import Toast from '$lib/components/Toast/Toast.svelte';
 	import { minio } from '$lib/stores/minio';
+	import { onMount } from 'svelte';
 	let open = false;
 	let nodeData: any = {};
 	let bpmn: any = {};
 	let toastMessage = 'با موفقیت ذخیره شد';
 	let toastCondition = false;
+	onMount(() => {
+		document.onkeydown = function (e) {
+			if (e.ctrlKey && e.key === 's') {
+				e.preventDefault();
+				save();
+			}
+		};
+	});
 	function onSettingClicked(data: any) {
 		open = false;
 		setTimeout(() => {

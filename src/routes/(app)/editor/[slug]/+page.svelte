@@ -41,6 +41,12 @@
 	import { minio } from '$lib/stores/minio';
 	import { page } from '$app/stores';
 	onMount(async () => {
+		document.onkeydown = function (e) {
+			if (e.ctrlKey && e.key === 's') {
+				e.preventDefault();
+				save();
+			}
+		};
 		let slug = $page.params.slug;
 		let data = await minio.getObject('VXML/' + slug);
 		let bpmn_data = await data.Body?.transformToString();
