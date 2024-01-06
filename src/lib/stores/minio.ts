@@ -40,9 +40,10 @@ function minioClient() {
 			});
 			// await createBucket('Audio');
 		} catch (error) {
-			console.log(error);
-			localStorage.removeItem('token');
-			goto('/auth/login');
+			if (error.response.data.includes('InvalidParameterValue')) {
+				localStorage.removeItem('token');
+				goto('/auth/login');
+			}
 		}
 	}
 	function getBucketName() {

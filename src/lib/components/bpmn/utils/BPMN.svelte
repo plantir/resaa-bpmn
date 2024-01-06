@@ -83,10 +83,13 @@
 			console.error(err);
 		}
 	}
-	export async function xml() {
+	export async function xml(vxml = false) {
 		try {
 			const result = await modeler.saveXML();
-			const { xml } = result;
+			let { xml } = result;
+			if (vxml) {
+				xml = convertBPMNtoVXML(xml);
+			}
 			return xml;
 			// await axios.post('/api', { data: xml });
 		} catch (err) {
@@ -108,7 +111,6 @@
 			pom.draggable = true;
 			pom.classList.add('dragout');
 			pom.click();
-			console.log(vxml);
 		} catch (err) {
 			console.error(err);
 		}

@@ -14,6 +14,8 @@
 	} from 'tiny-svg';
 	import { getIconByType } from '../bpmn/utils/icons';
 	import Uploader from './Uploader.svelte';
+	import Select from './Select.svelte';
+	import { GroupService } from '$lib/services/groups';
 	let dispatch = createEventDispatcher();
 	export let open = false;
 	export let data = {};
@@ -68,7 +70,14 @@
 		],
 		'check-call-center-condition': [
 			...default_fields_start,
-			{ title: 'callCenterId', model: 'callCenterId', type: 'input' }
+			{ title: 'callCenterId', model: 'callCenterId', type: 'input' },
+			{
+				title: 'انتخاب گروه',
+				model: 'group_id',
+				type: 'select',
+				placeholder: 'انتخاب گروه',
+				items: []
+			}
 		],
 		'check-dt-mf': [...default_fields_start, { title: 'cond', model: 'cond', type: 'input' }],
 		'bpmn:SequenceFlow': [...default_fields_start, { title: 'cond', model: 'cond', type: 'input' }]
@@ -79,6 +88,7 @@
 	let type: string = '';
 	let loading = false;
 	$: open, open && getClone();
+
 	function timeout(time = 100) {
 		return new Promise((resolve) => {
 			setTimeout(() => resolve(true), 1000);
@@ -90,6 +100,16 @@
 		formData = fields[type] || fields['default'];
 		for (let field of formData) {
 			field[field.model] = businessObject[field.model] || '';
+			if (field.model == 'group_id') {
+				let data = await GroupService.index().then((res) => res.data);
+				field.items = data.map((item: any) => {
+					return {
+						text: item.name,
+						value: item.id
+					};
+				});
+				changeKey();
+			}
 		}
 		if (!svgWrapper) {
 			await timeout();
@@ -116,7 +136,7 @@
 		let data: any = {};
 		for (const item of formData) {
 			if (item.type == 'file') {
-				let name = `Audio/Stream/${item[item.model].name}`;
+				let name = `Audio/${item[item.model].name}`;
 				await minio.putObject(name, item[item.model]);
 				data[item.model] = name;
 				continue;
@@ -127,7 +147,6 @@
 		loading = false;
 	}
 	function cancel() {
-		// data = Object.assign({}, clone);
 		open = false;
 	}
 	function changeValue(e, field) {
@@ -181,6 +200,12 @@
 										class="textarea textarea-bordered w-full h-24"
 									/>
 								</div>
+							{:else if field.type == 'select'}
+								<Select
+									bind:value={field[field.model]}
+									placeholder={field.placeholder}
+									items={field.items}
+								/>
 							{:else if field.type == 'checkbox'}
 								<div class="flex items-center">
 									<input

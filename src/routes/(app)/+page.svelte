@@ -13,7 +13,7 @@
 	});
 	async function getList() {
 		let data = await minio.getObjectList();
-		objectList = data.filter((item) => item.Key?.startsWith('VXML/'));
+		objectList = data.filter((item) => item.Key?.startsWith('Vxml/'));
 	}
 	function showDeleteModal(item: any) {
 		selectedItem = item;
@@ -35,8 +35,8 @@
 <div class="container mx-auto mt-20">
 	{#each objectList as item}
 		<div class="mb-2">
-			<a class="hover:text-primary-focus" href="/editor/{item.Key.replace('VXML/', '')}">
-				{item.Key?.replace('VXML/', '').replace('.bpmn', '')}
+			<a class="hover:text-primary-focus" href="/editor/{item.Key.replace('Vxml/', '')}">
+				{item.Key?.replace('Vxml/', '').replace('.bpmn', '')}
 				<i class="la la-edit" />
 			</a>
 			<a on:click={showDeleteModal(item)} class="hover:text-error cursor-pointer"

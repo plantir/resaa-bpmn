@@ -28,8 +28,9 @@
 	}
 	async function save() {
 		let xml = await bpmn.xml();
-		console.log(xml);
-		await minio.putObject('VXML/' + $page.params.slug, xml);
+		let vxml = await bpmn.xml(true);
+		await minio.putObject('Vxml/' + $page.params.slug, xml);
+		await minio.putObject('Vxml/' + $page.params.slug.replace('.bpmn', '.vxml'), vxml);
 		toastCondition = true;
 	}
 	async function importVXML() {
@@ -48,7 +49,7 @@
 			}
 		};
 		let slug = $page.params.slug;
-		let data = await minio.getObject('VXML/' + slug);
+		let data = await minio.getObject('Vxml/' + slug);
 		let bpmn_data = await data.Body?.transformToString();
 		if (slug.includes('.bpmn')) {
 			bpmn.load(bpmn_data);

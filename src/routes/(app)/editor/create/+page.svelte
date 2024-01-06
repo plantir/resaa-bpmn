@@ -36,8 +36,10 @@
 	}
 	async function save() {
 		let xml = await bpmn.xml();
-		console.log(xml);
-		await minio.putObject('VXML/' + Date.now().toString() + '.bpmn', xml);
+		let vxml = await bpmn.xml(true);
+		let name = Date.now().toString();
+		await minio.putObject('Vxml/' + name + '.bpmn', xml);
+		await minio.putObject('Vxml/' + name + '.vxml', vxml);
 		toastCondition = true;
 	}
 	async function importVXML() {
