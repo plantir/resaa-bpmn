@@ -202,9 +202,6 @@
 									/>
 								</div>
 							{:else if field.type == 'select'}
-								<div dir="ltr">
-									{JSON.stringify(field)}
-								</div>
 								<Select
 									bind:value={field[field.model]}
 									placeholder={field.placeholder}
