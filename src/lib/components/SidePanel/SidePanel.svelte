@@ -101,6 +101,7 @@
 		for (let field of formData) {
 			field[field.model] = businessObject[field.model] || '';
 			if (field.model == 'group_id') {
+				field[field.model] = +field[field.model];
 				let data = await GroupService.index().then((res) => res.data);
 				field.items = data.map((item: any) => {
 					return {
@@ -201,6 +202,9 @@
 									/>
 								</div>
 							{:else if field.type == 'select'}
+								<div dir="ltr">
+									{JSON.stringify(field)}
+								</div>
 								<Select
 									bind:value={field[field.model]}
 									placeholder={field.placeholder}
