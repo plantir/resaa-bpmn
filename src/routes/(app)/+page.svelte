@@ -13,7 +13,7 @@
 	});
 	async function getList() {
 		let data = await minio.getObjectList();
-		objectList = data.filter((item) => item.Key?.startsWith('Vxml/'));
+		objectList = data.filter((item) => item.Key?.startsWith('Vxml/') && item.Key.endsWith('.bpmn'));
 	}
 	function showDeleteModal(item: any) {
 		selectedItem = item;
