@@ -458,8 +458,12 @@ export function convertBPMNtoVXML(bpmn: string) {
 					let block = doc.createElement('block');
 					let prompt = doc.createElement('prompt');
 					let audio = doc.createElement('audio');
-					let src = item.getAttribute('cpbx:src');
-					audio.setAttribute('src', 'http://document-server.cloudpbx.local:5000/Documents/' + src);
+					let src = item.getAttribute('cpbx:src') || '';
+					audio.setAttribute(
+						'src',
+						'http://document-server.cloudpbx.local:5000/Documents/' +
+							src.replace('Audio/', 'Audio/Stream/')
+					);
 					for (let child of item.childNodes) {
 						audio.append(child.cloneNode(true));
 					}
@@ -473,9 +477,9 @@ export function convertBPMNtoVXML(bpmn: string) {
 					let meta2 = doc.createElement('meta');
 					let name = item.getAttribute('name');
 					let content = item.getAttribute('cpbx:content');
-					meta1.setAttribute('name', '@Meta.IVRStartNodeNumber');
+					meta1.setAttribute('name', 'Meta.IVRStartNodeNumber');
 					meta1.setAttribute('content', content);
-					meta2.setAttribute('name', '@Meta.IVRStartNodeTitle');
+					meta2.setAttribute('name', 'Meta.IVRStartNodeTitle');
 					meta2.setAttribute('content', name);
 					appendTo.prepend(meta1);
 					appendTo.prepend(meta2);
