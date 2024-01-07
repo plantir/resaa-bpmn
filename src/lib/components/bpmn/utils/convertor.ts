@@ -89,19 +89,17 @@ export function convertVXMLtoBPMN(vxml: string) {
 			}
 			bpmn_process.appendChild(task);
 		}
-		let opinion = form_item.querySelector(
-			"subdialog[src=\"@Url.DocumentLink('opinion','ccxml')\"]"
-		);
-		if (opinion) {
+		let survey = form_item.querySelector("subdialog[src=\"@Url.DocumentLink('opinion','ccxml')\"]");
+		if (survey) {
 			let id = form_item.getAttribute('id');
 			let name = form_item.getAttribute('name');
-			let src = opinion.getAttribute('src');
+			let src = survey.getAttribute('src');
 			let task = doc.createElement('bpmn:task');
 			task.setAttribute('id', id!);
 			task.setAttribute('name', name!);
 			task.setAttribute('cpbx:src', src!);
-			task.setAttribute('cpbx:moduleType', 'opinion');
-			for (let child of opinion.childNodes) {
+			task.setAttribute('cpbx:moduleType', 'survey');
+			for (let child of survey.childNodes) {
 				task.appendChild(child.cloneNode(true));
 				if (child.nodeName == 'bpmn:incoming') {
 					let outgoings = parsed_vxml.getElementsByTagName('bpmn:outgoing');
@@ -188,7 +186,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 		form.setAttribute('id', id!);
 		form.setAttribute('name', form_name!);
 		let subdialog = doc.createElement('subdialog');
-		subdialog.setAttribute('src', `@Url.DocumentLink('${name}','ccxml')`);
+		subdialog.setAttribute('src', `${name}.ccxml`);
 		let attributes = item.getAttributeNames();
 		attributes
 			.filter((attribute) => {
@@ -262,7 +260,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 					[
 						'queue',
 						'call-center',
-						'opinion',
+						'survey',
 						'mail-box',
 						'check-call-center-condition',
 						'callback',

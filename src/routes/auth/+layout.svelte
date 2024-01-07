@@ -17,7 +17,6 @@
 		} else {
 			goto('/auth/login');
 		}
-		// (await auth.isLogin()) ?  goto('/') : (loading = false);
 	});
 </script>
 
