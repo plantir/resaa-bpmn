@@ -16,6 +16,7 @@
 	import Uploader from './Uploader.svelte';
 	import Select from './Select.svelte';
 	import { GroupService } from '$lib/services/groups';
+	import axios from 'axios';
 	let dispatch = createEventDispatcher();
 	export let open = false;
 	export let data = {};
@@ -33,6 +34,13 @@
 		'call-center': [
 			...default_fields_start,
 			{ title: 'callCenterId', model: 'callCenterId', type: 'input' },
+			{
+				title: 'انتخاب کال سنتر',
+				model: 'callcenter_id',
+				type: 'select',
+				placeholder: 'انتخاب کال سنتر',
+				items: []
+			},
 			shouldRecord
 		],
 		audio: [...default_fields_start, { title: 'فایل صدا', model: 'src', type: 'file' }],
@@ -70,14 +78,7 @@
 		],
 		'check-call-center-condition': [
 			...default_fields_start,
-			{ title: 'callCenterId', model: 'callCenterId', type: 'input' },
-			{
-				title: 'انتخاب گروه',
-				model: 'group_id',
-				type: 'select',
-				placeholder: 'انتخاب گروه',
-				items: []
-			}
+			{ title: 'callCenterId', model: 'callCenterId', type: 'input' }
 		],
 		'check-dt-mf': [...default_fields_start, { title: 'cond', model: 'cond', type: 'input' }],
 		'bpmn:SequenceFlow': [...default_fields_start, { title: 'cond', model: 'cond', type: 'input' }]
@@ -100,10 +101,12 @@
 		formData = fields[type] || fields['default'];
 		for (let field of formData) {
 			field[field.model] = businessObject[field.model] || '';
-			if (field.model == 'group_id') {
-				field[field.model] = +field[field.model];
-				let data = await GroupService.index().then((res) => res.data);
-				field.items = data.map((item: any) => {
+			if (field.model == 'callcenter_id') {
+				field[field.model] = field[field.model];
+				let data = await axios
+					.get(`http://172.16.100.204:8072/v1/CallCenters/List?pageNumber=1&pageSize=1000`)
+					.then((res) => res.data);
+				field.items = data.data.items.map((item: any) => {
 					return {
 						text: item.name,
 						value: item.id
