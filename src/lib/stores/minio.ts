@@ -12,17 +12,16 @@ function minioClient() {
 	async function init() {
 		const endpoint = `http://172.16.100.203:9009`;
 		try {
-			let { data } = await axios.post(
-				'http://172.16.100.203:9009',
-				{},
-				{
-					params: {
-						Action: 'AssumeRoleWithWebIdentity',
-						Version: '2011-06-15',
-						WebIdentityToken: localStorage.token
-					}
+			let { data } = await axios({
+				method: 'post',
+				url: 'http://172.16.100.203:9009',
+				withCredentials: false,
+				params: {
+					Action: 'AssumeRoleWithWebIdentity',
+					Version: '2011-06-15',
+					WebIdentityToken: localStorage.token
 				}
-			);
+			});
 
 			let [l, secretKey] = data.match(/<SecretAccessKey>(.+)<\/SecretAccessKey>/);
 			let [m, accessKey] = data.match(/<AccessKeyId>(.+)<\/AccessKeyId>/);
