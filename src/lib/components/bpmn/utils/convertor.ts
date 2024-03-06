@@ -367,7 +367,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 								);
 								let goto = makeGoTo(next!);
 								if_element.appendChild(goto);
-							} else if (flow_value == '') {
+							} else if (!flow_value || flow_value == '') {
 								let else_element = doc.createElement('else');
 								let goto = makeGoTo(next!);
 								if_element.appendChild(else_element);
