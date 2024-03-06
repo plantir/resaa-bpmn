@@ -360,10 +360,12 @@ export function convertBPMNtoVXML(bpmn: string) {
 							let flow = parsed_bpmn.getElementById(child.innerHTML);
 							let flow_value = flow?.getAttribute('name');
 							let next = flow?.getAttribute('targetRef');
+							let [firstValue, secondValue] = flow_value?.split('-')!;
+							let op = secondValue > firstValue ? '&&' : '||';
 							if (index == 0) {
 								if_element.setAttribute(
 									'cond',
-									`time >= ${flow_value?.split('-')[0]} && time < ${flow_value?.split('-')[1]}`
+									`time >= ${firstValue} ${op} time < ${secondValue}`
 								);
 								let goto = makeGoTo(next!);
 								if_element.appendChild(goto);
@@ -376,7 +378,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 								let else_if_element = doc.createElement('elseif');
 								else_if_element.setAttribute(
 									'cond',
-									`time >= ${flow_value?.split('-')[0]} && time < ${flow_value?.split('-')[1]}`
+									`time >= ${firstValue} ${op} time < ${secondValue}`
 								);
 								let goto = makeGoTo(next!);
 								let else_element = if_element.querySelector('else');
