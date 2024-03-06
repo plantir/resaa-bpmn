@@ -345,14 +345,13 @@ export function convertBPMNtoVXML(bpmn: string) {
 					form.appendChild(field);
 					appendTo.appendChild(form);
 				}
-				debugger;
 				if (moduleType == 'working-hours') {
 					let form = doc.createElement('form');
 					form.setAttribute('id', id);
 					let block = doc.createElement('block');
 					let var_element = doc.createElement('var');
 					var_element.setAttribute('name', 'time');
-					var_element.setAttribute('expr', "formatDateTime(now(), 'HHmm')");
+					var_element.setAttribute('expr', 'new Date().getHours()');
 					block.appendChild(var_element);
 					let if_element = doc.createElement('if');
 					let index = 0;
@@ -364,9 +363,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 							if (index == 0) {
 								if_element.setAttribute(
 									'cond',
-									`time >= '${flow_value?.split('-')[0]}' and time <= '${
-										flow_value?.split('-')[1]
-									}'`
+									`time >= ${flow_value?.split('-')[0]} && time < ${flow_value?.split('-')[1]}`
 								);
 								let goto = makeGoTo(next!);
 								if_element.appendChild(goto);
@@ -379,9 +376,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 								let else_if_element = doc.createElement('elseif');
 								else_if_element.setAttribute(
 									'cond',
-									`time >= '${flow_value?.split('-')[0]}' and time <= '${
-										flow_value?.split('-')[1]
-									}'`
+									`time >= ${flow_value?.split('-')[0]} && time < ${flow_value?.split('-')[1]}`
 								);
 								let goto = makeGoTo(next!);
 								let else_element = if_element.querySelector('else');
@@ -518,21 +513,23 @@ export function convertBPMNtoVXML(bpmn: string) {
 	// vxml.appendChild(process[0]);
 	vxml.appendChild(diagram[0]);
 	doc.appendChild(vxml);
-	return new XMLSerializer()
-		.serializeToString(doc)
-		.replace(/xmlns:(bpmn|di|dc)="[^"]+"/g, function (str, ...args) {
-			return '';
-		})
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>')
-		.replace(
-			'<vxml>',
-			`<vxml version="2.1"
+	return (
+		new XMLSerializer()
+			.serializeToString(doc)
+			.replace(/xmlns:(bpmn|di|dc)="[^"]+"/g, function (str, ...args) {
+				return '';
+			})
+			// .replace(/&lt;/g, '<')
+			// .replace(/&gt;/g, '>')
+			.replace(
+				'<vxml>',
+				`<vxml version="2.1"
     xmlns="http://www.w3.org/2001/vxml"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
     xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
     xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
     xsi:schemaLocation="http://www.w3.org/2001/vxml http://www.w3.org/TR/2007/REC-voicexml21-20070619/vxml.xsd http://www.omg.org/spec/DD/20100524/DC http://www.omg.org/spec/BPMN/20100501/DC.xsd http://www.omg.org/spec/DD/20100524/DI http://www.omg.org/spec/BPMN/20100501/DI.xsd http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/20100501/BPMN20.xsd">`
-		);
+			)
+	);
 }

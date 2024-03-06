@@ -29,8 +29,15 @@
 	async function save() {
 		let xml = await bpmn.xml();
 		let vxml = await bpmn.xml(true);
-		await minio.putObject('Vxml/' + $page.params.slug, xml);
-		await minio.putObject('Vxml/' + $page.params.slug.replace('.bpmn', '.vxml'), vxml);
+		let [full, name] =
+			/<meta name="Meta\.IVRStartNodeTitle" content="([0-9]+)"\/>/gm.exec(vxml) || [];
+		if (!name) {
+			toastMessage = 'حتما باید یک ماجول شماره در صفحه باشد و مقدار داشته باشد';
+			toastCondition = true;
+			return;
+		}
+		await minio.putObject('Vxml/' + name + '.bpmn', xml);
+		await minio.putObject('Vxml/' + name + '.vxml', vxml);
 		toastCondition = true;
 	}
 	async function importVXML() {

@@ -10,6 +10,7 @@
 	let bpmn: any = {};
 	let toastMessage = 'با موفقیت ذخیره شد';
 	let toastCondition = false;
+	let toastType = 'success';
 	onMount(() => {
 		document.onkeydown = function (e) {
 			if (e.ctrlKey && e.key === 's') {
@@ -37,7 +38,14 @@
 	async function save() {
 		let xml = await bpmn.xml();
 		let vxml = await bpmn.xml(true);
-		let name = Date.now().toString();
+		let [full, name] =
+			/<meta name="Meta\.IVRStartNodeTitle" content="([0-9]+)"\/>/gm.exec(vxml) || [];
+		if (!name) {
+			toastType = 'error';
+			toastMessage = 'حتما باید یک ماجول شماره در صفحه باشد و مقدار داشته باشد';
+			toastCondition = true;
+			return;
+		}
 		await minio.putObject('Vxml/' + name + '.bpmn', xml);
 		await minio.putObject('Vxml/' + name + '.vxml', vxml);
 		toastCondition = true;
@@ -57,7 +65,7 @@
 <Header on:download={download} on:save={save} on:importVxml={importVXML} on:createNew={createNew} />
 <Bpmn on:setting:clicked={onSettingClicked} bind:this={bpmn} />
 <SidePanel bind:open data={nodeData} on:submit={onSubmit} />
-<Toast type="success" timeout={2000} bind:show={toastCondition} message={toastMessage} />
+<Toast type={toastType} timeout={2000} bind:show={toastCondition} message={toastMessage} />
 
 <style>
 </style>
