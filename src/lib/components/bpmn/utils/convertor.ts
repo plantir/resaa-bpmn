@@ -512,7 +512,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 					assignCallerSessionId.setAttribute('expr', 'callerSessionId');
 					let assignCcallerConnectionId = doc.createElement('assign');
 					assignCcallerConnectionId.setAttribute('name', 'globalCallerConnectionId');
-					assignCcallerConnectionId.setAttribute('expr', 'globalCallerConnectionId');
+					assignCcallerConnectionId.setAttribute('expr', 'callerConnectionId');
 					let assignCallerPhoneNumber = doc.createElement('assign');
 					assignCallerPhoneNumber.setAttribute('name', 'globalCallerPhoneNumber');
 					assignCallerPhoneNumber.setAttribute('expr', 'callerPhoneNumber');
