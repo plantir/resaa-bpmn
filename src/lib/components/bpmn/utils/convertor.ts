@@ -367,7 +367,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 							let flow = parsed_bpmn.getElementById(child.innerHTML);
 							let flow_value = flow?.getAttribute('name');
 							let next = flow?.getAttribute('targetRef');
-							let [firstValue, secondValue] = flow_value?.split('-')!;
+							let [firstValue, secondValue] = flow_value?.split('-')! || [];
 							let op = secondValue > firstValue ? '&&' : '||';
 							if (index == 0) {
 								if_element.setAttribute(
