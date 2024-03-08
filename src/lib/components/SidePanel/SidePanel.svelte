@@ -68,12 +68,12 @@
 		],
 		extension: [
 			...default_fields_start,
-			{ title: 'callee', model: 'callee', type: 'input' },
+			{ title: 'calleePhoneNumber', model: 'calleePhoneNumber', type: 'input' },
 			shouldRecord
 		],
 		bridge: [
 			...default_fields_start,
-			{ title: 'callee', model: 'callee', type: 'input' },
+			{ title: 'calleePhoneNumber', model: 'calleePhoneNumber', type: 'input' },
 			shouldRecord
 		],
 		'check-call-center-condition': [

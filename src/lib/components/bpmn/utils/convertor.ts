@@ -187,6 +187,13 @@ export function convertBPMNtoVXML(bpmn: string) {
 		form.setAttribute('name', form_name!);
 		let subdialog = doc.createElement('subdialog');
 		subdialog.setAttribute('src', `${name}.ccxml`);
+		['CallerSessionId', 'CallerConnectionId', 'CallerPhoneNumber'].map((item) => {
+			let param = doc.createElement('param');
+
+			param.setAttribute('name', item.replace('C', 'c'));
+			param.setAttribute('expr', `global${item}`);
+			subdialog.appendChild(param);
+		});
 		let attributes = item.getAttributeNames();
 		attributes
 			.filter((attribute) => {
@@ -476,8 +483,50 @@ export function convertBPMNtoVXML(bpmn: string) {
 					meta1.setAttribute('content', content);
 					meta2.setAttribute('name', 'Meta.IVRStartNodeTitle');
 					meta2.setAttribute('content', name);
+
+					let globalCallerSessionId = doc.createElement('var');
+					globalCallerSessionId.setAttribute('name', 'globalCallerSessionId');
+					globalCallerSessionId.setAttribute('expr', '');
+					let globalCallerConnectionId = doc.createElement('var');
+					globalCallerConnectionId.setAttribute('name', 'globalCallerConnectionId');
+					globalCallerConnectionId.setAttribute('expr', '');
+					let globalCallerPhoneNumber = doc.createElement('var');
+					globalCallerPhoneNumber.setAttribute('name', 'globalCallerPhoneNumber');
+					globalCallerPhoneNumber.setAttribute('expr', '');
+					let form = doc.createElement('form');
+					let callerSessionId = doc.createElement('var');
+					callerSessionId.setAttribute('name', 'callerSessionId');
+					callerSessionId.setAttribute('expr', '');
+					let callerConnectionId = doc.createElement('var');
+					callerConnectionId.setAttribute('name', 'callerConnectionId');
+					callerConnectionId.setAttribute('expr', '');
+					let callerPhoneNumber = doc.createElement('var');
+					callerPhoneNumber.setAttribute('name', 'callerPhoneNumber');
+					callerPhoneNumber.setAttribute('expr', '');
+					form.append(callerSessionId);
+					form.append(callerConnectionId);
+					form.append(callerPhoneNumber);
+					let block = doc.createElement('block');
+					let assignCallerSessionId = doc.createElement('assign');
+					assignCallerSessionId.setAttribute('name', 'globalCallerSessionId');
+					assignCallerSessionId.setAttribute('expr', 'callerSessionId');
+					let assignCcallerConnectionId = doc.createElement('assign');
+					assignCcallerConnectionId.setAttribute('name', 'globalCallerConnectionId');
+					assignCcallerConnectionId.setAttribute('expr', 'globalCallerConnectionId');
+					let assignCallerPhoneNumber = doc.createElement('assign');
+					assignCallerPhoneNumber.setAttribute('name', 'globalCallerPhoneNumber');
+					assignCallerPhoneNumber.setAttribute('expr', 'callerPhoneNumber');
+					block.append(assignCallerSessionId);
+					block.append(assignCcallerConnectionId);
+					block.append(assignCallerPhoneNumber);
+					form.append(block);
+					form.setAttribute('id', 'inboundRoute');
 					appendTo.prepend(meta1);
 					appendTo.prepend(meta2);
+					appendTo.append(globalCallerSessionId);
+					appendTo.append(globalCallerConnectionId);
+					appendTo.append(globalCallerPhoneNumber);
+					appendTo.append(form);
 				}
 				if (moduleType == 'exit') {
 					let id = item.getAttribute('id');
