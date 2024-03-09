@@ -113,7 +113,13 @@
 	// 	background-image: url('/icons/mailbox-1.png') !important;
 	// }
 }
-.bpmn-callback {
+.bpmn-create-callback {
+	background-image: url('/icons/callback.png') !important;
+	// &:hover {
+	// 	background-image: url('/icons/callback-1.png') !important;
+	// }
+}
+.bpmn-run-callback {
 	background-image: url('/icons/callback.png') !important;
 	// &:hover {
 	// 	background-image: url('/icons/callback-1.png') !important;

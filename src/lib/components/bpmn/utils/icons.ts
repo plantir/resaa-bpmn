@@ -102,7 +102,16 @@ export function getIconByType(type: string, icon_color = '#545454') {
 </g>
 `;
 	}
-	if (type == 'callback') {
+	if (type == 'create-callback') {
+		icon = `
+<g style="transform: translateX(16px) translateY(16px);">
+<path d="M4.38235 5H8.14706L10.0294 9.70588L7.67647 11.1176C8.68443 13.1614 10.3386 14.8156 12.3824 15.8235L13.7941 13.4706L18.5 15.3529V19.1176C18.5 20.1572 17.6572 21 16.6176 21C9.02014 20.5383 2.9617 14.4799 2.5 6.88235C2.5 5.84276 3.34276 5 4.38235 5" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14.5 5.28577H17.5C19.1569 5.28577 20.5 6.62891 20.5 8.28577V11.0001" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.9 3L14.5 5.28571L16.9 7.57143" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+`;
+	}
+	if (type == 'run-callback') {
 		icon = `
 <g style="transform: translateX(16px) translateY(16px);">
 <path d="M4.38235 5H8.14706L10.0294 9.70588L7.67647 11.1176C8.68443 13.1614 10.3386 14.8156 12.3824 15.8235L13.7941 13.4706L18.5 15.3529V19.1176C18.5 20.1572 17.6572 21 16.6176 21C9.02014 20.5383 2.9617 14.4799 2.5 6.88235C2.5 5.84276 3.34276 5 4.38235 5" stroke="${icon_color}" stroke-linecap="round" stroke-linejoin="round"/>

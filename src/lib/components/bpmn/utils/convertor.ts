@@ -263,7 +263,6 @@ export function convertBPMNtoVXML(bpmn: string) {
 						'survey',
 						'mail-box',
 						'check-call-center-condition',
-						'callback',
 						'bridge',
 						'sms',
 						'recorder',
@@ -501,6 +500,16 @@ export function convertBPMNtoVXML(bpmn: string) {
 					}
 					form.append(recorder);
 					appendTo.appendChild(form);
+				}
+				if (moduleType == 'create-callback') {
+					let form = makeSubdialog('callback-push', item);
+					appendTo.appendChild(form);
+					return;
+				}
+				if (moduleType == 'run-callback') {
+					let form = makeSubdialog('callback-pop', item);
+					appendTo.appendChild(form);
+					return;
 				}
 			}
 		}

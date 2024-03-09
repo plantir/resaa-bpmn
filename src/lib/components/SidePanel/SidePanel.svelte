@@ -57,9 +57,13 @@
 			{ title: 'mailBoxId', model: 'mailBoxId', type: 'input' },
 			{ title: 'shouldSendSms', model: 'shouldSendSms', type: 'checkbox' }
 		],
-		callback: [
+		'create-callback': [
 			...default_fields_start,
-			{ title: 'callbackId', model: 'callbackId', type: 'input' }
+			{ title: 'queueOwner', model: 'queueOwner', type: 'input' }
+		],
+		'run-callback': [
+			...default_fields_start,
+			{ title: 'queueOwner', model: 'queueOwner', type: 'input' }
 		],
 		menu: [
 			...default_fields_start,

@@ -29,6 +29,7 @@
 	async function save() {
 		let xml = await bpmn.xml();
 		let vxml = await bpmn.xml(true);
+		debugger;
 		let [full, name] =
 			/<meta name="Meta\.IVRStartNodeTitle" content="([0-9]+)"\/>/gm.exec(vxml) || [];
 		if (!name) {

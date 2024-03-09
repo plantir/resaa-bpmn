@@ -32,6 +32,7 @@
 				{ "name": "timeout", "isAttr": true, "type": "String" },
 				{ "name": "src", "isAttr": true, "type": "String" },
 				{ "name": "queueId", "isAttr": true, "type": "String" },
+				{ "name": "queueOwner", "isAttr": true, "type": "String" },
 				{ "name": "callbackId", "isAttr": true, "type": "String" },
 				{ "name": "callCenterId", "isAttr": true, "type": "String" },
 				{ "name": "mailBoxId", "isAttr": true, "type": "String" },
