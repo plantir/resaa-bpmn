@@ -33,10 +33,10 @@
 		],
 		'call-center': [
 			...default_fields_start,
-			{ title: 'callCenterId', model: 'callCenterId', type: 'input' },
+			// { title: 'callCenterMsisdn', model: 'callCenterMsisdn', type: 'input' },
 			{
 				title: 'انتخاب کال سنتر',
-				model: 'callcenter_id',
+				model: 'callCenterMsisdn',
 				type: 'select',
 				placeholder: 'انتخاب کال سنتر',
 				items: []
@@ -107,13 +107,16 @@
 			field[field.model] = businessObject[field.model] || '';
 			if (field.model == 'callcenter_id') {
 				field[field.model] = field[field.model];
+
 				let data = await axios
-					.get(`http://172.16.100.204:8072/v1/CallCenters/List?pageNumber=1&pageSize=1000`)
+					.get(
+						`http://172.16.100.204:8072/v1/CallCenters/List?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=432240000000001`
+					)
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {
 					return {
 						text: item.name,
-						value: item.id
+						value: item.msisdn
 					};
 				});
 				changeKey();
