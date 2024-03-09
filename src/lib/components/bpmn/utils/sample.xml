@@ -122,7 +122,7 @@
 	<form id="Activity_1xnsmyq">
 		<subdialog src="@Url.DocumentLink('bridge','ccxml')">
 			<param name="shouldRecord" expr="true" />
-			<param name="callee" expr="''" />
+			<param name="calleePhoneNumber" expr="''" />
 		</subdialog>
 	</form>
 	<form>
