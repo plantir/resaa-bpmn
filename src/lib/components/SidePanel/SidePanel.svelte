@@ -100,12 +100,13 @@
 		});
 	}
 	async function getClone() {
+		debugger;
 		let { businessObject } = JSON.parse(JSON.stringify(data));
 		type = businessObject.moduleType || businessObject.$type;
 		formData = fields[type] || fields['default'];
 		for (let field of formData) {
 			field[field.model] = businessObject[field.model] || '';
-			if (field.model == 'callcenter_id') {
+			if (field.model == 'callCenterMsisdn') {
 				field[field.model] = field[field.model];
 
 				let data = await axios
