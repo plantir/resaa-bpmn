@@ -50,7 +50,9 @@
 			{ title: 'ارسال به', model: 'to', type: 'input' },
 			{ title: 'متن ایمیل', model: 'message', type: 'textarea' }
 		],
-		survey: [...default_fields_start, { title: 'آیدی نظر سنجی', model: 'queueId', type: 'input' }],
+		survey: [...default_fields_start, { title: 'آیدی نظر سنجی', model: 'queueId', 	type: 'select',
+				placeholder: 'انتخاب نظرسنجی',
+				items: []}],
 		queue: [...default_fields_start, { title: 'queueId', model: 'queueId', type: 'input' }],
 		'mail-box': [
 			...default_fields_start,
@@ -118,6 +120,22 @@
 					return {
 						text: item.name,
 						value: item.msisdn
+					};
+				});
+				changeKey();
+			}
+			if (field.model == 'queueId') {
+				field[field.model] = field[field.model];
+
+				let data = await axios
+					.get(
+						`http://172.16.100.204:7017/v1/Survey/EnterpriseImsi/432240000000001?pageNumber=1&pageSize=1000`
+					)
+					.then((res) => res.data);
+				field.items = data.data.items.map((item: any) => {
+					return {
+						text: item.title,
+						value: item.id
 					};
 				});
 				changeKey();
