@@ -17,9 +17,11 @@
 	import Select from './Select.svelte';
 	import { GroupService } from '$lib/services/groups';
 	import axios from 'axios';
+	import { auth } from '$lib/stores/auth';
 	let dispatch = createEventDispatcher();
 	export let open = false;
 	export let data = {};
+	let user = auth.user;
 	let key = 0;
 	let formData: any = [];
 	let default_fields_start = [{ title: 'عنوان', model: 'name', type: 'input' }];
@@ -50,9 +52,16 @@
 			{ title: 'ارسال به', model: 'to', type: 'input' },
 			{ title: 'متن ایمیل', model: 'message', type: 'textarea' }
 		],
-		survey: [...default_fields_start, { title: 'آیدی نظر سنجی', model: 'queueId', 	type: 'select',
+		survey: [
+			...default_fields_start,
+			{
+				title: 'آیدی نظر سنجی',
+				model: 'queueId',
+				type: 'select',
 				placeholder: 'انتخاب نظرسنجی',
-				items: []}],
+				items: []
+			}
+		],
 		queue: [...default_fields_start, { title: 'queueId', model: 'queueId', type: 'input' }],
 		'mail-box': [
 			...default_fields_start,
@@ -113,7 +122,7 @@
 
 				let data = await axios
 					.get(
-						`http://172.16.100.204:8072/v1/CallCenters/List?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=432240000000001`
+						`http://172.16.100.204:8072/v1/CallCenters/List?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=${$user.imsi}`
 					)
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {
@@ -129,7 +138,7 @@
 
 				let data = await axios
 					.get(
-						`http://172.16.100.204:7017/v1/Survey/EnterpriseImsi/432240000000001?pageNumber=1&pageSize=1000`
+						`http://172.16.100.204:7017/v1/Survey/EnterpriseImsi/${$user.imsi}?pageNumber=1&pageSize=1000`
 					)
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {

@@ -21,7 +21,10 @@
 	}
 
 	async function deleteItem() {
-		await minio.deleteObject(selectedItem.Key);
+		let bpmn_file = selectedItem.Key;
+		let vxml_file = selectedItem.Key.replace('.bpmn', '.vxml');
+		await minio.deleteObject(bpmn_file);
+		await minio.deleteObject(vxml_file);
 		await getList();
 		modal = false;
 	}

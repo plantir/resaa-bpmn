@@ -78,7 +78,7 @@ export default class CustomPalette {
 			'bridge',
 			'timeout',
 			'audio',
-			'queue',
+			// 'queue',
 			'sms',
 			'email',
 			'working-hours',

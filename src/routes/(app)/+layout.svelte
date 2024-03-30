@@ -9,8 +9,14 @@
 	let layoutLoading = true;
 	onMount(async () => {
 		// const { minio } = await import('$lib/stores/minio');
-		(await auth.isLogin()) ? (layoutLoading = false) : goto('/auth/login');
-		layoutLoading = false;
+		let isLogin = await auth.isLogin();
+		if (isLogin) {
+			await auth.getUserByNdc();
+			layoutLoading = false;
+		} else {
+			goto('/auth/login');
+			layoutLoading = false;
+		}
 	});
 </script>
 

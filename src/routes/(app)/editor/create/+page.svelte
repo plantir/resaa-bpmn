@@ -5,6 +5,7 @@
 	import Toast from '$lib/components/Toast/Toast.svelte';
 	import { minio } from '$lib/stores/minio';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	let open = false;
 	let nodeData: any = {};
 	let bpmn: any = {};
@@ -40,7 +41,6 @@
 		let vxml = await bpmn.xml(true);
 		let [full, name] =
 			/<meta name="Meta\.IVRStartNodeTitle" content="([0-9]+)"\/>/gm.exec(vxml) || [];
-		debugger;
 		if (!name) {
 			toastType = 'error';
 			toastMessage = 'حتما باید یک ماجول شماره در صفحه باشد و مقدار داشته باشد';
@@ -50,6 +50,9 @@
 		await minio.putObject('Vxml/' + name + '.bpmn', xml);
 		await minio.putObject('Vxml/' + name + '.vxml', vxml);
 		toastCondition = true;
+		setTimeout(() => {
+			goto(`/editor/${name}.bpmn`);
+		}, 100);
 	}
 	async function importVXML() {
 		await bpmn.importVXML();

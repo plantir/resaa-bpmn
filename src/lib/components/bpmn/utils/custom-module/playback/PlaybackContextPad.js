@@ -86,7 +86,7 @@ export default class CustomContextPad {
 			'bridge',
 			'timeout',
 			'audio',
-			'queue',
+			// 'queue',
 			'recorder',
 			'menu',
 			'call-center',

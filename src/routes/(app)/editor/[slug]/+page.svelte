@@ -29,7 +29,6 @@
 	async function save() {
 		let xml = await bpmn.xml();
 		let vxml = await bpmn.xml(true);
-		debugger;
 		let [full, name] =
 			/<meta name="Meta\.IVRStartNodeTitle" content="([0-9]+)"\/>/gm.exec(vxml) || [];
 		if (!name) {
@@ -39,6 +38,16 @@
 		}
 		await minio.putObject('Vxml/' + name + '.bpmn', xml);
 		await minio.putObject('Vxml/' + name + '.vxml', vxml);
+		let slug = $page.params.slug;
+		let bpmn_file = `Vxml/${slug}`;
+		let vxml_file = bpmn_file.replace('.bpmn', '.vxml');
+		if (name != slug.replace('.bpmn', '')) {
+			await minio.deleteObject(bpmn_file);
+			await minio.deleteObject(vxml_file);
+			setTimeout(() => {
+				goto(`/editor/${name}.bpmn`);
+			}, 100);
+		}
 		toastCondition = true;
 	}
 	async function importVXML() {

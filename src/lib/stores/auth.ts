@@ -1,12 +1,28 @@
 import { writable } from 'svelte/store';
-
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 function authentication() {
 	const { set, update, subscribe } = writable<any | null>(null);
 
+	const user = writable<any>({});
 	function login(token: any) {
 		setLocalStorage(token);
 	}
-
+	function ndc() {
+		if (!localStorage.token) return;
+		let decoded_token: any = jwtDecode(localStorage.token);
+		return decoded_token.profile;
+	}
+	async function getUserByNdc() {
+		if (!localStorage.token) return;
+		let decoded_token: any = jwtDecode(localStorage.token);
+		let ndc = decoded_token.profile;
+		let { data } = await axios.get(
+			`http://172.16.100.204:9015/v2/Subscribers/EnterpriseSubscriber/Ndc/${ndc}`
+		);
+		user.set(data.data);
+		localStorage.setItem('user', JSON.stringify(data.data));
+	}
 	function setLocalStorage(token: any) {
 		localStorage.token = token;
 	}
@@ -45,6 +61,9 @@ function authentication() {
 
 	return {
 		subscribe,
+		ndc,
+		user,
+		getUserByNdc,
 		token,
 		login,
 		logOut,
