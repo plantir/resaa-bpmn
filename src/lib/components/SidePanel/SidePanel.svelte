@@ -79,7 +79,8 @@
 		menu: [
 			...default_fields_start,
 			{ title: 'timeout', model: 'timeout', type: 'input' },
-			{ title: 'interdigittimeout', model: 'interdigittimeout', type: 'input' }
+			{ title: 'interdigittimeout', model: 'interdigittimeout', type: 'input' },
+			{ title: 'فایل صدا', model: 'src', type: 'file' }
 		],
 		extension: [
 			...default_fields_start,

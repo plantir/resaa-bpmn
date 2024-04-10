@@ -288,6 +288,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 					field.setAttribute('name', 'choice');
 					let timeout = item.getAttribute('cpbx:timeout') || '30s';
 					let timeout_property = doc.createElement('property');
+					let src = item.getAttribute('cpbx:src');
 					timeout_property.setAttribute('name', 'timeout');
 					timeout_property.setAttribute('value', timeout);
 					let interdigittimeout = item.getAttribute('cpbx:interdigittimeout') || '3s';
@@ -296,6 +297,18 @@ export function convertBPMNtoVXML(bpmn: string) {
 					interdigittimeout_property.setAttribute('value', interdigittimeout);
 					field.appendChild(timeout_property);
 					field.appendChild(interdigittimeout_property);
+					debugger;
+					if (src) {
+						let prompt = doc.createElement('prompt');
+						let audio = doc.createElement('audio');
+						audio.setAttribute(
+							'src',
+							'http://document-server.cloudpbx.local:5000/Documents/' +
+								src.replace('Audio/', 'Audio/Stream/')
+						);
+						prompt.appendChild(audio);
+						field.appendChild(prompt);
+					}
 					let no_input = doc.createElement('noinput');
 					let filled = doc.createElement('filled');
 					let if_element = doc.createElement('if');

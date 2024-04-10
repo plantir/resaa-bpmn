@@ -28,6 +28,12 @@
 		await getList();
 		modal = false;
 	}
+
+	async function download(item) {
+		console.log(item);
+		let data = await minio.getObject(item.key);
+		console.log(data);
+	}
 </script>
 
 <svelte:head>
@@ -44,6 +50,9 @@
 			</a>
 			<a on:click={showDeleteModal(item)} class="hover:text-error cursor-pointer"
 				><i class="la la-trash text-red-600" /></a
+			>
+			<a on:click={download(item)} class="hover:text-error cursor-pointer"
+				><i class="la la-download text-success" /></a
 			>
 		</div>
 	{/each}
