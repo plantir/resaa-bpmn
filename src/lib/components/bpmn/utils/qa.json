@@ -44,7 +44,8 @@
 				{ "name": "cond", "isAttr": true, "type": "String" },
 				{ "name": "message", "isAttr": true, "type": "String" },
 				{ "name": "to", "isAttr": true, "type": "String" },
-				{ "name": "callcenter_id", "isAttr": true, "type": "String" }
+				{ "name": "callcenter_id", "isAttr": true, "type": "String" },
+				{ "name": "UserMsisdn", "isAttr": true, "type": "String" }
 			]
 		},
 		{

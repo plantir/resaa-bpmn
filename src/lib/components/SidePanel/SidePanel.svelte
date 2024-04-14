@@ -64,7 +64,8 @@
 		],
 		queue: [...default_fields_start, { title: 'queueId', model: 'queueId', type: 'input' }],
 		'mail-box': [
-			...default_fields_start
+			...default_fields_start,
+			{ title: 'شماره داخلی', model: 'UserMsisdn', type: 'input' }
 			// { title: 'mailBoxId', model: 'mailBoxId', type: 'input' },
 			// { title: 'shouldSendSms', model: 'shouldSendSms', type: 'checkbox' }
 		],
