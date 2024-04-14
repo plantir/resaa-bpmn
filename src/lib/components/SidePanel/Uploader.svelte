@@ -25,7 +25,7 @@
 </script>
 
 <div class="">
-	<input {id} on:input={onUploadFile} type="file" bind:files accept="audio/*" class="hidden" />
+	<input {id} on:input={onUploadFile} type="file" bind:files accept=".mp3" class="hidden" />
 	<label class="btn btn-outline btn-primary" for={id}>
 		آپلود صدا <icon class="la la-cloud-upload-alt text-2xl" /></label
 	>

@@ -6,8 +6,13 @@
 	import { onMount } from 'svelte';
 	import { auth } from '$lib/stores/auth';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	let layoutLoading = true;
 	onMount(async () => {
+		let token = $page.url.searchParams.get('auth_token');
+		if (token) {
+			auth.login(token);
+		}
 		// const { minio } = await import('$lib/stores/minio');
 		let isLogin = await auth.isLogin();
 		if (isLogin) {

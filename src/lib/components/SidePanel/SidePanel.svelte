@@ -64,9 +64,9 @@
 		],
 		queue: [...default_fields_start, { title: 'queueId', model: 'queueId', type: 'input' }],
 		'mail-box': [
-			...default_fields_start,
-			{ title: 'mailBoxId', model: 'mailBoxId', type: 'input' },
-			{ title: 'shouldSendSms', model: 'shouldSendSms', type: 'checkbox' }
+			...default_fields_start
+			// { title: 'mailBoxId', model: 'mailBoxId', type: 'input' },
+			// { title: 'shouldSendSms', model: 'shouldSendSms', type: 'checkbox' }
 		],
 		'create-callback': [
 			...default_fields_start,
@@ -123,7 +123,7 @@
 
 				let data = await axios
 					.get(
-						`http://172.16.100.204:8072/v1/CallCenters/List?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=${$user.imsi}`
+						`http://172.16.100.204:8072/v1/CallCenters/ListByOwner?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=${$user.imsi}`
 					)
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {
