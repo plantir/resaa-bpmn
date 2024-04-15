@@ -42,7 +42,10 @@
 	const changeType = () => {
 		type == 'grid' ? (type = 'row') : (type = 'grid');
 	};
-
+	const clickOnRow = (e, item) => {
+		if (e.srcElement.classList.contains('la-trash')) return;
+		goto(`/editor/${item.Key.replace('Vxml/', '')}`);
+	};
 	$: filteredItems = objectList.filter((item) => {
 		if (!search) return true;
 		return item.Key?.includes(search);
@@ -133,17 +136,22 @@
 	{:else}
 		<div class="flex flex-col pb-4 gap-y-2">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<div class="grid grid-cols-4 font-bold">
+			<div class="grid grid-cols-4 font-bold text-center">
 				<div class="px-3">ردیف</div>
 				<div class="px-3">نام (سرشماره)</div>
 				<div class="px-3">آخرین ویرایش</div>
-				<div class="text-left ml-2">ویرایش / حذف</div>
+				<div class=" ml-2">ویرایش / حذف</div>
 			</div>
 			{#each filteredItems as item, key}
-				<div class="h-14 bg-white grid grid-cols-4 items-center justify-center">
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<div
+					on:click={(e) => clickOnRow(e, item)}
+					class="h-14 bg-white grid grid-cols-4 items-center justify-center text-center font-bold cursor-pointer"
+				>
 					<div class="px-3">{key + 1}</div>
 					<div class="px-3">
-						<span class="font-bold">
+						<span>
 							{item.Key?.replace('Vxml/', '').replace('.bpmn', '')}
 						</span>
 						<!-- <a
@@ -156,7 +164,7 @@
 					<div class="px-3">
 						<span>{moment(item.LastModified).format('jDD jMMMM jYYYY')}</span>
 					</div>
-					<div class="text-left ml-4">
+					<div class="ml-4">
 						<a
 							href="/editor/{item.Key.replace('Vxml/', '')}"
 							class=" text-green-700 font-bold cursor-pointer ml-3"
