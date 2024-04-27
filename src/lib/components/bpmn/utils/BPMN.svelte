@@ -143,9 +143,16 @@
 	}
 	export async function load(bpmn: string) {
 		try {
-			modeler.importXML(bpmn).catch(function (err: any) {
-				alert(err);
-			});
+			modeler
+				.importXML(bpmn)
+				.then(() => {
+					modeler.get('canvas').zoom('fit-viewport', 'auto');
+				})
+				.catch(function (err: any) {
+					alert(err);
+				});
+				console.log(modeler);
+				
 		} catch (err) {
 			console.error(err);
 		}
