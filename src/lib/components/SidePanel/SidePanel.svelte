@@ -124,7 +124,7 @@
 
 				let data = await axios
 					.get(
-						`http://172.16.100.204:8072/v1/CallCenters/ListByOwner?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=${$user.imsi}`
+						`${import.meta.env.VITE_API_URL}:8072/v1/CallCenters/ListByOwner?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=${$user.imsi}`
 					)
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {
@@ -140,7 +140,7 @@
 
 				let data = await axios
 					.get(
-						`http://172.16.100.204:7017/v1/Survey/EnterpriseImsi/${$user.imsi}?pageNumber=1&pageSize=1000`
+						`${import.meta.env.VITE_API_URL}:7017/v1/Survey/EnterpriseImsi/${$user.imsi}?pageNumber=1&pageSize=1000`
 					)
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {
