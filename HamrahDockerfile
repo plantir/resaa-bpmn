@@ -1,19 +1,19 @@
 #add some comment
-FROM node:18-alpine AS build
+FROM prod-docker.resaa.net/node:18-alpine AS build
 
 WORKDIR /app
 COPY . .
+ENV VITE_BASE_URL=http://10.19.84.70:3000
+ENV VITE_API_URL=http://172.16.100.204
 RUN yarn
 RUN yarn build
 
-FROM node:18-alpine AS deploy-node
+FROM prod-docker.resaa.net/node:18-alpine AS deploy-node
 
 WORKDIR /app
 RUN rm -rf ./*
 COPY --from=build /app/package.json .
 COPY --from=build /app/build .
 RUN yarn --prod
-ENV VITE_BASE_URL=http://10.19.84.70:3000
-ENV VITE_API_URL=http://172.16.100.204
 EXPOSE 3000
 CMD ["node","index.js"]
