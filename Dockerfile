@@ -1,12 +1,12 @@
 #add some comment
-FROM node:18-alpine AS build
+FROM prod-docker.resaa.net/node:18-alpine AS build
 
 WORKDIR /app
 COPY . .
 RUN yarn
 RUN yarn build
 
-FROM node:18-alpine AS deploy-node
+FROM prod-docker.resaa.net/node:18-alpine AS deploy-node
 
 WORKDIR /app
 RUN rm -rf ./*
