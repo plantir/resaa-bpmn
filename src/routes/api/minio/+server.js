@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import * as Minio from 'minio';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-const endPoint = `http://172.16.100.203:9009`;
+const endPoint = import.meta.env.VITE_MINIO_URL;
 export async function GET({ params, request }) {
 	let WebIdentityToken = request.headers.get('Authorization')?.replace('Bearer ', '');
 	let qs = {

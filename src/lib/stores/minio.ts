@@ -10,11 +10,11 @@ function minioClient() {
 	const { set, update, subscribe } = writable<any | null>(null);
 	let s3Client: S3 | undefined = undefined;
 	async function init() {
-		const endpoint = `http://172.16.100.203:9009`;
+		const endpoint = import.meta.env.VITE_MINIO_URL;
 		try {
 			let { data } = await axios({
 				method: 'post',
-				url: 'http://172.16.100.203:9009',
+				url: import.meta.env.VITE_MINIO_URL,
 				withCredentials: false,
 				params: {
 					Action: 'AssumeRoleWithWebIdentity',

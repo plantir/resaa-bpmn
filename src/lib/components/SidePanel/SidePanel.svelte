@@ -140,7 +140,7 @@
 
 				let data = await axios
 					.get(
-						`${import.meta.env.VITE_API_URL}:7017/v1/Survey/EnterpriseImsi/${$user.imsi}?pageNumber=1&pageSize=1000`
+						`${import.meta.env.VITE_SAF_URL}/v1/Survey/EnterpriseImsi/${$user.imsi}?pageNumber=1&pageSize=1000`
 					)
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {

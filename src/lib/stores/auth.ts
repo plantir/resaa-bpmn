@@ -18,7 +18,7 @@ function authentication() {
 		let decoded_token: any = jwtDecode(localStorage.token);
 		let ndc = decoded_token.profile;
 		let { data } = await axios.get(
-			`http://172.16.100.204:9015/v2/Subscribers/EnterpriseSubscriber/Ndc/${ndc}`
+			`${import.meta.env.VITE_HSS_URL}/v2/Subscribers/EnterpriseSubscriber/Ndc/${ndc}`
 		);
 		user.set(data.data);
 		localStorage.setItem('user', JSON.stringify(data.data));
