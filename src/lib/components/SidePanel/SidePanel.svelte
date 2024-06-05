@@ -124,7 +124,7 @@
 
 				let data = await axios
 					.get(
-						`${import.meta.env.VITE_API_URL}:8072/v1/CallCenters/ListByOwner?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=${$user.imsi}`
+						`${import.meta.env.VITE_CCFC_URL}/v1/CallCenters/ListByOwner?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=${$user.imsi}`
 					)
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {
