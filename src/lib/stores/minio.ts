@@ -35,7 +35,8 @@ function minioClient() {
 			s3Client = new S3({
 				region: 'dummyRegion',
 				endpoint: endpoint,
-				credentials: creds
+				credentials: creds,
+				forcePathStyle: true
 			});
 			// await createBucket('Audio');
 		} catch (error) {
@@ -62,6 +63,7 @@ function minioClient() {
 	// 	}
 	// }
 	async function getObjectList() {
+		debugger;
 		if (!s3Client) await init();
 		let data = await s3Client!.listObjects({
 			Bucket: getBucketName()
