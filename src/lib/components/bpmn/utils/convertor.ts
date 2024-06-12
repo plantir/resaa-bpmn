@@ -297,7 +297,6 @@ export function convertBPMNtoVXML(bpmn: string) {
 					interdigittimeout_property.setAttribute('value', interdigittimeout);
 					field.appendChild(timeout_property);
 					field.appendChild(interdigittimeout_property);
-					debugger;
 					if (src) {
 						let prompt = doc.createElement('prompt');
 						let audio = doc.createElement('audio');

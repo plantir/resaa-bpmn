@@ -113,7 +113,6 @@
 		});
 	}
 	async function getClone() {
-		debugger;
 		let { businessObject } = JSON.parse(JSON.stringify(data));
 		type = businessObject.moduleType || businessObject.$type;
 		formData = fields[type] || fields['default'];
@@ -124,7 +123,11 @@
 
 				let data = await axios
 					.get(
-						`${import.meta.env.VITE_CCFC_URL}/v1/CallCenters/ListByOwner?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=${$user.imsi}`
+						`${
+							import.meta.env.VITE_CCFC_URL
+						}/v1/CallCenters/ListByOwner?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=${
+							$user.imsi
+						}`
 					)
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {
@@ -140,7 +143,9 @@
 
 				let data = await axios
 					.get(
-						`${import.meta.env.VITE_SAF_URL}/v1/Survey/EnterpriseImsi/${$user.imsi}?pageNumber=1&pageSize=1000`
+						`${import.meta.env.VITE_SAF_URL}/v1/Survey/EnterpriseImsi/${
+							$user.imsi
+						}?pageNumber=1&pageSize=1000`
 					)
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {

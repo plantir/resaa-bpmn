@@ -58,12 +58,10 @@ function minioClient() {
 	// 		});
 	// 		return data.Location || [];
 	// 	} catch (error) {
-	// 		debugger;
 	// 		console.log(error);
 	// 	}
 	// }
 	async function getObjectList() {
-		debugger;
 		if (!s3Client) await init();
 		let data = await s3Client!.listObjects({
 			Bucket: getBucketName()
