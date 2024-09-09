@@ -474,8 +474,10 @@ export function convertBPMNtoVXML(bpmn: string) {
 					let src = item.getAttribute('cpbx:src') || '';
 					audio.setAttribute(
 						'src',
-						'http://document-server.cloudpbx.local:5000/Documents/' +
-							src.replace('Audio/', 'Audio/Stream/')
+						encodeURIComponent(
+							'http://document-server.cloudpbx.local:5000/Documents/' +
+								src.replace('Audio/', 'Audio/Stream/')
+						)
 					);
 					for (let child of item.childNodes) {
 						audio.append(child.cloneNode(true));
