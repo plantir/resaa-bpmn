@@ -182,8 +182,7 @@
 		let data: any = {};
 		for (const item of formData) {
 			if (item.type == 'file') {
-				let name = `Audio/${item[item.model].name}`;
-				name = encodeURIComponent(name);
+				let name = `Audio/${encodeURIComponent(item[item.model].name)}`;
 				await minio.putObject(name, item[item.model]);
 				data[item.model] = name;
 				continue;
