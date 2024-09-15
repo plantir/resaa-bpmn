@@ -313,6 +313,8 @@ export function convertBPMNtoVXML(bpmn: string) {
 					let if_element = doc.createElement('if');
 					let no_input_child = doc.createElement('reprompt');
 					let index = 0;
+					let has_choice = false;
+					let choice_next_elm = undefined;
 					for (let child of item.childNodes) {
 						if (child.nodeName == 'bpmn:outgoing') {
 							let flow = parsed_bpmn.getElementById(child.innerHTML);
@@ -323,38 +325,44 @@ export function convertBPMNtoVXML(bpmn: string) {
 								no_input_child = makeGoTo(next!);
 								continue;
 							}
-							if (index == 0) {
-								if_element.setAttribute('cond', cond ? cond : `choice == ${dtmf}`);
-								let goto = makeGoTo(next!);
-								if_element.appendChild(goto);
-							} else if (dtmf == 'choice') {
-								let else_element = doc.createElement('else');
-								let goto = makeGoTo(next!);
-								let var_element = doc.createElement('var');
-								var_element.setAttribute('name', 'global_choice');
-								var_element.setAttribute('expr', "''");
-								let assign_element = doc.createElement('assign');
-								assign_element.setAttribute('name', 'global_choice');
-								assign_element.setAttribute('expr', 'choice');
-								filled.prepend(assign_element);
-								vxml.prepend(var_element);
-								if_element.appendChild(else_element);
-								if_element.appendChild(goto);
+							if (dtmf == 'choice') {
+								has_choice = true;
+								choice_next_elm = next;
 							} else {
-								let else_if_element = doc.createElement('elseif');
-								else_if_element.setAttribute('cond', cond ? cond : `choice == ${dtmf}`);
-								let goto = makeGoTo(next!);
-								let else_element = if_element.querySelector('else');
-								if (else_element) {
-									if_element.insertBefore(else_if_element, else_element);
-									if_element.insertBefore(goto, else_element);
+								if (if_element.hasAttribute('cond')) {
+									let else_if_element = doc.createElement('elseif');
+									else_if_element.setAttribute('cond', cond ? cond : `choice == ${dtmf}`);
+									let goto = makeGoTo(next!);
+									let else_element = if_element.querySelector('else');
+									if (else_element) {
+										if_element.insertBefore(else_if_element, else_element);
+										if_element.insertBefore(goto, else_element);
+									} else {
+										if_element.appendChild(else_if_element);
+										if_element.appendChild(goto);
+									}
 								} else {
-									if_element.appendChild(else_if_element);
+									if_element.setAttribute('cond', cond ? cond : `choice == ${dtmf}`);
+									let goto = makeGoTo(next!);
 									if_element.appendChild(goto);
 								}
 							}
 							index++;
 						}
+					}
+					if (has_choice) {
+						let else_element = doc.createElement('else');
+						let goto = makeGoTo(choice_next_elm!);
+						let var_element = doc.createElement('var');
+						var_element.setAttribute('name', 'global_choice');
+						var_element.setAttribute('expr', "''");
+						let assign_element = doc.createElement('assign');
+						assign_element.setAttribute('name', 'global_choice');
+						assign_element.setAttribute('expr', 'choice');
+						filled.prepend(assign_element);
+						vxml.prepend(var_element);
+						if_element.appendChild(else_element);
+						if_element.appendChild(goto);
 					}
 					no_input.appendChild(no_input_child);
 					field.appendChild(no_input);
