@@ -212,9 +212,11 @@ export function convertBPMNtoVXML(bpmn: string) {
 				param.setAttribute('expr', `${expr}`);
 				subdialog.appendChild(param);
 			});
-		for (let child of item.childNodes) {
-			subdialog.append(child.cloneNode(true));
-		}
+
+		// for (let child of item.childNodes) {
+		// debugger;
+		// subdialog.append(child.cloneNode(true));
+		// }
 		form.appendChild(subdialog);
 		if (name == 'check-call-center-condition') {
 			subdialog.setAttribute('name', `checkCondition`);
@@ -273,8 +275,8 @@ export function convertBPMNtoVXML(bpmn: string) {
 						'bridge',
 						'sms',
 						'recorder',
-						'email',
-						'extension'
+						'email'
+						// 'extension'
 					].includes(moduleType)
 				) {
 					let form = makeSubdialog(moduleType, item);
@@ -375,6 +377,90 @@ export function convertBPMNtoVXML(bpmn: string) {
 					}
 					field.appendChild(filled);
 					form.appendChild(field);
+					appendTo.appendChild(form);
+				}
+				if (moduleType == 'extension') {
+					let id = item.getAttribute('id');
+					let form_name = item.getAttribute('name');
+					let form = doc.createElement('form');
+					form.setAttribute('id', id!);
+					form.setAttribute('name', form_name!);
+					let subdialog = doc.createElement('subdialog');
+					subdialog.setAttribute('src', `extension.ccxml`);
+					subdialog.setAttribute('name', id);
+					['CallerSessionId', 'CallerConnectionId', 'CallerPhoneNumber'].map((item) => {
+						let param = doc.createElement('param');
+
+						param.setAttribute('name', item.replace('C', 'c'));
+						param.setAttribute('expr', `global${item}`);
+						subdialog.appendChild(param);
+					});
+					let attributes = item.getAttributeNames();
+					attributes
+						.filter((attribute) => {
+							if (!attribute.includes('cpbx')) return false;
+							if (attribute == 'cpbx:moduleType') return false;
+							return true;
+						})
+						.map((attribute) => {
+							let param = doc.createElement('param');
+							let expr = item.getAttribute(attribute);
+							if (expr == 'true' || expr == 'false') {
+							} else if (!isNaN(expr)) {
+								expr = `'${expr}'`;
+							}
+							param.setAttribute('name', attribute.replace('cpbx:', ''));
+							param.setAttribute('expr', `${expr}`);
+							subdialog.appendChild(param);
+						});
+
+					let if_element = doc.createElement('if');
+					let index = 0;
+					let has_condition = false;
+					let has_else_condition = false;
+					let else_next_element: any = undefined;
+					for (let child of item.childNodes) {
+						if (child.nodeName == 'bpmn:outgoing') {
+							let flow = parsed_bpmn.getElementById(child.innerHTML);
+							let dtmf = flow?.getAttribute('name');
+							let next = flow?.getAttribute('targetRef');
+							let cond = flow?.getAttribute('cpbx:cond');
+							debugger;
+							if (dtmf) {
+								has_condition = true;
+								if (if_element.hasAttribute('cond')) {
+									let goto = makeGoTo(next!);
+									let else_if_element = doc.createElement('elseif');
+									else_if_element.setAttribute('cond', cond ? cond : `choice == '${dtmf}'`);
+									let else_element = if_element.querySelector('else');
+									if (else_element) {
+										if_element.insertBefore(else_if_element, else_element);
+										if_element.insertBefore(goto, else_element);
+									} else {
+										if_element.appendChild(else_if_element);
+										if_element.appendChild(goto);
+									}
+								} else {
+									if_element.setAttribute('cond', cond ? cond : `${id} == '${dtmf}'`);
+									let goto = makeGoTo(next!);
+									if_element.appendChild(goto);
+								}
+							} else {
+								has_else_condition = true;
+								else_next_element = makeGoTo(next!);
+							}
+							index++;
+						}
+					}
+					if (has_else_condition) {
+						let else_element = doc.createElement('else');
+						if_element.appendChild(else_element);
+						if_element.appendChild(else_next_element);
+					}
+					form.appendChild(subdialog);
+					if (item.childNodes > 2 || has_condition) {
+						form.appendChild(if_element);
+					}
 					appendTo.appendChild(form);
 				}
 				if (moduleType == 'working-hours') {
