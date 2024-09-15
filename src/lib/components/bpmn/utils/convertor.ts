@@ -370,7 +370,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 					}
 					no_input.appendChild(no_input_child);
 					field.appendChild(no_input);
-					if (item.childNodes.length > 2) {
+					if (!has_choice || item.childNodes.length > 2) {
 						filled.appendChild(if_element);
 					}
 					field.appendChild(filled);
