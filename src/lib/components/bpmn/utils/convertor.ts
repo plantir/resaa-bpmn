@@ -431,7 +431,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 								if (if_element.hasAttribute('cond')) {
 									let goto = makeGoTo(next!);
 									let else_if_element = doc.createElement('elseif');
-									else_if_element.setAttribute('cond', cond ? cond : `choice == '${dtmf}'`);
+									else_if_element.setAttribute('cond', cond ? cond : `${id} == '${dtmf}'`);
 									let else_element = if_element.querySelector('else');
 									if (else_element) {
 										if_element.insertBefore(else_if_element, else_element);
