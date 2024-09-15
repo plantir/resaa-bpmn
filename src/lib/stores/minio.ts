@@ -71,6 +71,7 @@ function minioClient() {
 	async function getObject(key: string) {
 		if (!s3Client) await init();
 		let data = await s3Client!.getObject({
+			ResponseCacheControl: 'no-cache',
 			Bucket: getBucketName(),
 			Key: key
 		});
