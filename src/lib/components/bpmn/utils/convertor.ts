@@ -361,12 +361,18 @@ export function convertBPMNtoVXML(bpmn: string) {
 						assign_element.setAttribute('expr', 'choice');
 						filled.prepend(assign_element);
 						vxml.prepend(var_element);
-						if_element.appendChild(else_element);
-						if_element.appendChild(goto);
+						if (item.childNodes.length > 2) {
+							if_element.appendChild(else_element);
+							if_element.appendChild(goto);
+						} else {
+							filled.appendChild(goto);
+						}
 					}
 					no_input.appendChild(no_input_child);
 					field.appendChild(no_input);
-					filled.appendChild(if_element);
+					if (item.childNodes.length > 2) {
+						filled.appendChild(if_element);
+					}
 					field.appendChild(filled);
 					form.appendChild(field);
 					appendTo.appendChild(form);
