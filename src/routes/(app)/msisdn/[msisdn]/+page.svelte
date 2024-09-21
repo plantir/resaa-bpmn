@@ -9,8 +9,8 @@
 		let USER_BUSY = $page.url.searchParams.get('USER_BUSY');
 		let NO_ANSWER = $page.url.searchParams.get('NO_ANSWER');
 		let USER_NOT_REGISTERED = $page.url.searchParams.get('USER_NOT_REGISTERED');
-
 		let data = await minio.getObjectList();
+		let FORCE_REPLACE = $page.url.searchParams.has('force_replace');
 		objectList = data.filter((item) => item.Key?.startsWith('Vxml/') && item.Key.endsWith('.bpmn'));
 		console.log(objectList);
 		let id = msisdn.slice(msisdn.length - 5);
@@ -19,7 +19,7 @@
 
 			return item.Key == `Vxml/${id}.bpmn`;
 		});
-		if (foundItem) {
+		if (foundItem && !FORCE_REPLACE) {
 			goto(`/editor/${id}.bpmn`);
 		} else {
 			let bpmn,
