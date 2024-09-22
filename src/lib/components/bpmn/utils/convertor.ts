@@ -215,6 +215,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 
 		// for (let child of item.childNodes) {
 		// debugger;
+
 		// subdialog.append(child.cloneNode(true));
 		// }
 		form.appendChild(subdialog);
@@ -425,7 +426,6 @@ export function convertBPMNtoVXML(bpmn: string) {
 							let dtmf = flow?.getAttribute('name');
 							let next = flow?.getAttribute('targetRef');
 							let cond = flow?.getAttribute('cpbx:cond');
-							debugger;
 							if (dtmf) {
 								has_condition = true;
 								if (if_element.hasAttribute('cond')) {
@@ -459,7 +459,9 @@ export function convertBPMNtoVXML(bpmn: string) {
 					}
 					form.appendChild(subdialog);
 					if (item.childNodes > 2 || has_condition) {
-						form.appendChild(if_element);
+						let block = doc.createElement('block');
+						block.appendChild(if_element);
+						form.appendChild(block);
 					}
 					appendTo.appendChild(form);
 				}
