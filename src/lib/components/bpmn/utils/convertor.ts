@@ -205,6 +205,8 @@ export function convertBPMNtoVXML(bpmn: string) {
 				let param = doc.createElement('param');
 				let expr = item.getAttribute(attribute);
 				if (expr == 'true' || expr == 'false') {
+				} else if (attribute.includes('queueId')) {
+					expr = `'${expr}'`;
 				} else if (!isNaN(expr)) {
 					expr = `'${expr}'`;
 				}
