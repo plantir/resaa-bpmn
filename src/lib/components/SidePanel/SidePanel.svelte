@@ -1,23 +1,20 @@
 <script lang="ts">
-	import { afterUpdate, createEventDispatcher, onMount } from 'svelte';
-	import _ from 'lodash';
-	import translate from '../bpmn/utils/custom-translate/index';
 	import { minio } from '$lib/stores/minio';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import translate from '../bpmn/utils/custom-translate/index';
 
+	import { auth } from '$lib/stores/auth';
+	import axios from 'axios';
 	import {
+		appendTo,
 		innerSVG,
 		append as svgAppend,
-		appendTo,
 		attr as svgAttr,
-		classes as svgClasses,
 		create as svgCreate
 	} from 'tiny-svg';
 	import { getIconByType } from '../bpmn/utils/icons';
-	import Uploader from './Uploader.svelte';
 	import Select from './Select.svelte';
-	import { GroupService } from '$lib/services/groups';
-	import axios from 'axios';
-	import { auth } from '$lib/stores/auth';
+	import Uploader from './Uploader.svelte';
 	let dispatch = createEventDispatcher();
 	export let open = false;
 	export let data = {};
@@ -183,7 +180,8 @@
 		for (const item of formData) {
 			if (item.type == 'file') {
 				let name = `Audio/${encodeURIComponent(item[item.model].name)}`;
-				await minio.putObject(name, item[item.model]);
+				let minio_name = `Audio/${item[item.model].name}`;
+				await minio.putObject(minio_name, item[item.model]);
 				data[item.model] = name;
 				continue;
 			}
