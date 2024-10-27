@@ -34,6 +34,7 @@
 		let vxml = await bpmn.xml(true);
 		let [full, name] =
 			/<meta name="Meta\.IVRStartNodeTitle" content="([0-9]+)"\/>/gm.exec(vxml) || [];
+		debugger;
 		if (!name) {
 			toastMessage = 'حتما باید یک ماجول شماره در صفحه باشد و مقدار داشته باشد';
 			toastCondition = true;
