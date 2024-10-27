@@ -1,5 +1,7 @@
 import { flattenDeep } from 'lodash';
 
+export const IranTell = (s: any) => s.replace(/0([\d]{5,})/, `98$1`);
+
 export function convertVXMLtoBPMN(vxml: string) {
 	let parser = new DOMParser();
 	let parsed_vxml = parser.parseFromString(vxml, 'text/xml');
@@ -210,7 +212,12 @@ export function convertBPMNtoVXML(bpmn: string) {
 				} else if (!isNaN(expr)) {
 					expr = `'${expr}'`;
 				}
-				param.setAttribute('name', attribute.replace('cpbx:', ''));
+				let name = attribute.replace('cpbx:', '');
+				debugger;
+				if (['calleePhoneNumber', 'UserMsisdn', 'UserMsisdn'].includes(name)) {
+					expr = IranTell(expr);
+				}
+				param.setAttribute('name', name);
 				param.setAttribute('expr', `${expr}`);
 				subdialog.appendChild(param);
 			});
@@ -594,11 +601,13 @@ export function convertBPMNtoVXML(bpmn: string) {
 					let meta2 = doc.createElement('meta');
 					let name = item.getAttribute('name');
 					let content = item.getAttribute('cpbx:content');
+					name = IranTell(name);
+					content = IranTell(content);
+
 					meta1.setAttribute('name', 'Meta.IVRStartNodeNumber');
 					meta1.setAttribute('content', content);
 					meta2.setAttribute('name', 'Meta.IVRStartNodeTitle');
 					meta2.setAttribute('content', name);
-
 					let globalCallerSessionId = doc.createElement('var');
 					globalCallerSessionId.setAttribute('name', 'globalCallerSessionId');
 					globalCallerSessionId.setAttribute('expr', '');

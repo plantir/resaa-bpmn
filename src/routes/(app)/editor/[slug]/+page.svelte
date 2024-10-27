@@ -1,9 +1,12 @@
 <script lang="ts">
-	import Header from '$lib/components/Header/Header.svelte';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import Bpmn from '$lib/components/bpmn/utils/BPMN.svelte';
+	import { IranTell } from '$lib/components/bpmn/utils/convertor';
+	import Header from '$lib/components/Header/Header.svelte';
 	import SidePanel from '$lib/components/SidePanel/SidePanel.svelte';
 	import Toast from '$lib/components/Toast/Toast.svelte';
-	import { goto } from '$app/navigation';
+	import { minio } from '$lib/stores/minio';
 	import { onMount } from 'svelte';
 	let open = false;
 	let nodeData: any = {};
@@ -36,6 +39,7 @@
 			toastCondition = true;
 			return;
 		}
+		name = IranTell(name);
 		await minio.putObject('Vxml/' + name + '.bpmn', xml);
 		await minio.putObject('Vxml/' + name + '.vxml', vxml);
 		let slug = $page.params.slug;
@@ -56,8 +60,7 @@
 	async function createNew() {
 		goto('/editor/create');
 	}
-	import { minio } from '$lib/stores/minio';
-	import { page } from '$app/stores';
+
 	onMount(async () => {
 		document.onkeydown = function (e) {
 			if (e.ctrlKey && e.key === 's') {
