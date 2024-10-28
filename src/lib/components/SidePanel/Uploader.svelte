@@ -9,7 +9,7 @@
 		if (typeof file == 'string' && file != '') {
 			loading = true;
 			let data = await minio.getObject(
-				file.replace('http://document-server.cloudpbx.local:5000/Documents/', '')
+				decodeURI(file.replace('http://document-server.cloudpbx.local:5000/Documents/', ''))
 			);
 			let body_byte: any = await data.Body!.transformToByteArray();
 			let blob = new Blob([body_byte]);
