@@ -213,7 +213,6 @@ export function convertBPMNtoVXML(bpmn: string) {
 					expr = `'${expr}'`;
 				}
 				let name = attribute.replace('cpbx:', '');
-				debugger;
 				if (['calleePhoneNumber', 'UserMsisdn', 'UserMsisdn'].includes(name)) {
 					expr = IranTell(expr);
 				}
@@ -419,7 +418,11 @@ export function convertBPMNtoVXML(bpmn: string) {
 							} else if (!isNaN(expr)) {
 								expr = `'${expr}'`;
 							}
-							param.setAttribute('name', attribute.replace('cpbx:', ''));
+							let name = attribute.replace('cpbx:', '');
+							if (['calleePhoneNumber', 'UserMsisdn', 'UserMsisdn'].includes(name)) {
+								expr = IranTell(expr);
+							}
+							param.setAttribute('name', name);
 							param.setAttribute('expr', `${expr}`);
 							subdialog.appendChild(param);
 						});
