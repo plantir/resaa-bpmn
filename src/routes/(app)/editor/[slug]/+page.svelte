@@ -41,7 +41,7 @@
 		}
 		name = IranTell(name);
 		await minio.putObject('Vxml/' + name + '.bpmn', xml);
-		await minio.putObject('Vxml/' + name + '.vxml', vxml);
+		await minio.putObject('Vxml/' + name.replace('_', '') + '.vxml', vxml);
 		let slug = $page.params.slug;
 		let bpmn_file = `Vxml/${slug}`;
 		let vxml_file = bpmn_file.replace('.bpmn', '.vxml');
