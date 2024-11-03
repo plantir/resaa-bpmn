@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { minio } from '$lib/stores/minio';
-	import type { _Object } from '@aws-sdk/client-s3';
 	import { goto } from '$app/navigation';
 	import Modal from '$lib/components/Modal/Modal.svelte';
+	import { minio } from '$lib/stores/minio';
+	import type { _Object } from '@aws-sdk/client-s3';
+	import { onMount } from 'svelte';
 
 	import moment from 'moment-jalaali';
 	moment.loadPersian({ dialect: 'persian-modern', usePersianDigits: true });
-	import { replace } from 'tiny-svg';
 	let modal = false;
 	let objectList: _Object[] = [];
 	let selectedItem: any = undefined;
@@ -18,8 +17,12 @@
 	});
 	async function getList() {
 		let data = await minio.getObjectList();
-		objectList = data.filter((item) => item.Key?.startsWith('Vxml/') && item.Key.endsWith('.bpmn'));
-		console.log(objectList);
+		objectList = data.filter(
+			(item) =>
+				item.Key?.startsWith('Vxml/') &&
+				item.Key.endsWith('.bpmn') &&
+				!item.Key.replace('Vxml/', '').startsWith('_')
+		);
 	}
 	function showDeleteModal(item: any) {
 		selectedItem = item;
