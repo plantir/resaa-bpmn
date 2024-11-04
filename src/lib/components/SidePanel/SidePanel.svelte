@@ -83,7 +83,8 @@
 		extension: [
 			...default_fields_start,
 			{ title: 'calleePhoneNumber', model: 'calleePhoneNumber', type: 'input' },
-			shouldRecord
+			shouldRecord,
+			{ title: 'تماس داخلی وارد شده', model: 'incoming_call', type: 'checkbox' }
 		],
 		bridge: [
 			...default_fields_start,
@@ -199,6 +200,16 @@
 		} else {
 			field[field.model] = e.target.value;
 		}
+		if (field.model == 'incoming_call') {
+			let calle = formData.find((x) => x.model == 'calleePhoneNumber');
+			if (e.target.checked) {
+				calle['calleePhoneNumber'] = 'global_choice';
+				calle.hidden = true;
+			} else {
+				calle['calleePhoneNumber'] = '';
+				calle.hidden = false;
+			}
+		}
 	}
 	const changeKey = () => {
 		key++;
@@ -222,7 +233,7 @@
 			<div>
 				{#if formData}
 					{#each formData as field}
-						<div class="form-control w-full mt-4">
+						<div class="form-control w-full mt-4" class:hidden={field.hidden}>
 							<span class="text-right label-text mb-2 pr-1">{field.title}</span>
 							{#if field.type == 'input'}
 								<input

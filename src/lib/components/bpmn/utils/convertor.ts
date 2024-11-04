@@ -332,10 +332,12 @@ export function convertBPMNtoVXML(bpmn: string) {
 							let dtmf = flow?.getAttribute('name');
 							let next = flow?.getAttribute('targetRef');
 							let cond = flow?.getAttribute('cpbx:cond');
+							if (dtmf == null) dtmf = 'choice';
 							if (dtmf == 'noinput') {
 								no_input_child = makeGoTo(next!);
 								continue;
 							}
+							debugger;
 							if (dtmf == 'choice') {
 								has_choice = true;
 								choice_next_elm = next;
