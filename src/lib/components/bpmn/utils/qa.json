@@ -29,6 +29,7 @@
 				},
 				{ "name": "title", "isAttr": true, "type": "String" },
 				{ "name": "shouldRecord", "isAttr": true, "type": "Boolean" },
+				{ "name": "incomingCall", "isAttr": true, "type": "Boolean" },
 				{ "name": "timeout", "isAttr": true, "type": "String" },
 				{ "name": "src", "isAttr": true, "type": "String" },
 				{ "name": "queueId", "isAttr": true, "type": "String" },

@@ -84,7 +84,7 @@
 			...default_fields_start,
 			{ title: 'calleePhoneNumber', model: 'calleePhoneNumber', type: 'input' },
 			shouldRecord,
-			{ title: 'تماس داخلی وارد شده', model: 'incoming_call', type: 'checkbox' }
+			{ title: 'تماس داخلی وارد شده', model: 'incomingCall', type: 'checkbox' }
 		],
 		bridge: [
 			...default_fields_start,
@@ -200,7 +200,7 @@
 		} else {
 			field[field.model] = e.target.value;
 		}
-		if (field.model == 'incoming_call') {
+		if (field.model == 'incomingCall') {
 			let calle = formData.find((x) => x.model == 'calleePhoneNumber');
 			if (e.target.checked) {
 				calle['calleePhoneNumber'] = 'global_choice';
