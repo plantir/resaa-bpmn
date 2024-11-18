@@ -136,6 +136,14 @@
 				});
 				changeKey();
 			}
+
+			if (field.model == 'incomingCall') {
+				let calle = formData.find((x) => x.model == 'calleePhoneNumber');
+				if (field[field.model]) {
+					calle['calleePhoneNumber'] = 'global_choice';
+					calle.hidden = true;
+				}
+			}
 			if (field.model == 'queueId') {
 				field[field.model] = field[field.model];
 
