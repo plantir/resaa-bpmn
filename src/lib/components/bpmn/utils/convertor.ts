@@ -1,6 +1,6 @@
 import { flattenDeep } from 'lodash';
 
-export const IranTell = (s: any) => s && s.replace(/0([\d]{5,})/, `98$1`);
+export const IranTell = (s: any) => s && s.replace(/^0([\d]{5,})/, `98$1`);
 
 export function convertVXMLtoBPMN(vxml: string) {
 	let parser = new DOMParser();
