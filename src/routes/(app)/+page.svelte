@@ -56,8 +56,8 @@
 </script>
 
 <svelte:head>
-	<title>طراحی فلو دیاگرام</title>
-	<meta name="description" content="طراحی فلو دیاگرام" />
+	<title>طراحی جریان تماس</title>
+	<meta name="description" content="طراحی جریان تماس" />
 </svelte:head>
 
 <div dir="rtl" class="container mx-auto mt-4">
