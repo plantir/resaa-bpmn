@@ -1,5 +1,5 @@
 #add some comment
-FROM docker.resaa.net/node:20 AS build
+FROM docker.resaa.net/node:20-alpine AS build
 
 WORKDIR /app
 COPY . .
