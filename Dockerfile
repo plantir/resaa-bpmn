@@ -1,5 +1,5 @@
 #add some comment
-FROM prod-docker.resaa.net/node:20 AS build
+FROM docker.resaa.net/node:20 AS build
 
 WORKDIR /app
 COPY . .
@@ -24,7 +24,7 @@ ENV VITE_CKF_URL=http://ckf.bss.cloudpbx.mcci.local
 ENV VITE_CJRF_URL=http://cjrf.bss.cloudpbx.mcci.local
 RUN yarn build
 
-FROM prod-docker.resaa.net/node:18-alpine AS deploy-node
+FROM docker.resaa.net/node:18-alpine AS deploy-node
 
 WORKDIR /app
 RUN rm -rf ./*
