@@ -7,8 +7,12 @@
 	import { auth } from '$lib/stores/auth';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { EnvService } from '$lib/services/env';
+	import { env } from '$lib/stores/env';
 	let layoutLoading = true;
 	onMount(async () => {
+		const data = await EnvService.get();
+		env.set(data);
 		let token = $page.url.searchParams.get('auth_token');
 		if (token) {
 			auth.login(token);

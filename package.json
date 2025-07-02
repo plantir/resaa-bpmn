@@ -44,6 +44,7 @@
 		"bpmn-js": "^13.2.2",
 		"cheerio": "^1.0.0-rc.12",
 		"diagram-js-grid": "^0.2.0",
+		"dotenv": "^17.0.1",
 		"inherits": "^2.0.4",
 		"inherits-browser": "^0.1.0",
 		"jwt-decode": "^4.0.0",

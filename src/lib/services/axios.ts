@@ -1,7 +1,11 @@
 import axios, { AxiosError } from 'axios';
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000/api';
+import { env } from '$lib/stores/env';
+const API_URL = 'http://localhost:3000/api';
 const Axios = axios.create({
 	baseURL: API_URL
+});
+env.subscribe((value) => {
+	Axios.defaults.baseURL = value.VITE_API_URL;
 });
 Axios.interceptors.request.use(async function (config) {
 	// if (config.url?.startsWith("http")) return config;

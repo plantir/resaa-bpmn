@@ -1,6 +1,11 @@
 import { writable } from 'svelte/store';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
+import { env } from '$lib/stores/env';
+let VITE_HSS_URL = '';
+env.subscribe((value) => {
+	VITE_HSS_URL = value.VITE_HSS_URL;
+});
 function authentication() {
 	const { set, update, subscribe } = writable<any | null>(null);
 
@@ -18,7 +23,7 @@ function authentication() {
 		let decoded_token: any = jwtDecode(localStorage.token);
 		let ndc = decoded_token.profile;
 		let { data } = await axios.get(
-			`${import.meta.env.VITE_HSS_URL}/v2/Subscribers/EnterpriseSubscriber/Ndc/${ndc}`
+			`${VITE_HSS_URL}/v2/Subscribers/EnterpriseSubscriber/Ndc/${ndc}`
 		);
 		user.set(data.data);
 		localStorage.setItem('user', JSON.stringify(data.data));

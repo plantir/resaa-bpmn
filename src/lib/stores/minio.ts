@@ -5,16 +5,20 @@ import { jwtDecode } from 'jwt-decode';
 // import { Client } from 'minio';
 import { ListBucketsCommand, S3 } from '@aws-sdk/client-s3';
 import { goto } from '$app/navigation';
-
+import { env } from '$lib/stores/env';
+let VITE_MINIO_URL = '';
+env.subscribe((value) => {
+	VITE_MINIO_URL = value.VITE_MINIO_URL;
+});
 function minioClient() {
 	const { set, update, subscribe } = writable<any | null>(null);
 	let s3Client: S3 | undefined = undefined;
 	async function init() {
-		const endpoint = import.meta.env.VITE_MINIO_URL;
+		const endpoint = VITE_MINIO_URL;
 		try {
 			let { data } = await axios({
 				method: 'post',
-				url: import.meta.env.VITE_MINIO_URL,
+				url: VITE_MINIO_URL,
 				withCredentials: false,
 				params: {
 					Action: 'AssumeRoleWithWebIdentity',

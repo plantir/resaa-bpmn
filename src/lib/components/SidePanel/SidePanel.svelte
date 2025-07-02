@@ -15,6 +15,7 @@
 	import { getIconByType } from '../bpmn/utils/icons';
 	import Select from './Select.svelte';
 	import Uploader from './Uploader.svelte';
+	import { env } from '$lib/stores/env';
 	let dispatch = createEventDispatcher();
 	export let open = false;
 	export let data = {};
@@ -121,11 +122,7 @@
 
 				let data = await axios
 					.get(
-						`${
-							import.meta.env.VITE_CCFC_URL
-						}/v1/CallCenters/ListByOwner?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=${
-							$user.imsi
-						}`
+						`${$env.VITE_CCFC_URL}/v1/CallCenters/ListByOwner?pageNumber=1&pageSize=1000&OwnerSubscriberImsi=${$user.imsi}`
 					)
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {
@@ -149,9 +146,7 @@
 
 				let data = await axios
 					.get(
-						`${import.meta.env.VITE_SAF_URL}/v1/Survey/EnterpriseImsi/${
-							$user.imsi
-						}?pageNumber=1&pageSize=1000`
+						`${$env.VITE_SAF_URL}/v1/Survey/EnterpriseImsi/${$user.imsi}?pageNumber=1&pageSize=1000`
 					)
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {
