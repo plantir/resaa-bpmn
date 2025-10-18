@@ -23,7 +23,7 @@ function authentication() {
 		let decoded_token: any = jwtDecode(localStorage.token);
 		let ndc = decoded_token.profile;
 		let { data } = await axios.get(
-			`${VITE_HSS_URL}/v2/Subscribers/EnterpriseSubscriber/Ndc/${ndc}`
+			`${VITE_HSS_URL}/v2/Subscribers/Enterprise/Ndc/${ndc}`
 		);
 		user.set(data.data);
 		localStorage.setItem('user', JSON.stringify(data.data));
