@@ -39,13 +39,16 @@
 			toastCondition = true;
 			return;
 		}
+		let slug = $page.params.slug;
 		name = IranTell(name);
+		if (slug.includes('_')) {
+			name = '_' + name;
+		}
 		await minio.putObject('Vxml/' + name + '.bpmn', xml);
 		await minio.putObject('Vxml/' + name.replace('_', '') + '.vxml', vxml);
-		let slug = $page.params.slug;
 		let bpmn_file = `Vxml/${slug}`;
 		let vxml_file = bpmn_file.replace('.bpmn', '.vxml');
-		if (name != slug.replace('.bpmn', '')) {
+		if (name != slug.replace('.bpmn', '') && !slug.includes('_')) {
 			await minio.deleteObject(bpmn_file);
 			await minio.deleteObject(vxml_file);
 			setTimeout(() => {
