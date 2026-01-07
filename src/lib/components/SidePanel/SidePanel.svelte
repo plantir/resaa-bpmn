@@ -152,7 +152,7 @@
 				field.items = data.data.items.map((item: any) => {
 					return {
 						text: item.title,
-						value: item.id
+						value: item.surveyMsisdn
 					};
 				});
 				changeKey();
