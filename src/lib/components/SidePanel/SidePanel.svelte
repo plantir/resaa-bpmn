@@ -143,7 +143,11 @@
 			}
 			if (field.model == 'queueId') {
 				field[field.model] = field[field.model];
-
+				const surveyDiscriminatorValues: any = {
+					InternalSurvey: 'داخلی',
+					CallCenterSurvey: 'مرکز تماس',
+					CampaignSurvey: 'کمپین'
+				};
 				let data = await axios
 					.get(
 						`${$env.VITE_SAF_URL}/v1/Survey/EnterpriseImsi/${$user.imsi}?pageNumber=1&pageSize=1000`
@@ -151,7 +155,7 @@
 					.then((res) => res.data);
 				field.items = data.data.items.map((item: any) => {
 					return {
-						text: item.title,
+						text: `${item.title} - ${surveyDiscriminatorValues[item.surveyType]}`,
 						value: item.surveyMsisdn
 					};
 				});
