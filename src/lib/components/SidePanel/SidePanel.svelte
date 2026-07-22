@@ -153,9 +153,14 @@
 						`${$env.VITE_SAF_URL}/v1/Survey/EnterpriseImsi/${$user.imsi}?pageNumber=1&pageSize=1000`
 					)
 					.then((res) => res.data);
+				const surveyTypes: any = {
+					InternalSurvey: 'داخلی',
+					CallCenterSurvey: 'مرکز تماس',
+					CampaignSurvey: 'کمپین'
+				};
 				field.items = data.data.items.map((item: any) => {
 					return {
-						text: `${item.title} - ${surveyDiscriminatorValues[item.surveyType]}`,
+						text: `${item.title} (${surveyTypes[item.surveyType]})`,
 						value: item.surveyMsisdn
 					};
 				});
