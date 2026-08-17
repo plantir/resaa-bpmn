@@ -24,5 +24,6 @@ export function GET() {
 		VITE_CKF_URL: process.env.VITE_CKF_URL,
 		VITE_CJRF_URL: process.env.VITE_CJRF_URL,
 		VITE_FS_URL: process.env.VITE_FS_URL,
+		VITE_DOCUMENT_SERVER_URL: process.env.VITE_DOCUMENT_SERVER_URL
 	});
 }

@@ -1,25 +1,28 @@
 <script lang="ts">
 	import { minio } from '$lib/stores/minio';
+	import { env } from '$lib/stores/env';
 	export let file: any;
 	let files: any = [];
 	let id = new Date().getTime().toString();
 	let src: any = null;
 	let loading = false;
+	let documentServerUrl = '';
+	env.subscribe((value) => {
+		documentServerUrl = value.VITE_DOCUMENT_SERVER_URL;
+	});
 	const loadFile = async () => {
 		if (typeof file == 'string' && file != '') {
 			loading = true;
-			let data = await minio.getObject(
-				decodeURI(file.replace('http://document-server.cloudpbx.local:5000/Documents/', ''))
-			);
+			let data = await minio.getObject(decodeURI(file.replace(`${documentServerUrl}/`, '')));
 			let body_byte: any = await data.Body!.transformToByteArray();
 			let blob = new Blob([body_byte]);
 			src = URL.createObjectURL(blob);
 			loading = false;
 		}
 	};
-	const onUploadFile = async (e) => {
+	const onUploadFile = async (e: Event) => {
 		src = null;
-		file = e.target.files[0];
+		file = (<HTMLInputElement>e.target)?.files?.[0];
 	};
 	$: file, loadFile();
 </script>

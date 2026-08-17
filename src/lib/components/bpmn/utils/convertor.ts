@@ -1,6 +1,12 @@
 import { flattenDeep } from 'lodash';
+import { env } from '$lib/stores/env';
 
 export const IranTell = (s: any) => s && s.replace(/^0([\d]{5,})/, `98$1`);
+
+let documentServerUrl = '';
+env.subscribe((value) => {
+	documentServerUrl = value.VITE_DOCUMENT_SERVER_URL;
+});
 
 export function convertVXMLtoBPMN(vxml: string) {
 	let parser = new DOMParser();
@@ -134,6 +140,7 @@ export function convertVXMLtoBPMN(vxml: string) {
  * @param {string} bpmn
  */
 export function convertBPMNtoVXML(bpmn: string) {
+	console.log(bpmn);
 	let parser = new DOMParser();
 	let parsed_bpmn = parser.parseFromString(bpmn, 'text/xml');
 	let process = parsed_bpmn.getElementsByTagName('bpmn:process');
@@ -313,8 +320,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 						let audio = doc.createElement('audio');
 						audio.setAttribute(
 							'src',
-							'http://document-server.cloudpbx.local:5000/Documents/' +
-								src.replace('Audio/', 'Audio/Stream/')
+							`${documentServerUrl}/` + src.replace('Audio/', 'Audio/Stream/')
 						);
 						prompt.appendChild(audio);
 						field.appendChild(prompt);
@@ -590,8 +596,7 @@ export function convertBPMNtoVXML(bpmn: string) {
 					let src = item.getAttribute('cpbx:src') || '';
 					audio.setAttribute(
 						'src',
-						'http://document-server.cloudpbx.local:5000/Documents/' +
-							src.replace('Audio/', 'Audio/Stream/')
+						`${documentServerUrl}/` + src.replace('Audio/', 'Audio/Stream/')
 					);
 					for (let child of item.childNodes) {
 						audio.append(child.cloneNode(true));
